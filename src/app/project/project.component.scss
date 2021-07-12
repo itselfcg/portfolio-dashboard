@@ -1,0 +1,37 @@
+.mat-card{
+  margin: 2em;
+
+}
+.mat-card-content{
+  padding: 2em;
+  }
+
+
+
+.image-preview {
+  height: 5rem;
+  margin: 1rem 0;
+}
+
+.image-preview img {
+  height: 100%;
+}
+
+
+
+.input-space {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+.title-card-right{
+  float: right;
+  display: inline;
+
+}

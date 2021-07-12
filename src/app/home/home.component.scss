@@ -1,0 +1,32 @@
+
+.mat-card-content{
+padding: 2em;
+}
+
+table{
+  width: 100%;
+ }
+
+ .mat-column-id, .mat-column-language {
+   width: 7% !important;
+   word-break: break-word;
+ }
+
+ .mat-column-actions, .mat-column-title{
+  width: 12.5% !important;
+   word-break: break-word;
+ }
+
+.mat-column-git_url, .mat-column-details, .mat-column-preview_url {
+  width: 7% !important;
+   word-break: break-word;
+ }
+
+ .mat-column-labels {
+  width: 20% !important;
+  word-break: break-word;
+}
+.mat-column-content {
+  width: 20% !important;
+  word-break: break-word;
+}
