@@ -18,9 +18,13 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
 
-  displayedColumns: any[] = [
+  proyectColumns: any[] = [
   'id','language','title','content','labels','git_url','details','preview_url','actions'
   ];
+
+  caseStudyColumns: any[] = [
+    'id','language','project','title','content','actions'
+    ];
 
   constructor(
     public projectService: ProjectService,
