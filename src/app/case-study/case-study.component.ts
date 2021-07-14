@@ -4,11 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { mimeType } from '../mime-type.validator';
+import { Insight } from '../_models/insight.model';
 import { Project } from '../_models/project.model';
 import { User } from '../_models/user.model';
 import { CaseStudyService } from '../_services/case-study.service';
 import { ProjectService } from '../_services/projects.service';
-import { UserDialog } from './dialogs/user-dialog.component';
+import { InsightDialog } from './dialogs/insights/insights-dialog.component';
+import { UserDialog } from './dialogs/user/user-dialog.component';
 
 @Component({
   selector: 'app-case-study',
@@ -22,10 +24,11 @@ export class CaseStudyComponent implements OnInit {
   mode = 'create';
 
   projectsAvailabe: Project[];
-  insigths: string[] = [];
+  insigths: Insight[] = [];
   users: User[] = [];
 
   usersDataSource = new MatTableDataSource(this.users);
+  insightsDataSource = new MatTableDataSource(this.insigths);
 
   user: User = {
     name: '',
@@ -46,7 +49,7 @@ export class CaseStudyComponent implements OnInit {
     'picture',
     'actions',
   ];
-  insigthsColumns: any[] = ['id', 'title', 'content', 'icon'];
+  insigthsColumns: any[] = ['icon','title', 'content',  'actions'];
 
   constructor(
     public dialog: MatDialog,
@@ -77,7 +80,7 @@ export class CaseStudyComponent implements OnInit {
         this.form.value.project,
         this.form.value.title,
         this.form.value.content,
-        this.users
+        this.users,this.insigths
       );
     } else {
     }
@@ -119,11 +122,11 @@ export class CaseStudyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if ((mode === 'create')) {
+        if (mode === 'create') {
           this.users.push(result);
-        }else{
-          var index=this.users.indexOf(user);
-          this.users[index]=result;
+        } else {
+          var index = this.users.indexOf(user);
+          this.users[index] = result;
         }
         this.usersDataSource = new MatTableDataSource(this.users);
       }
@@ -131,8 +134,49 @@ export class CaseStudyComponent implements OnInit {
   }
 
   onDeleteUser(user: User) {
-    console.log(user);
     this.users = this.users.filter((result) => result.name !== user.name);
     this.usersDataSource = new MatTableDataSource(this.users);
   }
+
+  openInsightDialog(insight: Insight): void {
+    var mode = 'update';
+
+    if (!insight) {
+      mode = 'create';
+      insight = {
+        title: null,
+        content: null,
+        icon: null,
+      };
+    }
+
+    const dialogRef = this.dialog.open(InsightDialog, {
+      width: '450px',
+      data: {
+        title: insight.title,
+        content: insight.content,
+        icon: insight.icon,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.insigths.push(result);
+        } else {
+          var index = this.insigths.indexOf(insight);
+          this.insigths[index] = result;
+        }
+        this.insightsDataSource = new MatTableDataSource(this.insigths);
+      }
+    });
+  }
+
+
+
+  onDeleteInsight(insight: Insight) {
+    this.insigths = this.insigths.filter((result) => result.title !== insight.title);
+    this.insightsDataSource = new MatTableDataSource(this.insigths);
+  }
+
 }

@@ -7,6 +7,7 @@ import { CaseStudy } from '../_models/case-study.model';
 
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user.model';
+import { Insight } from '../_models/insight.model';
 const API_URL = environment.apiUrl + '/cases';
 
 @Injectable({ providedIn: 'root' })
@@ -38,7 +39,8 @@ export class CaseStudyService {
     project: string,
     title: string,
     content: string,
-    users: User[]
+    users: User[],
+    insights: Insight[]
   ) {
     var formData = new FormData();
     formData.append('language', language);
@@ -46,22 +48,29 @@ export class CaseStudyService {
     formData.append('title', title);
     formData.append('content', content);
 
-    var users2:any[]=[];
+    var users2: any[] = [];
+
+    // can be remplaced with a map.
     for (let i = 0; i < users.length; i++) {
       let user = {
-        id:i,
+        id: i,
         name: users[i].name,
         age: users[i].age,
         story: users[i].story,
         occupation: users[i].occupation,
-        pictures:{ description:users[i].pictures.description}
+        pictures: { description: users[i].pictures.description },
       };
       users2.push(user);
-      formData.append('user-pic-'+i, users[i].file, users[i].pictures.description);
+      formData.append(
+        'user-pic-' + i,
+        users[i].file,
+        users[i].pictures.description
+      );
     }
     formData.append('users', JSON.stringify(users2));
+    formData.append('insights', JSON.stringify(insights));
 
-console.log("Enviando post");
+    console.log('Enviando post');
     this.http
       .post<{ message: string; id: string }>(API_URL, formData)
       .subscribe((res) => {});

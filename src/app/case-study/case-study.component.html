@@ -109,7 +109,55 @@
             </table>
           </div>
         </mat-tab>
-        <mat-tab label="Insights">Insights</mat-tab>
+        <mat-tab label="Insights">
+
+          <div class="tab-content">
+            <mat-toolbar-row>
+              <span><h3>Insights</h3></span>
+              <span class="example-spacer"></span>
+              <button mat-icon-button color="primary" (click)="openInsightDialog(null)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </mat-toolbar-row>
+
+            <div style="text-align: center; width: 100%"></div>
+
+            <table mat-table [dataSource]="insightsDataSource" [style.width.%]="100">
+              <ng-container matColumnDef="icon">
+                <th mat-header-cell *matHeaderCellDef>Icon</th>
+                <td mat-cell *matCellDef="let insight">{{ insight.icon }}</td>
+              </ng-container>
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let insight">{{ insight.title }}</td>
+              </ng-container>
+              <ng-container matColumnDef="content">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let insight">{{insight.content}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let user">
+                  <button
+                    mat-icon-button
+                    color="accent" (click)="openInsightDialog(user)" >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="onDeleteInsight(user)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="insigthsColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: insigthsColumns"></tr>
+            </table>
+          </div>
+
+
+
+        </mat-tab>
       </mat-tab-group>
 
       <div class="title-card-right b">

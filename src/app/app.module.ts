@@ -12,8 +12,8 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AngularMaterialModule } from "./angular-material.module";
 import {MatIconModule} from '@angular/material/icon';
-import { UserDialog } from './case-study/dialogs/user-dialog.component';
-
+import { UserDialog } from './case-study/dialogs/user/user-dialog.component';
+import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,8 @@ import { UserDialog } from './case-study/dialogs/user-dialog.component';
     CaseStudyComponent,
     HomeComponent,
     HeaderComponent,
-    UserDialog
+    UserDialog,
+    InsightDialog
   ],
   imports: [
     BrowserModule,
