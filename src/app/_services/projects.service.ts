@@ -29,8 +29,14 @@ export class ProjectService {
       });
   }
 
+  getAllWithoutCaseStudy() {
+    return this.http.get<{project: Project[] }>(API_URL, {
+      params: { details: "false" },
+    });
+  }
+
   getById(id: string) {
-    return this.http.get<{ message: string; project: Project[] }>(API_URL, {
+    return this.http.get<{project: Project[] }>(API_URL, {
       params: { id: id },
     });
   }
@@ -113,14 +119,11 @@ export class ProjectService {
         content: content,
         labels: labels.split(' '),
         git_url: git_url,
-        details: false,
+        details: "false",
         preview_url: preview_url,
         picture: { url: picture, description: picture_alt },
       };
     }
-
-    console.log(flagFormData);
-    console.log(formData);
 
     this.http
       .put(API_URL + '/' + id, flagFormData ? formData :  formDataProject)

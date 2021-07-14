@@ -12,6 +12,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AngularMaterialModule } from "./angular-material.module";
 import {MatIconModule} from '@angular/material/icon';
+import { UserDialog } from './case-study/dialogs/user-dialog.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MatIconModule} from '@angular/material/icon';
     ProjectComponent,
     CaseStudyComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    UserDialog
   ],
   imports: [
     BrowserModule,
