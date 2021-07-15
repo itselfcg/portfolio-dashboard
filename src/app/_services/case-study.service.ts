@@ -8,6 +8,8 @@ import { CaseStudy } from '../_models/case-study.model';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user.model';
 import { Insight } from '../_models/insight.model';
+import { Section } from '../_models/section.model';
+import { Sections } from '../_models/sections.model';
 const API_URL = environment.apiUrl + '/cases';
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +21,12 @@ export class CaseStudyService {
 
   getCaseStudyUpdateListener() {
     return this.caseUpdated.asObservable();
+  }
+
+  getSections() {
+    return this.http.get<{ message: string; sections: string[] }>(
+      API_URL + '/sections'
+    );
   }
 
   getAll() {
@@ -40,7 +48,8 @@ export class CaseStudyService {
     title: string,
     content: string,
     users: User[],
-    insights: Insight[]
+    insights: Insight[],
+    sections: Section[]
   ) {
     var formData = new FormData();
     formData.append('language', language);
@@ -67,8 +76,20 @@ export class CaseStudyService {
         users[i].pictures.description
       );
     }
+
+    var section: any = {};
+    for (let i = 0; i < sections.length; i++) {
+      section[sections[i].name] = {
+        title: sections[i].title,
+        content: sections[i].content,
+        questions: sections[i].questions,
+        list: sections[i].list,
+      };
+    }
+
     formData.append('users', JSON.stringify(users2));
     formData.append('insights', JSON.stringify(insights));
+    formData.append('sections', JSON.stringify(section));
 
     console.log('Enviando post');
     this.http

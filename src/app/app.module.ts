@@ -7,13 +7,14 @@ import { ProjectComponent } from './project/project.component';
 import { CaseStudyComponent } from './case-study/case-study.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { AuthInterceptor } from "./auth/auth-interceptor";
-import { AngularMaterialModule } from "./angular-material.module";
-import {MatIconModule} from '@angular/material/icon';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AuthInterceptor } from './auth/auth-interceptor';
+import { AngularMaterialModule } from './angular-material.module';
+import { MatIconModule } from '@angular/material/icon';
 import { UserDialog } from './case-study/dialogs/user/user-dialog.component';
 import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.component';
+import { SectionDialog } from './case-study/dialogs/sections/section-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.com
     HomeComponent,
     HeaderComponent,
     UserDialog,
-    InsightDialog
+    InsightDialog,
+    SectionDialog,
   ],
   imports: [
     BrowserModule,
@@ -33,11 +35,11 @@ import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.com
     FormsModule,
     HttpClientModule,
     AngularMaterialModule,
-    MatIconModule
+    MatIconModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

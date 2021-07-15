@@ -1,0 +1,79 @@
+<form [formGroup]="form" (submit)="save()">
+  <h1 mat-dialog-title>Section</h1>
+  <div mat-dialog-content [formGroup]="form">
+    <div class="input-space">
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="name">
+          <mat-option
+            *ngFor="let section of sectionsAvailable "
+            value="{{section}}"
+            >{{section}}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="50">
+        <input
+          matInput
+          type="text"
+          formControlName="title"
+          placeholder="Title"
+        />
+        <mat-error>Please enter a title.</mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field [style.width.%]="100">
+      <input
+        matInput
+        type="text"
+        formControlName="content"
+        placeholder="Description"
+      />
+      <mat-error>Please enter an description.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.%]="100">
+      <input
+        matInput
+        type="text"
+        formControlName="questions"
+        placeholder="Questions"
+      />
+      <mat-error>Please enter questions.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field [style.width.%]="100">
+      <input matInput type="text" formControlName="list" placeholder="List" />
+      <mat-error>Please enter a list.</mat-error>
+    </mat-form-field>
+
+    <!-- <div>
+      <mat-form-field [style.width.%]="50">
+        <textarea
+          matInput
+          rows="2"
+          formControlName="picture_alt"
+          placeholder="Picture description"
+        ></textarea>
+        <mat-error>Please enter a picture description.</mat-error>
+      </mat-form-field>
+
+      <button mat-stroked-button type="button" (click)="filePicker.click()">
+        Select picture
+      </button>
+      <input type="file" #filePicker (change)="onImagePicked($event)" />
+      <div
+        class="image-preview"
+        *ngIf="
+        imagePreview !== '' && imagePreview && form.get('picture').valid
+      "
+      >
+        <img [src]="imagePreview" />
+      </div>
+    </div> -->
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="close()">CLOSE</button>
+    <button mat-button mat-flat-button type="submit">SAVE</button>
+  </div>
+</form>

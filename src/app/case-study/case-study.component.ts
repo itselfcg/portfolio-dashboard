@@ -6,10 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { mimeType } from '../mime-type.validator';
 import { Insight } from '../_models/insight.model';
 import { Project } from '../_models/project.model';
+import { Section } from '../_models/section.model';
 import { User } from '../_models/user.model';
 import { CaseStudyService } from '../_services/case-study.service';
 import { ProjectService } from '../_services/projects.service';
 import { InsightDialog } from './dialogs/insights/insights-dialog.component';
+import { SectionDialog } from './dialogs/sections/section-dialog.component';
 import { UserDialog } from './dialogs/user/user-dialog.component';
 
 @Component({
@@ -26,20 +28,13 @@ export class CaseStudyComponent implements OnInit {
   projectsAvailabe: Project[];
   insigths: Insight[] = [];
   users: User[] = [];
+  sections: Section[] = [];
+  sectionsName: string[] = [];
+  sectionsNameAvailable: string[];
 
   usersDataSource = new MatTableDataSource(this.users);
   insightsDataSource = new MatTableDataSource(this.insigths);
-
-  user: User = {
-    name: '',
-    occupation: '',
-    story: '',
-    age: '',
-    pictures: { url: '', description: '' },
-    file: new File([''], '', {
-      type: '',
-    }),
-  };
+  sectionsDataSource = new MatTableDataSource(this.sections);
 
   userColumns: any[] = [
     'name',
@@ -49,7 +44,15 @@ export class CaseStudyComponent implements OnInit {
     'picture',
     'actions',
   ];
-  insigthsColumns: any[] = ['icon','title', 'content',  'actions'];
+  insigthsColumns: any[] = ['icon', 'title', 'content', 'actions'];
+  sectionsColumns: any[] = [
+    'name',
+    'title',
+    'content',
+    'questions',
+    'list',
+    'actions',
+  ];
 
   constructor(
     public dialog: MatDialog,
@@ -57,9 +60,15 @@ export class CaseStudyComponent implements OnInit {
     private caseStudyService: CaseStudyService
   ) {}
   ngOnInit(): void {
+    this.caseStudyService.getSections().subscribe((result) => {
+      this.sectionsName = result.sections;
+      this.sectionsNameAvailable = result.sections;
+    });
+
     this.projectService.getAllWithoutCaseStudy().subscribe((result) => {
       this.projectsAvailabe = result.project;
     });
+
     this.form = new FormGroup({
       language: new FormControl('en', {
         validators: [Validators.required],
@@ -80,7 +89,9 @@ export class CaseStudyComponent implements OnInit {
         this.form.value.project,
         this.form.value.title,
         this.form.value.content,
-        this.users,this.insigths
+        this.users,
+        this.insigths,
+        this.sections
       );
     } else {
     }
@@ -172,11 +183,70 @@ export class CaseStudyComponent implements OnInit {
     });
   }
 
-
-
   onDeleteInsight(insight: Insight) {
-    this.insigths = this.insigths.filter((result) => result.title !== insight.title);
+    this.insigths = this.insigths.filter(
+      (result) => result.title !== insight.title
+    );
     this.insightsDataSource = new MatTableDataSource(this.insigths);
   }
 
+  openSectionDialog(section: Section): void {
+    var mode = 'update';
+
+    if (!section) {
+      mode = 'create';
+      section = {
+        name: this.sectionsNameAvailable[0],
+        title: null,
+        content: null,
+        questions: null,
+        list: null,
+        pictures: [
+          {
+            url: null,
+            description: null,
+          },
+        ],
+        sections: this.sectionsNameAvailable,
+      };
+    }
+
+    const dialogRef = this.dialog.open(SectionDialog, {
+      width: '450px',
+      data: {
+        name: section.name,
+        title: section.title,
+        content: section.content,
+        questions: section.questions,
+        list: section.list,
+        pictures: section.pictures,
+        sections: this.sectionsNameAvailable,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.sections.push(result);
+          this.sectionsNameAvailable = this.sectionsNameAvailable.filter(
+            (section) => section !== result.name
+          );
+        } else {
+          var index = this.sections.indexOf(section);
+          this.sections[index] = result;
+          this.sectionsNameAvailable = this.sectionsName.filter(
+            (name) => !this.sections.map((section) => section.name).includes(name)
+          );
+        }
+        this.sectionsDataSource = new MatTableDataSource(this.sections);
+      }
+    });
+  }
+
+  onDeleteSection(section: Section) {
+    this.sections = this.sections.filter(
+      (result) => result.title !== section.title
+    );
+    this.sectionsDataSource = new MatTableDataSource(this.sections);
+  }
 }
