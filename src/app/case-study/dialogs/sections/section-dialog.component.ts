@@ -5,8 +5,11 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { mimeType } from 'src/app/mime-type.validator';
+import { Picture } from 'src/app/_models/picture.model';
 import { Section } from 'src/app/_models/section.model';
+import { PictureDialog } from '../picture/picture-dialog.component';
 
 @Component({
   selector: 'section-dialog',
@@ -17,7 +20,12 @@ export class SectionDialog implements OnInit {
   form: FormGroup;
   imagePreview: string;
   sectionsAvailable: string[];
+  pictures: Picture[] = [];
+  picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
+  picturesDataSource = new MatTableDataSource(this.pictures);
+
   constructor(
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<SectionDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Section
   ) {
@@ -37,13 +45,16 @@ export class SectionDialog implements OnInit {
       list: new FormControl(this.data.list, {
         validators: [Validators.required],
       }),
-      /*  pictures: new FormControl(this.data.pictures, {
-        validators: [Validators.required],
-        asyncValidators: [mimeType],
-      }), */
     });
 
-    this.sectionsAvailable=data.sections;
+    if (data.pictures) {
+      this.pictures = data.pictures;
+      this.picturesDataSource = new MatTableDataSource(this.pictures);
+    } else {
+      this.pictures = [];
+    }
+
+    this.sectionsAvailable = data.sections;
   }
 
   ngOnInit() {}
@@ -61,7 +72,7 @@ export class SectionDialog implements OnInit {
       content: this.form.value.content,
       questions: this.form.value.questions,
       list: this.form.value.list,
-      pictures: null,
+      pictures: this.pictures,
       sections: null,
     };
 
@@ -72,14 +83,46 @@ export class SectionDialog implements OnInit {
     this.dialogRef.close();
   }
 
-  onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ picture: file });
-    this.form.get('picture').updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+  openPictureDialog(picture: Picture): void {
+    var mode = 'update';
+
+    if (!picture) {
+      mode = 'create';
+      picture = {
+        name: null,
+        description: null,
+        url: null,
+        file: null,
+      };
+    }
+
+    const dialogRef = this.dialog.open(PictureDialog, {
+      width: '450px',
+      data: {
+        name: picture.name,
+        description: picture.description,
+        url: picture.url,
+        file: picture.file,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.pictures.push(result);
+        } else {
+          var index = this.pictures.indexOf(picture);
+          this.pictures[index] = result;
+        }
+        this.picturesDataSource = new MatTableDataSource(this.pictures);
+      }
+    });
+  }
+
+  onDeletePicture(picture: Picture) {
+    this.pictures = this.pictures.filter(
+      (result) => result.name !== picture.name
+    );
+    this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
 }

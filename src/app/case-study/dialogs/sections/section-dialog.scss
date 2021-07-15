@@ -8,7 +8,6 @@ input[type="file"] {
   visibility: hidden;
 }
 
-
 .image-preview {
   height: 5rem;
   margin: 1rem 0;
@@ -16,4 +15,14 @@ input[type="file"] {
 
 .image-preview img {
   height: 100%;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.tab-content {
+  padding-top: 2em;
+  height: 300px;
+  width: 100%;
 }

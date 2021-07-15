@@ -209,16 +209,10 @@ export class CaseStudyComponent implements OnInit {
         content: null,
         questions: null,
         list: null,
-        pictures: [
-          {
-            url: null,
-            description: null,
-          },
-        ],
+        pictures: null,
         sections: this.sectionsNameAvailable,
       };
     }
-
     const dialogRef = this.dialog.open(SectionDialog, {
       width: '450px',
       data: {

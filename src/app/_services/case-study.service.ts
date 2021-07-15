@@ -73,18 +73,17 @@ export class CaseStudyService {
       );
     }
 
-    var usersMapped=users.map(user=> (
-      {
-        name: user.name,
-        age:user.age,
-        story: user.story,
-        occupation: user.occupation,
-        pictures:{
-          name:user.pictures.name,
-          description:user.pictures.description
-        }
-      })
-    );
+    var usersMapped = users.map((user) => ({
+      name: user.name,
+      age: user.age,
+      story: user.story,
+      occupation: user.occupation,
+      pictures: {
+        name: user.pictures.name,
+        description: user.pictures.description,
+      },
+    }));
+
 
     // Can be remplaced with map
     var section: any = {};
@@ -94,8 +93,20 @@ export class CaseStudyService {
         content: sections[i].content,
         questions: sections[i].questions,
         list: sections[i].list,
+        pictures:[]
       };
+
+      for (let j = 0; j < sections[i].pictures.length; j++) {
+        section[sections[i].name].pictures.push({
+          name: sections[i].pictures[j].name,
+          description: sections[i].pictures[j].description,
+        });
+        formData.append(sections[i].name+'-pic-' + i, sections[i].pictures[j].file, sections[i].pictures[j].name);
+      }
     }
+
+    console.log(section);
+
 
     formData.append('users', JSON.stringify(usersMapped));
     formData.append('insights', JSON.stringify(insights));

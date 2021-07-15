@@ -6,11 +6,6 @@ export interface Section {
   content: string;
   list: string[];
   questions: string[];
-  pictures: [
-    {
-      url: string;
-      description: string;
-    }
-  ];
+  pictures: Picture[];
   sections:string[];
 }
