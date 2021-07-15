@@ -29,11 +29,13 @@ export class UserDialog implements OnInit {
       age: new FormControl(this.data.age, { validators: [Validators.required] }),
       occupation: new FormControl(this.data.occupation, { validators: [Validators.required] }),
       story: new FormControl(this.data.story, { validators: [Validators.required] }),
-      picture: new FormControl(this.data.pictures.url, {
+      file: new FormControl(this.data.pictures.url, {
         validators: [Validators.required],
         asyncValidators: [mimeType],
       }),
-      picture_alt: new FormControl(this.data.pictures.description, { validators: [Validators.required] }),
+      fileName: new FormControl(this.data.pictures.name, { validators: [Validators.required] }),
+      fileDescription: new FormControl(this.data.pictures.description, { validators: [Validators.required] }),
+
     });
 
     this.imagePreview=this.data.pictures.url;
@@ -54,12 +56,11 @@ export class UserDialog implements OnInit {
       story: this.form.value.story,
       occupation: this.form.value.occupation,
       pictures: {
-        name:null,
+        name:this.form.value.fileName,
+        description: this.form.value.fileDescription,
         url: this.imagePreview,
-        description: this.form.value.picture_alt,
-        file:null
+        file:this.form.value.file
       },
-      file:this.form.value.picture
     };
 
     this.dialogRef.close(user);
@@ -71,8 +72,8 @@ export class UserDialog implements OnInit {
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ picture: file });
-    this.form.get('picture').updateValueAndValidity();
+    this.form.patchValue({ file: file });
+    this.form.get('file').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;

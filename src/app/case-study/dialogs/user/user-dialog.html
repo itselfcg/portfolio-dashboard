@@ -18,8 +18,7 @@
         formControlName="occupation"
         placeholder="Occupation"
       />
-      <mat-error>Please enter a name.</mat-error
-      >
+      <mat-error>Please enter a name.</mat-error>
     </mat-form-field>
 
     <mat-form-field [style.width.%]="100">
@@ -29,37 +28,45 @@
         formControlName="story"
         placeholder="User story"
       ></textarea>
-      <mat-error>Please enter a name.</mat-error
-      >
+      <mat-error>Please enter a name.</mat-error>
     </mat-form-field>
 
-    <div>
+    <div class="input-space">
       <mat-form-field [style.width.%]="50">
         <textarea
           matInput
           rows="2"
-          formControlName="picture_alt"
+          formControlName="fileName"
+          placeholder="Picture name"
+        ></textarea>
+        <mat-error>Please enter a picture name.</mat-error>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="50">
+        <textarea
+          matInput
+          rows="2"
+          formControlName="fileDescription"
           placeholder="Picture description"
         ></textarea>
         <mat-error>Please enter a picture description.</mat-error>
       </mat-form-field>
+    </div>
 
-      <button mat-stroked-button type="button" (click)="filePicker.click()">
-        Select picture
-      </button>
-      <input type="file" #filePicker (change)="onImagePicked($event)" />
-      <div
-        class="image-preview"
-        *ngIf="
-        imagePreview !== '' && imagePreview && form.get('picture').valid
-      "
-      >
-        <img [src]="imagePreview" />
-      </div>
+    <button mat-stroked-button type="button" (click)="filePicker.click()">
+      Select picture
+    </button>
+    <input type="file" #filePicker (change)="onImagePicked($event)" />
+    <div
+      class="image-preview"
+      *ngIf="
+      imagePreview !== '' && imagePreview && form.get('file').valid
+    "
+    >
+      <img [src]="imagePreview" />
     </div>
   </div>
   <div mat-dialog-actions align="end">
-    <button mat-button (click)="close()">CLOSE</button>
-    <button mat-button mat-flat-button type="submit">SAVE</button>
+    <button type="button" mat-button (click)="close()">CLOSE</button>
+    <button type="button" mat-button mat-flat-button type="submit">SAVE</button>
   </div>
 </form>

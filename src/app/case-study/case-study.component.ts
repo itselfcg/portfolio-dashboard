@@ -116,13 +116,10 @@ export class CaseStudyComponent implements OnInit {
         occupation: null,
         pictures: {
           name:null,
-          url: null,
           description: null,
+          url: null,
           file: null,
-        },
-        file: new File([''], '', {
-          type: '',
-        }),
+        }
       };
     }
 
@@ -134,8 +131,10 @@ export class CaseStudyComponent implements OnInit {
         story: user.story,
         occupation: user.occupation,
         pictures: {
-          url: user.pictures.url,
+          name: user.pictures.name,
           description: user.pictures.description,
+          url: user.pictures.url,
+          file: user.pictures.file,
         },
       },
     });

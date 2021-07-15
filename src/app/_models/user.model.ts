@@ -6,6 +6,4 @@ export interface User {
   occupation: string,
   story: string,
   pictures: Picture
-  file: File
-
 }

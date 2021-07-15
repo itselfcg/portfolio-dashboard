@@ -59,34 +59,34 @@ export class CaseStudyService {
     formData.append('title', title);
     formData.append('content', content);
 
-    var users2: any[] = [];
-    //Pictures
-
+    //Generic Pictures
     for (let i = 0; i < pictures.length; i++) {
-      formData.append(
-        'header-pic-' + i,
-        pictures[i].file,
-        pictures[i].name
-      );
+      formData.append('header-pic-' + i, pictures[i].file, pictures[i].name);
     }
-    // can be remplaced with a map.
+
+    // User Pictures
     for (let i = 0; i < users.length; i++) {
-      let user = {
-        id: i,
-        name: users[i].name,
-        age: users[i].age,
-        story: users[i].story,
-        occupation: users[i].occupation,
-        pictures: { description: users[i].pictures.description },
-      };
-      users2.push(user);
       formData.append(
         'user-pic-' + i,
-        users[i].file,
-        users[i].pictures.description
+        users[i].pictures.file,
+        users[i].pictures.name
       );
     }
 
+    var usersMapped=users.map(user=> (
+      {
+        name: user.name,
+        age:user.age,
+        story: user.story,
+        occupation: user.occupation,
+        pictures:{
+          name:user.pictures.name,
+          description:user.pictures.description
+        }
+      })
+    );
+
+    // Can be remplaced with map
     var section: any = {};
     for (let i = 0; i < sections.length; i++) {
       section[sections[i].name] = {
@@ -97,7 +97,7 @@ export class CaseStudyService {
       };
     }
 
-    formData.append('users', JSON.stringify(users2));
+    formData.append('users', JSON.stringify(usersMapped));
     formData.append('insights', JSON.stringify(insights));
     formData.append('sections', JSON.stringify(section));
 
