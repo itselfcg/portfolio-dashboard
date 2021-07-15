@@ -121,7 +121,7 @@ export class ProjectService {
         git_url: git_url,
         details: "false",
         preview_url: preview_url,
-        picture: { url: picture, description: picture_alt },
+        picture: { name:null,url: picture, description: picture_alt,file:null },
       };
     }
 

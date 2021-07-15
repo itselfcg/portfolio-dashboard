@@ -10,6 +10,7 @@ import { User } from '../_models/user.model';
 import { Insight } from '../_models/insight.model';
 import { Section } from '../_models/section.model';
 import { Sections } from '../_models/sections.model';
+import { Picture } from '../_models/picture.model';
 const API_URL = environment.apiUrl + '/cases';
 
 @Injectable({ providedIn: 'root' })
@@ -49,7 +50,8 @@ export class CaseStudyService {
     content: string,
     users: User[],
     insights: Insight[],
-    sections: Section[]
+    sections: Section[],
+    pictures: Picture[]
   ) {
     var formData = new FormData();
     formData.append('language', language);
@@ -58,7 +60,15 @@ export class CaseStudyService {
     formData.append('content', content);
 
     var users2: any[] = [];
+    //Pictures
 
+    for (let i = 0; i < pictures.length; i++) {
+      formData.append(
+        'header-pic-' + i,
+        pictures[i].file,
+        pictures[i].name
+      );
+    }
     // can be remplaced with a map.
     for (let i = 0; i < users.length; i++) {
       let user = {

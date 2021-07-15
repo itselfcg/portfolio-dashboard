@@ -5,12 +5,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { mimeType } from '../mime-type.validator';
 import { Insight } from '../_models/insight.model';
+import { Picture } from '../_models/picture.model';
 import { Project } from '../_models/project.model';
 import { Section } from '../_models/section.model';
 import { User } from '../_models/user.model';
 import { CaseStudyService } from '../_services/case-study.service';
 import { ProjectService } from '../_services/projects.service';
 import { InsightDialog } from './dialogs/insights/insights-dialog.component';
+import { PictureDialog } from './dialogs/picture/picture-dialog.component';
 import { SectionDialog } from './dialogs/sections/section-dialog.component';
 import { UserDialog } from './dialogs/user/user-dialog.component';
 
@@ -31,10 +33,12 @@ export class CaseStudyComponent implements OnInit {
   sections: Section[] = [];
   sectionsName: string[] = [];
   sectionsNameAvailable: string[];
+  pictures: Picture[] = [];
 
   usersDataSource = new MatTableDataSource(this.users);
   insightsDataSource = new MatTableDataSource(this.insigths);
   sectionsDataSource = new MatTableDataSource(this.sections);
+  picturesDataSource = new MatTableDataSource(this.pictures);
 
   userColumns: any[] = [
     'name',
@@ -45,6 +49,8 @@ export class CaseStudyComponent implements OnInit {
     'actions',
   ];
   insigthsColumns: any[] = ['icon', 'title', 'content', 'actions'];
+  picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
+
   sectionsColumns: any[] = [
     'name',
     'title',
@@ -91,7 +97,8 @@ export class CaseStudyComponent implements OnInit {
         this.form.value.content,
         this.users,
         this.insigths,
-        this.sections
+        this.sections,
+        this.pictures
       );
     } else {
     }
@@ -108,8 +115,10 @@ export class CaseStudyComponent implements OnInit {
         story: null,
         occupation: null,
         pictures: {
+          name:null,
           url: null,
           description: null,
+          file: null,
         },
         file: new File([''], '', {
           type: '',
@@ -235,7 +244,8 @@ export class CaseStudyComponent implements OnInit {
           var index = this.sections.indexOf(section);
           this.sections[index] = result;
           this.sectionsNameAvailable = this.sectionsName.filter(
-            (name) => !this.sections.map((section) => section.name).includes(name)
+            (name) =>
+              !this.sections.map((section) => section.name).includes(name)
           );
         }
         this.sectionsDataSource = new MatTableDataSource(this.sections);
@@ -248,5 +258,49 @@ export class CaseStudyComponent implements OnInit {
       (result) => result.title !== section.title
     );
     this.sectionsDataSource = new MatTableDataSource(this.sections);
+  }
+
+
+  openPictureDialog(picture: Picture): void {
+    var mode = 'update';
+
+    if (!picture) {
+      mode = 'create';
+      picture = {
+        name: null,
+        description: null,
+        url: null,
+        file:null,
+      };
+    }
+
+    const dialogRef = this.dialog.open(PictureDialog, {
+      width: '450px',
+      data: {
+        name: picture.name,
+        description: picture.description,
+        url: picture.url,
+        file: picture.file
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.pictures.push(result);
+        } else {
+          var index = this.pictures.indexOf(picture);
+          this.pictures[index] = result;
+        }
+        this.picturesDataSource = new MatTableDataSource(this.pictures);
+      }
+    });
+  }
+
+  onDeletePicture(picture: Picture){
+    this.pictures = this.pictures.filter(
+      (result) => result.name !== picture.name
+    );
+    this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
 }

@@ -54,8 +54,10 @@ export class UserDialog implements OnInit {
       story: this.form.value.story,
       occupation: this.form.value.occupation,
       pictures: {
+        name:null,
         url: this.imagePreview,
         description: this.form.value.picture_alt,
+        file:null
       },
       file:this.form.value.picture
     };
