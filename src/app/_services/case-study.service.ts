@@ -196,31 +196,37 @@ export class CaseStudyService {
     }
 
     // Section Pictures
+
     var sectionsMapped: any = {};
     for (let i = 0; i < sections.length; i++) {
-      sectionsMapped[sections[i].name] = {
-        title: sections[i].title,
-        content: sections[i].content,
-        questions: sections[i].questions,
-        list: sections[i].list,
-        pictures: sections[i].pictures,
-      };
-      if (sections[i].pictures) {
-        for (let j = 0; j < sections[i].pictures.length; j++) {
-          sectionsMapped[sections[i].name].pictures.push({
-            fileName: sections[i].pictures[j].fileName,
-            description: sections[i].pictures[j].description,
-            url:
-              typeof sections[i].pictures[j].file === 'object'
-                ? ''
-                : sections[i].pictures[j].url,
-          });
-          if (typeof sections[i].pictures[j].file === 'object') {
-            formData.append(
-              sections[i].name + '-pic-' + i,
-              sections[i].pictures[j].file,
-              sections[i].pictures[j].fileName
-            );
+      if (sections[i].title && sections[i].title !== '') {
+        sectionsMapped[sections[i].name] = {
+          title: sections[i].title ? sections[i].title : '',
+          content: sections[i].content ? sections[i].content : '',
+          questions: sections[i].questions ? sections[i].questions : '',
+          list: sections[i].list ? sections[i].list : '',
+          pictures: [], // It's filled in the next loop. needs special logic to append to formData and manage the file (if there's a file)
+        };
+
+        if (sections[i].pictures) {
+          for (let j = 0; j < sections[i].pictures.length; j++) {
+            sectionsMapped[sections[i].name].pictures.push({
+              fileName: sections[i].pictures[j].fileName,
+              description: sections[i].pictures[j].description,
+              url:
+                typeof sections[i].pictures[j].file === 'object'
+                  ? ''
+                  : sections[i].pictures[j].url,
+            });
+
+            if (typeof sections[i].pictures[j].file === 'object') {
+              formData.append(
+                sections[i].name + '-pic-' + i,
+                sections[i].pictures[j].file,
+                sections[i].pictures[j].fileName
+              );
+            }
+
           }
         }
       }
@@ -229,9 +235,6 @@ export class CaseStudyService {
     formData.append('pictures', JSON.stringify(picturesMapped));
     formData.append('users', JSON.stringify(usersMapped));
     formData.append('sections', JSON.stringify(sectionsMapped));
-
-    console.log(formData.get('pictures'));
-
     this.http
       .put<{ message: string; id: string }>(API_URL + '/' + id, formData)
       .subscribe((res) => {});
