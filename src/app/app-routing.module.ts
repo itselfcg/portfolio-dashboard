@@ -10,6 +10,8 @@ const routes: Routes = [
   { path: 'project', component: ProjectComponent },
   { path: "project/edit/:projectId", component: ProjectComponent },
   { path: 'case', component: CaseStudyComponent },
+  { path: 'case/edit/:caseId', component: CaseStudyComponent },
+
   { path: '', component: HomeComponent}
 ];
 @NgModule({

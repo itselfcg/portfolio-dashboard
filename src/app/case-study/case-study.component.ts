@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mimeType } from '../mime-type.validator';
+import { CaseStudy } from '../_models/case-study.model';
 import { Insight } from '../_models/insight.model';
 import { Picture } from '../_models/picture.model';
 import { Project } from '../_models/project.model';
 import { Section } from '../_models/section.model';
+import { Sections } from '../_models/sections.model';
 import { User } from '../_models/user.model';
 import { CaseStudyService } from '../_services/case-study.service';
 import { ProjectService } from '../_services/projects.service';
@@ -27,7 +29,10 @@ export class CaseStudyComponent implements OnInit {
   imagePreview: string;
   mode = 'create';
 
-  projectsAvailabe: Project[];
+  caseId: string;
+  caseStudy: CaseStudy;
+
+  projects: Project[];
   insigths: Insight[] = [];
   users: User[] = [];
   sections: Section[] = [];
@@ -50,7 +55,6 @@ export class CaseStudyComponent implements OnInit {
   ];
   insigthsColumns: any[] = ['icon', 'title', 'content', 'actions'];
   picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
-
   sectionsColumns: any[] = [
     'name',
     'title',
@@ -63,7 +67,8 @@ export class CaseStudyComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private projectService: ProjectService,
-    private caseStudyService: CaseStudyService
+    private caseStudyService: CaseStudyService,
+    public route: ActivatedRoute
   ) {}
   ngOnInit(): void {
     this.caseStudyService.getSections().subscribe((result) => {
@@ -71,8 +76,8 @@ export class CaseStudyComponent implements OnInit {
       this.sectionsNameAvailable = result.sections;
     });
 
-    this.projectService.getAllWithoutCaseStudy().subscribe((result) => {
-      this.projectsAvailabe = result.project;
+    this.projectService.getAll().subscribe((result) => {
+      this.projects = result.projects;
     });
 
     this.form = new FormGroup({
@@ -82,6 +87,47 @@ export class CaseStudyComponent implements OnInit {
       project: new FormControl(null, { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
+    });
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('caseId')) {
+        this.mode = 'edit';
+        this.caseId = paramMap.get('caseId');
+        this.isLoading = true;
+        this.caseStudyService.getById(this.caseId).subscribe((postData) => {
+          this.isLoading = false;
+          this.caseStudy = postData.caseStudy[0];
+
+          this.form.setValue({
+            language: this.caseStudy.language,
+            project: this.caseStudy.project,
+            title: this.caseStudy.title,
+            content: this.caseStudy.content,
+          });
+
+          this.insigths = this.caseStudy.insights;
+          this.users = this.caseStudy.users;
+          this.pictures = this.caseStudy.pictures;
+
+          let arrSections = this.caseStudy.sections;
+          let resultArray = Object.entries(arrSections).map(function (result) {
+            let value=result[1];
+            let section: Section = {name:result[0],
+              title: value.title,
+              content: value.content,
+              list: value.list,
+              questions: value.questions,
+              pictures: value.pictures,
+              sections:value.sections};
+            return section;
+          });
+          this.sections=resultArray;
+          this.insightsDataSource = new MatTableDataSource(this.insigths);
+          this.usersDataSource = new MatTableDataSource(this.users);
+          this.picturesDataSource = new MatTableDataSource(this.pictures);
+          this.sectionsDataSource = new MatTableDataSource(this.sections);
+        });
+      }
     });
   }
 
@@ -101,6 +147,17 @@ export class CaseStudyComponent implements OnInit {
         this.pictures
       );
     } else {
+      this.caseStudyService.update(
+        this.caseId,
+        this.form.value.language,
+        this.form.value.project,
+        this.form.value.title,
+        this.form.value.content,
+        this.users,
+        this.insigths,
+        this.sections,
+        this.pictures
+      );
     }
   }
 
@@ -115,11 +172,11 @@ export class CaseStudyComponent implements OnInit {
         story: null,
         occupation: null,
         pictures: {
-          name:null,
+          fileName: null,
           description: null,
           url: null,
           file: null,
-        }
+        },
       };
     }
 
@@ -131,7 +188,7 @@ export class CaseStudyComponent implements OnInit {
         story: user.story,
         occupation: user.occupation,
         pictures: {
-          name: user.pictures.name,
+          fileName: user.pictures.fileName,
           description: user.pictures.description,
           url: user.pictures.url,
           file: user.pictures.file,
@@ -253,27 +310,26 @@ export class CaseStudyComponent implements OnInit {
     this.sectionsDataSource = new MatTableDataSource(this.sections);
   }
 
-
   openPictureDialog(picture: Picture): void {
     var mode = 'update';
 
     if (!picture) {
       mode = 'create';
       picture = {
-        name: null,
+        fileName: null,
         description: null,
         url: null,
-        file:null,
+        file: null,
       };
     }
 
     const dialogRef = this.dialog.open(PictureDialog, {
       width: '450px',
       data: {
-        name: picture.name,
+        fileName: picture.fileName,
         description: picture.description,
         url: picture.url,
-        file: picture.file
+        file: picture.file,
       },
     });
 
@@ -290,9 +346,9 @@ export class CaseStudyComponent implements OnInit {
     });
   }
 
-  onDeletePicture(picture: Picture){
+  onDeletePicture(picture: Picture) {
     this.pictures = this.pictures.filter(
-      (result) => result.name !== picture.name
+      (result) => result.fileName !== picture.fileName
     );
     this.picturesDataSource = new MatTableDataSource(this.pictures);
   }

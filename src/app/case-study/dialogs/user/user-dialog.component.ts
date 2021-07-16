@@ -33,7 +33,7 @@ export class UserDialog implements OnInit {
         validators: [Validators.required],
         asyncValidators: [mimeType],
       }),
-      fileName: new FormControl(this.data.pictures.name, { validators: [Validators.required] }),
+      fileName: new FormControl(this.data.pictures.fileName, { validators: [Validators.required] }),
       fileDescription: new FormControl(this.data.pictures.description, { validators: [Validators.required] }),
 
     });
@@ -56,7 +56,7 @@ export class UserDialog implements OnInit {
       story: this.form.value.story,
       occupation: this.form.value.occupation,
       pictures: {
-        name:this.form.value.fileName,
+        fileName:this.form.value.fileName,
         description: this.form.value.fileDescription,
         url: this.imagePreview,
         file:this.form.value.file

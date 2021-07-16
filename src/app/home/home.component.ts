@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.projectService.getAll();
+    this.projectService.getAllSubscription();
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
       .subscribe((projects: Project[]) => {
@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
   onDeleteProject(postId: string) {
     this.projectService.delete(postId).subscribe(
       () => {
-        this.projectService.getAll();
+        this.projectService.getAllSubscription();
       },
       () => {
         this.isLoading = false;

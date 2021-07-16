@@ -22,18 +22,23 @@ export class PictureDialog implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Picture
   ) {
     this.form = new FormGroup({
-      name: new FormControl(this.data.name, {
+      name: new FormControl(this.data.fileName, {
         validators: [Validators.required],
       }),
       description: new FormControl(this.data.description, {
         validators: [Validators.required],
       }),
-      file: new FormControl(this.data.file, {
+      file: new FormControl(this.data.url, {
         validators: [Validators.required],
         asyncValidators: [mimeType],
       })
     });
+    console.log();
+
+
     this.imagePreview = this.data.url;
+
+
   }
 
   ngOnInit() {}
@@ -45,7 +50,7 @@ export class PictureDialog implements OnInit {
       return;
     }
     let picture: Picture = {
-      name: this.form.value.name,
+      fileName: this.form.value.name,
       description: this.form.value.description,
       url: this.imagePreview,
       file: this.form.value.file,

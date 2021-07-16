@@ -39,12 +39,8 @@ export class SectionDialog implements OnInit {
       content: new FormControl(this.data.content, {
         validators: [Validators.required],
       }),
-      questions: new FormControl(this.data.questions, {
-        validators: [Validators.required],
-      }),
-      list: new FormControl(this.data.list, {
-        validators: [Validators.required],
-      }),
+      questions: new FormControl(this.data.questions),
+      list: new FormControl(this.data.list),
     });
 
     if (data.pictures) {
@@ -89,7 +85,7 @@ export class SectionDialog implements OnInit {
     if (!picture) {
       mode = 'create';
       picture = {
-        name: null,
+        fileName: null,
         description: null,
         url: null,
         file: null,
@@ -99,7 +95,7 @@ export class SectionDialog implements OnInit {
     const dialogRef = this.dialog.open(PictureDialog, {
       width: '450px',
       data: {
-        name: picture.name,
+        fileName: picture.fileName,
         description: picture.description,
         url: picture.url,
         file: picture.file,
@@ -121,7 +117,7 @@ export class SectionDialog implements OnInit {
 
   onDeletePicture(picture: Picture) {
     this.pictures = this.pictures.filter(
-      (result) => result.name !== picture.name
+      (result) => result.fileName !== picture.fileName
     );
     this.picturesDataSource = new MatTableDataSource(this.pictures);
   }

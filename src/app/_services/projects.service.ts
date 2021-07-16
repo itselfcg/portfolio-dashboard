@@ -20,7 +20,7 @@ export class ProjectService {
     return this.projectUpdated.asObservable();
   }
 
-  getAll() {
+  getAllSubscription() {
     this.http
       .get<{ message: string; projects: Project[] }>(API_URL + '/all')
       .subscribe((result) => {
@@ -28,6 +28,12 @@ export class ProjectService {
         this.projectUpdated.next([...this.projects]);
       });
   }
+
+  getAll() {
+    return this.http
+      .get<{ message: string; projects: Project[] }>(API_URL + '/all')
+  }
+
 
   getAllWithoutCaseStudy() {
     return this.http.get<{project: Project[] }>(API_URL, {
@@ -121,7 +127,7 @@ export class ProjectService {
         git_url: git_url,
         details: "false",
         preview_url: preview_url,
-        picture: { name:null,url: picture, description: picture_alt,file:null },
+        picture: { fileName:null,url: picture, description: picture_alt,file:null },
       };
     }
 

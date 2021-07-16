@@ -30,6 +30,12 @@ export class CaseStudyService {
     );
   }
 
+  getById(id: string) {
+    return this.http.get<{ caseStudy: CaseStudy[] }>(API_URL, {
+      params: { id: id },
+    });
+  }
+
   getAll() {
     this.http
       .get<{ message: string; caseStudy: CaseStudy[] }>(API_URL + '/all')
@@ -60,18 +66,21 @@ export class CaseStudyService {
     formData.append('content', content);
 
     //Generic Pictures
+
+    var picturesMapped = pictures.map((picture) => ({
+      fileName: picture.fileName,
+      description: picture.description,
+    }));
+
     for (let i = 0; i < pictures.length; i++) {
-      formData.append('header-pic-' + i, pictures[i].file, pictures[i].name);
+      formData.append(
+        'header-pic-' + i,
+        pictures[i].file,
+        pictures[i].fileName
+      );
     }
 
     // User Pictures
-    for (let i = 0; i < users.length; i++) {
-      formData.append(
-        'user-pic-' + i,
-        users[i].pictures.file,
-        users[i].pictures.name
-      );
-    }
 
     var usersMapped = users.map((user) => ({
       name: user.name,
@@ -79,13 +88,20 @@ export class CaseStudyService {
       story: user.story,
       occupation: user.occupation,
       pictures: {
-        name: user.pictures.name,
+        fileName: user.pictures.fileName,
         description: user.pictures.description,
       },
     }));
 
+    for (let i = 0; i < users.length; i++) {
+      formData.append(
+        'user-pic-' + i,
+        users[i].pictures.file,
+        users[i].pictures.fileName
+      );
+    }
 
-    // Can be remplaced with map
+    // Section Pictures
     var section: any = {};
     for (let i = 0; i < sections.length; i++) {
       section[sections[i].name] = {
@@ -93,21 +109,23 @@ export class CaseStudyService {
         content: sections[i].content,
         questions: sections[i].questions,
         list: sections[i].list,
-        pictures:[]
+        pictures: [],
       };
 
       for (let j = 0; j < sections[i].pictures.length; j++) {
         section[sections[i].name].pictures.push({
-          name: sections[i].pictures[j].name,
+          name: sections[i].pictures[j].fileName,
           description: sections[i].pictures[j].description,
         });
-        formData.append(sections[i].name+'-pic-' + i, sections[i].pictures[j].file, sections[i].pictures[j].name);
+        formData.append(
+          sections[i].name + '-pic-' + i,
+          sections[i].pictures[j].file,
+          sections[i].pictures[j].fileName
+        );
       }
     }
 
-    console.log(section);
-
-
+    formData.append('pictures', JSON.stringify(picturesMapped));
     formData.append('users', JSON.stringify(usersMapped));
     formData.append('insights', JSON.stringify(insights));
     formData.append('sections', JSON.stringify(section));
@@ -115,6 +133,107 @@ export class CaseStudyService {
     console.log('Enviando post');
     this.http
       .post<{ message: string; id: string }>(API_URL, formData)
+      .subscribe((res) => {});
+  }
+
+  update(
+    id: string,
+    language: string,
+    project: string,
+    title: string,
+    content: string,
+    users: User[],
+    insights: Insight[],
+    sections: Section[],
+    pictures: Picture[]
+  ) {
+    var formData = new FormData();
+    formData.append('language', language);
+    formData.append('project', project);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('insights', JSON.stringify(insights));
+
+    //Generic Pictures
+    var picturesMapped = pictures.map((picture) => ({
+      fileName: picture.fileName,
+      description: picture.description,
+      url: typeof picture.file === 'object' ? '' : picture.url,
+    }));
+    console.log(picturesMapped);
+    for (let i = 0; i < pictures.length; i++) {
+      if (typeof pictures[i].file === 'object') {
+        formData.append(
+          'header-pic-' + i,
+          pictures[i].file,
+          pictures[i].fileName
+        );
+      }
+    }
+
+    // User Pictures
+
+    var usersMapped = users.map((user) => ({
+      name: user.name,
+      age: user.age,
+      story: user.story,
+      occupation: user.occupation,
+      pictures: {
+        fileName: user.pictures.fileName,
+        description: user.pictures.description,
+        url: typeof user.pictures.file === 'object' ? '' : user.pictures.url,
+      },
+    }));
+
+    for (let i = 0; i < users.length; i++) {
+      if (typeof users[i].pictures.file === 'object') {
+        formData.append(
+          'user-pic-' + i,
+          users[i].pictures.file,
+          users[i].pictures.fileName
+        );
+      }
+    }
+
+    // Section Pictures
+    var sectionsMapped: any = {};
+    for (let i = 0; i < sections.length; i++) {
+      sectionsMapped[sections[i].name] = {
+        title: sections[i].title,
+        content: sections[i].content,
+        questions: sections[i].questions,
+        list: sections[i].list,
+        pictures: sections[i].pictures,
+      };
+      if (sections[i].pictures) {
+        for (let j = 0; j < sections[i].pictures.length; j++) {
+          sectionsMapped[sections[i].name].pictures.push({
+            fileName: sections[i].pictures[j].fileName,
+            description: sections[i].pictures[j].description,
+            url:
+              typeof sections[i].pictures[j].file === 'object'
+                ? ''
+                : sections[i].pictures[j].url,
+          });
+          if (typeof sections[i].pictures[j].file === 'object') {
+            formData.append(
+              sections[i].name + '-pic-' + i,
+              sections[i].pictures[j].file,
+              sections[i].pictures[j].fileName
+            );
+          }
+        }
+      }
+    }
+
+    formData.append('pictures', JSON.stringify(picturesMapped));
+    formData.append('users', JSON.stringify(usersMapped));
+    formData.append('sections', JSON.stringify(sectionsMapped));
+
+    console.log(formData.get('pictures'));
+
+    this.http
+      .put<{ message: string; id: string }>(API_URL + '/' + id, formData)
       .subscribe((res) => {});
   }
 }
