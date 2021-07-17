@@ -10,8 +10,7 @@ import { Picture } from 'src/app/_models/picture.model';
 
 @Component({
   selector: 'picture-dialog',
-  templateUrl: 'picture-dialog.html',
-  styleUrls: ['../../case-study.component.scss'],
+  templateUrl: 'picture-dialog.html'
 })
 export class PictureDialog implements OnInit {
   form: FormGroup;
