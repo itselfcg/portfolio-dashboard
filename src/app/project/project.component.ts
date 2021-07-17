@@ -9,10 +9,12 @@ import {
 import { ProjectService } from '../_services/projects.service';
 import { Project } from '../_models/project.model';
 import { mimeType } from '../mime-type.validator';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemsDialog } from '../case-study/dialogs/items/items-dialog.component';
+import { ItemsDialog } from '../dialogs/items/items-dialog.component';
+import { Picture } from '../_models/picture.model';
+import { PictureDialog } from '../dialogs/picture/picture-dialog.component';
 
 @Component({
   selector: 'app-project',
@@ -25,16 +27,21 @@ export class ProjectComponent implements OnInit {
   mode = 'create';
   projectId: string;
   isLoading = false;
-  imagePreview: string;
 
   labels: string[] = [];
+  pictures: Picture[] = [];
+
   labelsColumns: any[] = ['name', 'actions'];
+  picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
+
   labelsDataSource = new MatTableDataSource(this.labels);
+  picturesDataSource = new MatTableDataSource(this.pictures);
 
   constructor(
     public dialog: MatDialog,
     public projectService: ProjectService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -45,13 +52,8 @@ export class ProjectComponent implements OnInit {
       name: new FormControl(null, { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      git_url: new FormControl(null),
-      preview_url: new FormControl(null),
-      picture: new FormControl('', {
-        validators: [Validators.required],
-        asyncValidators: [mimeType],
-      }),
-      picture_alt: new FormControl(null, { validators: [Validators.required] }),
+      git_url: new FormControl(''),
+      preview_url: new FormControl(''),
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -68,14 +70,14 @@ export class ProjectComponent implements OnInit {
             name: this.project.name,
             title: this.project.title,
             content: this.project.content,
-            labels: this.labels,
             git_url: this.project.git_url,
             preview_url: this.project.preview_url,
-            picture: this.project.picture.url,
-            picture_alt: this.project.picture.description,
           });
 
-          this.imagePreview = this.project.picture.url;
+          this.labels = this.project.labels;
+          this.pictures = this.project.pictures;
+          this.labelsDataSource = new MatTableDataSource(this.labels);
+          this.picturesDataSource = new MatTableDataSource(this.pictures);
         });
       } else {
         this.mode = 'create';
@@ -84,46 +86,49 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ picture: file });
-    this.form.get('picture').updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
-
   onSavePost() {
+    this.isLoading = true;
     if (this.form.invalid) {
+      this.isLoading = false;
       return;
     }
     if (this.mode === 'create') {
-      this.projectService.create(
-        this.form.value.language,
-        this.form.value.name,
-        this.form.value.title,
-        this.form.value.content,
-        this.form.value.git_url,
-        this.form.value.preview_url,
-        this.form.value.labels,
-        this.form.value.picture,
-        this.form.value.picture_alt
-      );
+      this.projectService
+        .create(
+          this.form.value.language,
+          this.form.value.name,
+          this.form.value.title,
+          this.form.value.content,
+          this.form.value.git_url,
+          this.form.value.preview_url,
+          this.labels,
+          this.pictures
+        )
+        .subscribe((result) => {
+          this.isLoading = false;
+          if (result.status) {
+            this.router.navigate(['/']);
+          }
+        });
     } else {
-      this.projectService.update(
-        this.projectId,
-        this.form.value.language,
-        this.form.value.name,
-        this.form.value.title,
-        this.form.value.content,
-        this.form.value.git_url,
-        this.form.value.preview_url,
-        this.form.value.labels,
-        this.form.value.picture,
-        this.form.value.picture_alt
-      );
+      this.projectService
+        .update(
+          this.projectId,
+          this.form.value.language,
+          this.form.value.name,
+          this.form.value.title,
+          this.form.value.content,
+          this.form.value.git_url,
+          this.form.value.preview_url,
+          this.labels,
+          this.pictures
+        )
+        .subscribe((result) => {
+          this.isLoading = false;
+          if (result.status) {
+            this.router.navigate(['/']);
+          }
+        });
     }
   }
 
@@ -155,5 +160,48 @@ export class ProjectComponent implements OnInit {
   onDeleteListItem(item: string) {
     this.labels = this.labels.filter((r) => r !== item);
     this.labelsDataSource = new MatTableDataSource(this.labels);
+  }
+
+  openPictureDialog(picture: Picture): void {
+    var mode = 'update';
+
+    if (!picture) {
+      mode = 'create';
+      picture = {
+        fileName: null,
+        description: null,
+        url: null,
+        file: null,
+      };
+    }
+
+    const dialogRef = this.dialog.open(PictureDialog, {
+      width: '450px',
+      data: {
+        fileName: picture.fileName,
+        description: picture.description,
+        url: picture.url,
+        file: picture.file,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.pictures.push(result);
+        } else {
+          var index = this.pictures.indexOf(picture);
+          this.pictures[index] = result;
+        }
+        this.picturesDataSource = new MatTableDataSource(this.pictures);
+      }
+    });
+  }
+
+  onDeletePicture(picture: Picture) {
+    this.pictures = this.pictures.filter(
+      (result) => result.fileName !== picture.fileName
+    );
+    this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
 }

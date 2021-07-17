@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { mimeType } from '../mime-type.validator';
 import { CaseStudy } from '../_models/case-study.model';
 import { Insight } from '../_models/insight.model';
@@ -14,7 +14,7 @@ import { User } from '../_models/user.model';
 import { CaseStudyService } from '../_services/case-study.service';
 import { ProjectService } from '../_services/projects.service';
 import { InsightDialog } from './dialogs/insights/insights-dialog.component';
-import { PictureDialog } from './dialogs/picture/picture-dialog.component';
+import { PictureDialog } from '../dialogs/picture/picture-dialog.component';
 import { SectionDialog } from './dialogs/sections/section-dialog.component';
 import { UserDialog } from './dialogs/user/user-dialog.component';
 
@@ -55,19 +55,14 @@ export class CaseStudyComponent implements OnInit {
   ];
   insigthsColumns: any[] = ['icon', 'title', 'content', 'actions'];
   picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
-  sectionsColumns: any[] = [
-    'name',
-    'title',
-    'content',
-    'list',
-    'actions',
-  ];
+  sectionsColumns: any[] = ['name', 'title', 'content', 'list', 'actions'];
 
   constructor(
     public dialog: MatDialog,
     private projectService: ProjectService,
     private caseStudyService: CaseStudyService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.caseStudyService.getSections().subscribe((result) => {
@@ -134,6 +129,8 @@ export class CaseStudyComponent implements OnInit {
   onSaveCaseStudy() {
     this.isLoading = true;
     if (this.form.invalid) {
+      this.isLoading = false;
+
       return;
     }
     if (this.mode === 'create') {
@@ -150,7 +147,9 @@ export class CaseStudyComponent implements OnInit {
         )
         .subscribe((result) => {
           this.isLoading = false;
-          console.log(result.message);
+          if (result.status) {
+            this.router.navigate(['/']);
+          }
         });
     } else {
       this.caseStudyService
@@ -167,7 +166,9 @@ export class CaseStudyComponent implements OnInit {
         )
         .subscribe((result) => {
           this.isLoading = false;
-          console.log(result.message);
+          if (result.status) {
+            this.router.navigate(['/']);
+          }
         });
     }
   }
@@ -291,7 +292,6 @@ export class CaseStudyComponent implements OnInit {
         sections: this.sectionsNameAvailable,
       },
     });
-
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

@@ -8,8 +8,8 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { Picture } from 'src/app/_models/picture.model';
 import { Section } from 'src/app/_models/section.model';
-import { ItemsDialog } from '../items/items-dialog.component';
-import { PictureDialog } from '../picture/picture-dialog.component';
+import { ItemsDialog } from '../../../dialogs/items/items-dialog.component';
+import { PictureDialog } from '../../../dialogs/picture/picture-dialog.component';
 
 @Component({
   selector: 'section-dialog',

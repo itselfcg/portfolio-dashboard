@@ -129,8 +129,9 @@ export class CaseStudyService {
     formData.append('insights', JSON.stringify(insights));
     formData.append('sections', JSON.stringify(section));
 
-    return this.http
-      .post<{ message: string; id: string }>(API_URL, formData);
+    return this.http.post<{ message: string; id: string }>(API_URL, formData, {
+      observe: 'response',
+    });
   }
 
   update(
@@ -220,7 +221,6 @@ export class CaseStudyService {
                 sections[i].pictures[j].fileName
               );
             }
-
           }
         }
       }
@@ -229,7 +229,12 @@ export class CaseStudyService {
     formData.append('pictures', JSON.stringify(picturesMapped));
     formData.append('users', JSON.stringify(usersMapped));
     formData.append('sections', JSON.stringify(sectionsMapped));
-    return this.http
-      .put<{ message: string; id: string }>(API_URL + '/' + id, formData);
+    return this.http.put<{ message: string; id: string }>(
+      API_URL + '/' + id,
+      formData,
+      {
+        observe: 'response',
+      }
+    );
   }
 }

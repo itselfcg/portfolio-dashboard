@@ -2,25 +2,44 @@
   margin: 2em;
 }
 
-mat-card-title{
+mat-card-title {
   padding-top: 1em;
-
 }
-mat-toolbar-row{
-  border-bottom: #3F51B5 1.5px solid;
+mat-toolbar-row {
+  border-bottom: #3f51b5 1.5px solid;
 }
 
 .tab-content {
   padding-top: 2em;
 }
 
-
-
-.mat-column-name {
-  width: 75% !important;
-  word-break: break-word;
+#labels {
+  .mat-column-name {
+    width: 75% !important;
+    word-break: break-word;
+  }
+  .mat-column-actions {
+    width: 25% !important;
+    word-break: break-word;
+  }
 }
-.mat-column-actions {
-  width: 25% !important;
-  word-break: break-word;
+
+#pictures {
+  .mat-column-name {
+    width: 25% !important;
+    word-break: break-word;
+  }
+  .mat-column-content {
+    width: 40% !important;
+    word-break: break-word;
+  }
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-picture {
+    width: 15% !important;
+    word-break: break-word;
+  }
 }

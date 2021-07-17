@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 import { Project } from '../_models/project.model';
 
 import { environment } from 'src/environments/environment';
+import { Picture } from '../_models/picture.model';
 const API_URL = environment.apiUrl + '/projects';
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +14,7 @@ export class ProjectService {
   private projects: Project[] = [];
   private projectUpdated = new Subject<Project[]>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   getProjectsUpdateListener() {
     return this.projectUpdated.asObservable();
@@ -30,19 +30,19 @@ export class ProjectService {
   }
 
   getAll() {
-    return this.http
-      .get<{ message: string; projects: Project[] }>(API_URL + '/all')
+    return this.http.get<{ message: string; projects: Project[] }>(
+      API_URL + '/all'
+    );
   }
 
-
   getAllWithoutCaseStudy() {
-    return this.http.get<{project: Project[] }>(API_URL, {
-      params: { details: "false" },
+    return this.http.get<{ project: Project[] }>(API_URL, {
+      params: { details: 'false' },
     });
   }
 
   getById(id: string) {
-    return this.http.get<{project: Project[] }>(API_URL, {
+    return this.http.get<{ project: Project[] }>(API_URL, {
       params: { id: id },
     });
   }
@@ -58,9 +58,8 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
-    labels: string,
-    picture: File,
-    picture_alt: string
+    labels: string[],
+    pictures: Picture[]
   ) {
     let formData = new FormData();
     formData.append('language', language);
@@ -70,19 +69,25 @@ export class ProjectService {
     formData.append('git_url', git_url);
     formData.append('preview_url', preview_url);
     formData.append('details', 'false');
-    let label = labels.split(' ');
-    for (var i = 0; i < label.length; i++) {
-      formData.append('labels[]', label[i]);
-    }
-    formData.append('picture', picture, picture_alt);
+    formData.append('labels', JSON.stringify(labels));
 
-    this.http
-      .post<{ message: string; id: string }>(API_URL, formData)
-      .subscribe(
-        (res) => {
-          this.router.navigate(['/']);
-        }
+    var picturesMapped = pictures.map((picture) => ({
+      fileName: picture.fileName,
+      description: picture.description,
+    }));
+
+    formData.append('pictures', JSON.stringify(picturesMapped));
+    for (let i = 0; i < pictures.length; i++) {
+      formData.append(
+        'preview-pic-' + i,
+        pictures[i].file,
+        pictures[i].fileName
       );
+    }
+
+    return this.http.post<{ message: string; id: string }>(API_URL, formData, {
+      observe: 'response',
+    });
   }
 
   update(
@@ -93,48 +98,42 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
-    labels: string,
-    picture: File | string,
-    picture_alt: string
+    labels: string[],
+    pictures: Picture[]
   ) {
-    let formData: FormData = new FormData();
-    let formDataProject: Project;
-    let flagFormData = false;
-    if (typeof picture === 'object') {
-      flagFormData=true;
-      formData = new FormData();
-      formData.append('language', language);
-      formData.append('name', name);
-      formData.append('title', title);
-      formData.append('content', content);
-      formData.append('git_url', git_url);
-      formData.append('preview_url', preview_url);
-      formData.append('details', 'false');
-      let label = labels.split(' ');
-      for (var i = 0; i < label.length; i++) {
-        formData.append('labels[]', label[i]);
-      }
-      formData.append('picture', picture, picture_alt);
+    let formData = new FormData();
+    formData.append('language', language);
+    formData.append('name', name);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('git_url', git_url);
+    formData.append('preview_url', preview_url);
+    formData.append('details', 'false');
+    formData.append('labels', JSON.stringify(labels));
 
-    } else {
-      formDataProject = {
-        _id: id,
-        language: language,
-        name: name,
-        title: title,
-        content: content,
-        labels: labels.split(' '),
-        git_url: git_url,
-        details: "false",
-        preview_url: preview_url,
-        picture: { fileName:null,url: picture, description: picture_alt,file:null },
-      };
+    var picturesMapped = pictures.map((picture) => ({
+      fileName: picture.fileName,
+      description: picture.description,
+      url: typeof picture.file === 'object' ? '' : picture.url,
+    }));
+
+    formData.append('pictures', JSON.stringify(picturesMapped));
+    for (let i = 0; i < pictures.length; i++) {
+      if (typeof pictures[i].file === 'object') {
+        formData.append(
+          'preview-pic-' + i,
+          pictures[i].file,
+          pictures[i].fileName
+        );
+      }
     }
 
-    this.http
-      .put(API_URL + '/' + id, flagFormData ? formData :  formDataProject)
-      .subscribe((response) => {
-        this.router.navigate(['/']);
-      });
+    return this.http.put<{ message: string; id: string }>(
+      API_URL + '/' + id,
+      formData,
+      {
+        observe: 'response',
+      }
+    );
   }
 }

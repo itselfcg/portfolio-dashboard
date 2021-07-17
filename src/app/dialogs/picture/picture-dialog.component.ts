@@ -33,12 +33,8 @@ export class PictureDialog implements OnInit {
         asyncValidators: [mimeType],
       })
     });
-    console.log();
-
 
     this.imagePreview = this.data.url;
-
-
   }
 
   ngOnInit() {}

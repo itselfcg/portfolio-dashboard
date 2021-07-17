@@ -6,7 +6,7 @@ export interface Project{
   name:string,
   title: string,
   content: string,
-  picture: Picture,
+  pictures: Picture[],
   labels: string[],
   git_url: string,
   details: string,

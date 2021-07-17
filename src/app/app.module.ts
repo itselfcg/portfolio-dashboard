@@ -15,8 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserDialog } from './case-study/dialogs/user/user-dialog.component';
 import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.component';
 import { SectionDialog } from './case-study/dialogs/sections/section-dialog.component';
-import { PictureDialog } from './case-study/dialogs/picture/picture-dialog.component';
-import { ItemsDialog } from './case-study/dialogs/items/items-dialog.component';
+import { PictureDialog } from './dialogs/picture/picture-dialog.component';
+import { ItemsDialog } from './dialogs/items/items-dialog.component';
 
 @NgModule({
   declarations: [
