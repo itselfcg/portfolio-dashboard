@@ -35,25 +35,59 @@
             <mat-error>Please enter an description.</mat-error>
           </mat-form-field>
 
-          <mat-form-field [style.width.%]="100">
-            <input
-              matInput
-              type="text"
-              formControlName="questions"
-              placeholder="Questions"
-            />
-            <mat-error>Please enter questions.</mat-error>
-          </mat-form-field>
 
-          <mat-form-field [style.width.%]="100">
-            <input
-              matInput
-              type="text"
-              formControlName="list"
-              placeholder="List"
-            />
-            <mat-error>Please enter a list.</mat-error>
-          </mat-form-field>
+        </div>
+      </mat-tab>
+      <mat-tab label="List">
+        <div class="tab-content">
+
+          <mat-toolbar-row>
+            <span><h3>List</h3></span>
+            <span class="example-spacer"></span>
+            <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              (click)="openItemDialog(null)"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-toolbar-row>
+
+          <table
+            mat-table
+            [dataSource]="itemsDataSource"item
+            [style.width.%]="100"
+          >
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let item">{{ item }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let item">
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="accent"
+                  (click)="openItemDialog(item)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  type="button"
+                  mat-icon-button
+                  (click)="onDeleteListItem(item)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="itemsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: itemsColumns"></tr>
+          </table>
+
         </div>
       </mat-tab>
       <mat-tab label="Pictures">

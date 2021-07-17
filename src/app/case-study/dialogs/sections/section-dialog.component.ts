@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { mimeType } from 'src/app/mime-type.validator';
 import { Picture } from 'src/app/_models/picture.model';
 import { Section } from 'src/app/_models/section.model';
+import { ItemsDialog } from '../items/items-dialog.component';
 import { PictureDialog } from '../picture/picture-dialog.component';
 
 @Component({
@@ -21,8 +22,13 @@ export class SectionDialog implements OnInit {
   imagePreview: string;
   sectionsAvailable: string[];
   pictures: Picture[] = [];
+  items: string[] = [];
+
+  itemsColumns: any[] = ['name', 'actions'];
   picturesColumns: any[] = ['name', 'description', 'picture', 'actions'];
+
   picturesDataSource = new MatTableDataSource(this.pictures);
+  itemsDataSource = new MatTableDataSource(this.items);
 
   constructor(
     public dialog: MatDialog,
@@ -36,11 +42,7 @@ export class SectionDialog implements OnInit {
       title: new FormControl(this.data.title, {
         validators: [Validators.required],
       }),
-      content: new FormControl(this.data.content, {
-        validators: [Validators.required],
-      }),
-      questions: new FormControl(this.data.questions),
-      list: new FormControl(this.data.list),
+      content: new FormControl(this.data.content),
     });
 
     if (data.pictures) {
@@ -49,6 +51,9 @@ export class SectionDialog implements OnInit {
     } else {
       this.pictures = [];
     }
+
+    this.items = data.list ? data.list : [];
+    this.itemsDataSource = new MatTableDataSource(this.items);
 
     this.sectionsAvailable = data.sections;
   }
@@ -66,8 +71,7 @@ export class SectionDialog implements OnInit {
       name: this.form.value.name,
       title: this.form.value.title,
       content: this.form.value.content,
-      questions: this.form.value.questions,
-      list: this.form.value.list,
+      list: this.items,
       pictures: this.pictures,
       sections: null,
     };
@@ -120,5 +124,35 @@ export class SectionDialog implements OnInit {
       (result) => result.fileName !== picture.fileName
     );
     this.picturesDataSource = new MatTableDataSource(this.pictures);
+  }
+
+  openItemDialog(item: string) {
+    var mode = 'update';
+
+    if (!item) {
+      mode = 'create';
+      item = '';
+    }
+
+    const dialogRef = this.dialog.open(ItemsDialog, {
+      width: '450px',
+      data: item,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.items.push(result);
+        } else {
+          var index = this.items.indexOf(item);
+          this.items[index] = result;
+        }
+        this.itemsDataSource = new MatTableDataSource(this.items);
+      }
+    });
+  }
+  onDeleteListItem(item: string) {
+    this.items = this.items.filter((r) => r !== item);
+    this.itemsDataSource = new MatTableDataSource(this.items);
   }
 }

@@ -16,6 +16,7 @@ import { UserDialog } from './case-study/dialogs/user/user-dialog.component';
 import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.component';
 import { SectionDialog } from './case-study/dialogs/sections/section-dialog.component';
 import { PictureDialog } from './case-study/dialogs/picture/picture-dialog.component';
+import { ItemsDialog } from './case-study/dialogs/items/items-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { PictureDialog } from './case-study/dialogs/picture/picture-dialog.compo
     HeaderComponent,
     UserDialog,
     InsightDialog,
-    SectionDialog,PictureDialog
+    SectionDialog,
+    PictureDialog,
+    ItemsDialog,
   ],
   imports: [
     BrowserModule,

@@ -107,7 +107,6 @@ export class CaseStudyService {
       section[sections[i].name] = {
         title: sections[i].title,
         content: sections[i].content,
-        questions: sections[i].questions,
         list: sections[i].list,
         pictures: [],
       };
@@ -130,10 +129,8 @@ export class CaseStudyService {
     formData.append('insights', JSON.stringify(insights));
     formData.append('sections', JSON.stringify(section));
 
-    console.log('Enviando post');
-    this.http
-      .post<{ message: string; id: string }>(API_URL, formData)
-      .subscribe((res) => {});
+    return this.http
+      .post<{ message: string; id: string }>(API_URL, formData);
   }
 
   update(
@@ -160,7 +157,6 @@ export class CaseStudyService {
       description: picture.description,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
-    console.log(picturesMapped);
     for (let i = 0; i < pictures.length; i++) {
       if (typeof pictures[i].file === 'object') {
         formData.append(
@@ -172,7 +168,6 @@ export class CaseStudyService {
     }
 
     // User Pictures
-
     var usersMapped = users.map((user) => ({
       name: user.name,
       age: user.age,
@@ -203,7 +198,6 @@ export class CaseStudyService {
         sectionsMapped[sections[i].name] = {
           title: sections[i].title ? sections[i].title : '',
           content: sections[i].content ? sections[i].content : '',
-          questions: sections[i].questions ? sections[i].questions : '',
           list: sections[i].list ? sections[i].list : '',
           pictures: [], // It's filled in the next loop. needs special logic to append to formData and manage the file (if there's a file)
         };
@@ -235,8 +229,7 @@ export class CaseStudyService {
     formData.append('pictures', JSON.stringify(picturesMapped));
     formData.append('users', JSON.stringify(usersMapped));
     formData.append('sections', JSON.stringify(sectionsMapped));
-    this.http
-      .put<{ message: string; id: string }>(API_URL + '/' + id, formData)
-      .subscribe((res) => {});
+    return this.http
+      .put<{ message: string; id: string }>(API_URL + '/' + id, formData);
   }
 }

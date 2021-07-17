@@ -1,0 +1,19 @@
+<form [formGroup]="form" (submit)="save()">
+  <div mat-dialog-content [formGroup]="form">
+    <mat-form-field [style.width.%]="100">
+      <input
+        matInput
+        type="text"
+        formControlName="content"
+        placeholder="Description"
+      />
+      <mat-error>Please enter a description.</mat-error
+      >
+    </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="close()">CLOSE</button>
+    <button mat-button mat-flat-button type="submit">SAVE</button>
+  </div>
+</form>

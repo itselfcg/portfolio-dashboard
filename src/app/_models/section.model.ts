@@ -5,7 +5,6 @@ export interface Section {
   title: string;
   content: string;
   list: string[];
-  questions: string[];
   pictures: Picture[];
   sections:string[];
 }

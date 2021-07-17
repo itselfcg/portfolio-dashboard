@@ -59,7 +59,6 @@ export class CaseStudyComponent implements OnInit {
     'name',
     'title',
     'content',
-    'questions',
     'list',
     'actions',
   ];
@@ -111,17 +110,18 @@ export class CaseStudyComponent implements OnInit {
 
           let arrSections = this.caseStudy.sections;
           let resultArray = Object.entries(arrSections).map(function (result) {
-            let value=result[1];
-            let section: Section = {name:result[0],
+            let value = result[1];
+            let section: Section = {
+              name: result[0],
               title: value.title,
               content: value.content,
               list: value.list,
-              questions: value.questions,
               pictures: value.pictures,
-              sections:value.sections};
+              sections: value.sections,
+            };
             return section;
           });
-          this.sections=resultArray;
+          this.sections = resultArray;
           this.insightsDataSource = new MatTableDataSource(this.insigths);
           this.usersDataSource = new MatTableDataSource(this.users);
           this.picturesDataSource = new MatTableDataSource(this.pictures);
@@ -132,32 +132,43 @@ export class CaseStudyComponent implements OnInit {
   }
 
   onSaveCaseStudy() {
+    this.isLoading = true;
     if (this.form.invalid) {
       return;
     }
     if (this.mode === 'create') {
-      this.caseStudyService.create(
-        this.form.value.language,
-        this.form.value.project,
-        this.form.value.title,
-        this.form.value.content,
-        this.users,
-        this.insigths,
-        this.sections,
-        this.pictures
-      );
+      this.caseStudyService
+        .create(
+          this.form.value.language,
+          this.form.value.project,
+          this.form.value.title,
+          this.form.value.content,
+          this.users,
+          this.insigths,
+          this.sections,
+          this.pictures
+        )
+        .subscribe((result) => {
+          this.isLoading = false;
+          console.log(result.message);
+        });
     } else {
-      this.caseStudyService.update(
-        this.caseId,
-        this.form.value.language,
-        this.form.value.project,
-        this.form.value.title,
-        this.form.value.content,
-        this.users,
-        this.insigths,
-        this.sections,
-        this.pictures
-      );
+      this.caseStudyService
+        .update(
+          this.caseId,
+          this.form.value.language,
+          this.form.value.project,
+          this.form.value.title,
+          this.form.value.content,
+          this.users,
+          this.insigths,
+          this.sections,
+          this.pictures
+        )
+        .subscribe((result) => {
+          this.isLoading = false;
+          console.log(result.message);
+        });
     }
   }
 
@@ -264,7 +275,6 @@ export class CaseStudyComponent implements OnInit {
         name: this.sectionsNameAvailable[0],
         title: null,
         content: null,
-        questions: null,
         list: null,
         pictures: null,
         sections: this.sectionsNameAvailable,
@@ -276,12 +286,12 @@ export class CaseStudyComponent implements OnInit {
         name: section.name,
         title: section.title,
         content: section.content,
-        questions: section.questions,
         list: section.list,
         pictures: section.pictures,
         sections: this.sectionsNameAvailable,
       },
     });
+
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
