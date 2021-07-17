@@ -6,7 +6,6 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { mimeType } from 'src/app/mime-type.validator';
 import { Picture } from 'src/app/_models/picture.model';
 import { Section } from 'src/app/_models/section.model';
 import { ItemsDialog } from '../items/items-dialog.component';
@@ -15,7 +14,7 @@ import { PictureDialog } from '../picture/picture-dialog.component';
 @Component({
   selector: 'section-dialog',
   templateUrl: 'section-dialog.html',
-  styleUrls: ['section-dialog.scss'],
+  styleUrls: ['../../case-study.component.scss','section-dialog.scss'],
 })
 export class SectionDialog implements OnInit {
   form: FormGroup;

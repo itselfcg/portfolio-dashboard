@@ -11,7 +11,7 @@ import { User } from 'src/app/_models/user.model';
 @Component({
   selector: 'user-dialog',
   templateUrl: 'user-dialog.html',
-  styleUrls: ['user-dialog.scss'],
+  styleUrls: ['../../case-study.component.scss'],
 })
 export class UserDialog implements OnInit {
   form: FormGroup;

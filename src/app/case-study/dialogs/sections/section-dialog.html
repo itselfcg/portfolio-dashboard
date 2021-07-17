@@ -4,46 +4,42 @@
     <mat-tab-group>
       <mat-tab label="Basic">
         <div class="tab-content">
-          <div class="input-space">
-            <mat-form-field appearance="fill">
-              <mat-label>Type</mat-label>
-              <mat-select formControlName="name">
-                <mat-option
-                  *ngFor="let section of sectionsAvailable "
-                  value="{{section}}"
-                  >{{section}}</mat-option
-                >
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field [style.width.%]="50">
-              <input
-                matInput
-                type="text"
-                formControlName="title"
-                placeholder="Title"
-              />
-              <mat-error>Please enter a title.</mat-error>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="name">
+              <mat-option
+                *ngFor="let section of sectionsAvailable "
+                value="{{section}}"
+                >{{section}}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
           <mat-form-field [style.width.%]="100">
             <input
               matInput
               type="text"
-              formControlName="content"
-              placeholder="Description"
+              formControlName="title"
+              placeholder="Title"
             />
+            <mat-error>Please enter a title.</mat-error>
+          </mat-form-field>
+          <mat-form-field [style.width.%]="100">
+            <textarea
+              matInput
+              rows="6"
+              formControlName="content"
+              placeholder="Section description"
+            ></textarea>
             <mat-error>Please enter an description.</mat-error>
           </mat-form-field>
-
-
         </div>
       </mat-tab>
       <mat-tab label="List">
         <div class="tab-content">
-
           <mat-toolbar-row>
             <span><h3>List</h3></span>
-            <span class="example-spacer"></span>
+            <span class="spacer"></span>
             <button
               type="button"
               mat-icon-button
@@ -56,9 +52,15 @@
 
           <table
             mat-table
-            [dataSource]="itemsDataSource"item
+            [dataSource]="itemsDataSource"
+            item
             [style.width.%]="100"
           >
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [colSpan]="itemsColumns.length" style="text-align: center;">
+              No records found
+            </td>
+          </tr>
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let item">{{ item }}</td>
@@ -87,14 +89,13 @@
             <tr mat-header-row *matHeaderRowDef="itemsColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: itemsColumns"></tr>
           </table>
-
         </div>
       </mat-tab>
       <mat-tab label="Pictures">
         <div class="tab-content">
           <mat-toolbar-row>
             <span><h3>Pictures</h3></span>
-            <span class="example-spacer"></span>
+            <span class="spacer"></span>
             <button
               type="button"
               mat-icon-button
@@ -110,6 +111,15 @@
             [dataSource]="picturesDataSource"
             [style.width.%]="100"
           >
+            <tr class="mat-row" *matNoDataRow>
+              <td
+                class="mat-cell"
+                [colSpan]="picturesColumns.length"
+                style="text-align: center"
+              >
+                No records found
+              </td>
+            </tr>
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let picture">{{ picture.fileName }}</td>
@@ -144,7 +154,7 @@
             <ng-container matColumnDef="picture">
               <th mat-header-cell *matHeaderCellDef>Url</th>
               <td mat-cell *matCellDef="let picture">
-                <img class="image-preview" src="{{ picture.url }}" />
+                <img class="image-preview-table" src="{{ picture.url }}" />
               </td>
             </ng-container>
 

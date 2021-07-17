@@ -1,37 +1,26 @@
-.mat-card{
+.mat-card {
   margin: 2em;
-
-}
-.mat-card-content{
-  padding: 2em;
-  }
-
-
-
-.image-preview {
-  height: 5rem;
-  margin: 1rem 0;
 }
 
-.image-preview img {
-  height: 100%;
+mat-card-title{
+  padding-top: 1em;
+
+}
+mat-toolbar-row{
+  border-bottom: #3F51B5 1.5px solid;
+}
+
+.tab-content {
+  padding-top: 2em;
 }
 
 
 
-.input-space {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
+.mat-column-name {
+  width: 75% !important;
+  word-break: break-word;
 }
-
-
-input[type="file"] {
-  visibility: hidden;
-}
-
-.title-card-right{
-  float: right;
-  display: inline;
-
+.mat-column-actions {
+  width: 25% !important;
+  word-break: break-word;
 }

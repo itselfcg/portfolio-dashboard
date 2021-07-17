@@ -1,12 +1,12 @@
 <form [formGroup]="form" (submit)="save()">
   <div mat-dialog-content [formGroup]="form">
     <mat-form-field [style.width.%]="100">
-      <input
-        matInput
-        type="text"
-        formControlName="content"
-        placeholder="Description"
-      />
+      <textarea
+      matInput
+      rows="6"
+      formControlName="content"
+      placeholder="Section description"
+    ></textarea>
       <mat-error>Please enter a description.</mat-error
       >
     </mat-form-field>

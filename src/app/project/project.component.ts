@@ -10,6 +10,9 @@ import { ProjectService } from '../_services/projects.service';
 import { Project } from '../_models/project.model';
 import { mimeType } from '../mime-type.validator';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemsDialog } from '../case-study/dialogs/items/items-dialog.component';
 
 @Component({
   selector: 'app-project',
@@ -19,13 +22,17 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 export class ProjectComponent implements OnInit {
   project: Project;
   form: FormGroup;
-   mode = 'create';
-  private projectId: string;
-  submitted: boolean = false;
+  mode = 'create';
+  projectId: string;
   isLoading = false;
   imagePreview: string;
 
+  labels: string[] = [];
+  labelsColumns: any[] = ['name', 'actions'];
+  labelsDataSource = new MatTableDataSource(this.labels);
+
   constructor(
+    public dialog: MatDialog,
     public projectService: ProjectService,
     public route: ActivatedRoute
   ) {}
@@ -38,10 +45,9 @@ export class ProjectComponent implements OnInit {
       name: new FormControl(null, { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      labels: new FormControl(null, { validators: [Validators.required] }),
       git_url: new FormControl(null),
       preview_url: new FormControl(null),
-      picture: new FormControl("", {
+      picture: new FormControl('', {
         validators: [Validators.required],
         asyncValidators: [mimeType],
       }),
@@ -57,24 +63,19 @@ export class ProjectComponent implements OnInit {
           this.isLoading = false;
           this.project = postData.project[0];
 
-          let label = '';
-          for (let i = 0; i < this.project.labels.length; i++) {
-            label += this.project.labels[i] + ' ';
-          }
-          label=label.slice(0,label.length-1)
           this.form.setValue({
             language: this.project.language,
             name: this.project.name,
             title: this.project.title,
             content: this.project.content,
-            labels: label,
+            labels: this.labels,
             git_url: this.project.git_url,
             preview_url: this.project.preview_url,
             picture: this.project.picture.url,
             picture_alt: this.project.picture.description,
           });
 
-          this.imagePreview=this.project.picture.url;
+          this.imagePreview = this.project.picture.url;
         });
       } else {
         this.mode = 'create';
@@ -86,7 +87,7 @@ export class ProjectComponent implements OnInit {
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ picture: file });
-    this.form.get("picture").updateValueAndValidity();
+    this.form.get('picture').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -124,5 +125,35 @@ export class ProjectComponent implements OnInit {
         this.form.value.picture_alt
       );
     }
+  }
+
+  openItemDialog(item: string) {
+    var mode = 'update';
+
+    if (!item) {
+      mode = 'create';
+      item = '';
+    }
+
+    const dialogRef = this.dialog.open(ItemsDialog, {
+      width: '450px',
+      data: item,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (mode === 'create') {
+          this.labels.push(result);
+        } else {
+          var index = this.labels.indexOf(item);
+          this.labels[index] = result;
+        }
+        this.labelsDataSource = new MatTableDataSource(this.labels);
+      }
+    });
+  }
+  onDeleteListItem(item: string) {
+    this.labels = this.labels.filter((r) => r !== item);
+    this.labelsDataSource = new MatTableDataSource(this.labels);
   }
 }

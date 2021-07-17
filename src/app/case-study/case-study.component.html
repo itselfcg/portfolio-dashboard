@@ -1,10 +1,13 @@
 <mat-card class="mat-elevation-z8">
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <mat-card-header>
-    <mat-card-title>Case study </mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="example-container">
-    <form [formGroup]="form" (submit)="onSaveCaseStudy()" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSaveCaseStudy()" *ngIf="!isLoading">
+    <mat-card-header>
+      <mat-card-title>Case study </mat-card-title>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" type="submit">SAVE</button>
+    </mat-card-header>
+
+    <mat-card-content>
       <mat-tab-group animationDuration="0ms">
         <mat-tab label="Basic">
           <div class="tab-content">
@@ -43,7 +46,7 @@
               <mat-form-field [style.width.%]="100">
                 <textarea
                   matInput
-                  rows="2"
+                  rows="3"
                   formControlName="content"
                   placeholder="Project description"
                 ></textarea>
@@ -53,7 +56,7 @@
 
             <mat-toolbar-row>
               <span><h3>Header pictures</h3></span>
-              <span class="example-spacer"></span>
+              <span class="spacer"></span>
               <button
                 type="button"
                 mat-icon-button
@@ -65,13 +68,27 @@
             </mat-toolbar-row>
 
             <table
+              id="basic"
               mat-table
               [dataSource]="picturesDataSource"
               [style.width.%]="100"
             >
+              <ng-container>
+                <tr class="mat-row" *matNoDataRow>
+                  <td
+                    class="mat-cell"
+                    [colSpan]="picturesColumns.length"
+                    style="text-align: center"
+                  >
+                    No records found
+                  </td>
+                </tr>
+              </ng-container>
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let picture">{{ picture.fileName }}</td>
+                <td mat-cell *matCellDef="let picture">
+                  {{ picture.fileName }}
+                </td>
               </ng-container>
               <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>Description</th>
@@ -103,7 +120,7 @@
               <ng-container matColumnDef="picture">
                 <th mat-header-cell *matHeaderCellDef>Url</th>
                 <td mat-cell *matCellDef="let picture">
-                  <img class="image-preview" src="{{ picture.url }}" />
+                  <img class="image-preview-table" src="{{ picture.url }}" />
                 </td>
               </ng-container>
 
@@ -116,7 +133,7 @@
           <div class="tab-content">
             <mat-toolbar-row>
               <span><h3>Sections</h3></span>
-              <span class="example-spacer"></span>
+              <span class="spacer"></span>
               <button
                 type="button"
                 mat-icon-button
@@ -130,10 +147,22 @@
             <div style="text-align: center; width: 100%"></div>
 
             <table
+              id="section"
               mat-table
               [dataSource]="sectionsDataSource"
               [style.width.%]="100"
             >
+              <ng-container>
+                <tr class="mat-row" *matNoDataRow>
+                  <td
+                    class="mat-cell"
+                    [colSpan]="sectionsColumns.length"
+                    style="text-align: center"
+                  >
+                    No records found
+                  </td>
+                </tr>
+              </ng-container>
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let section">{{ section.name }}</td>
@@ -154,12 +183,6 @@
                   {{ section.list }}
                 </td>
               </ng-container>
-              <!--             <ng-container matColumnDef="pictures">
-                <th mat-header-cell *matHeaderCellDef>Picture</th>
-                <td mat-cell *matCellDef="let section">
-                  <img class="image-preview" src="{{ section.pictures.url }}" />
-                </td>
-              </ng-container> -->
               <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let section">
@@ -190,7 +213,8 @@
           <div class="tab-content">
             <mat-toolbar-row>
               <span><h3>Users</h3></span>
-              <span class="example-spacer"></span>
+              <span class="spacer"></span>
+
               <button
                 type="button"
                 mat-icon-button
@@ -204,10 +228,22 @@
             <div style="text-align: center; width: 100%"></div>
 
             <table
+              id="user"
               mat-table
               [dataSource]="usersDataSource"
               [style.width.%]="100"
             >
+              <ng-container>
+                <tr class="mat-row" *matNoDataRow>
+                  <td
+                    class="mat-cell"
+                    [colSpan]="userColumns.length"
+                    style="text-align: center"
+                  >
+                    No records found
+                  </td>
+                </tr>
+              </ng-container>
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let user">{{ user.name }}</td>
@@ -228,7 +264,10 @@
               <ng-container matColumnDef="picture">
                 <th mat-header-cell *matHeaderCellDef>Picture</th>
                 <td mat-cell *matCellDef="let user">
-                  <img class="image-preview" src="{{ user.pictures.url }}" />
+                  <img
+                    class="image-preview-table"
+                    src="{{ user.pictures.url }}"
+                  />
                 </td>
               </ng-container>
 
@@ -243,7 +282,11 @@
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button type="button" (click)="onDeleteUser(user)">
+                  <button
+                    type="button"
+                    mat-icon-button
+                    (click)="onDeleteUser(user)"
+                  >
                     <mat-icon>delete</mat-icon>
                   </button>
                 </td>
@@ -258,7 +301,7 @@
           <div class="tab-content">
             <mat-toolbar-row>
               <span><h3>Insights</h3></span>
-              <span class="example-spacer"></span>
+              <span class="spacer"></span>
               <button
                 type="button"
                 mat-icon-button
@@ -272,10 +315,23 @@
             <div style="text-align: center; width: 100%"></div>
 
             <table
+              id="insight"
               mat-table
               [dataSource]="insightsDataSource"
               [style.width.%]="100"
             >
+              <ng-container>
+                <tr class="mat-row" *matNoDataRow>
+                  <td
+                    class="mat-cell"
+                    [colSpan]="insigthsColumns.length"
+                    style="text-align: center"
+                  >
+                    No records found
+                  </td>
+                </tr></ng-container
+              >
+
               <ng-container matColumnDef="icon">
                 <th mat-header-cell *matHeaderCellDef>Icon</th>
                 <td mat-cell *matCellDef="let insight">{{ insight.icon }}</td>
@@ -318,10 +374,6 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-
-      <div class="title-card-right b">
-        <button mat-raised-button color="accent" type="submit">SAVE</button>
-      </div>
-    </form>
-  </mat-card-content>
+    </mat-card-content>
+  </form>
 </mat-card>

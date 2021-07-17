@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
 
-  proyectColumns: any[] = [
+  projectColumns: any[] = [
   'id','language','title','content','labels','git_url','details','preview_url','actions'
   ];
 

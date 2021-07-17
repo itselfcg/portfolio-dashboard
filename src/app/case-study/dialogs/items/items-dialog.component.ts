@@ -10,6 +10,16 @@ import { Insight } from 'src/app/_models/insight.model';
 @Component({
   selector: 'items-dialog',
   templateUrl: 'items-dialog.html',
+  styles: [`
+    .mat-column-name {
+      width: 75% !important;
+      word-break: break-word;
+    }
+    .mat-column-actions {
+      width: 25% !important;
+      word-break: break-word;
+    }
+  `]
 })
 export class ItemsDialog implements OnInit {
   form: FormGroup;

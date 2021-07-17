@@ -11,7 +11,7 @@ import { Picture } from 'src/app/_models/picture.model';
 @Component({
   selector: 'picture-dialog',
   templateUrl: 'picture-dialog.html',
-  styleUrls: ['picture-dialog.scss'],
+  styleUrls: ['../../case-study.component.scss'],
 })
 export class PictureDialog implements OnInit {
   form: FormGroup;

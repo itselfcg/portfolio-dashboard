@@ -1,49 +1,114 @@
-.mat-card{
+.mat-card {
   margin: 2em;
+}
+
+mat-card-title{
+  padding-top: 1em;
 
 }
-.mat-card-content{
-  padding: 2em;
+
+mat-toolbar-row{
+  border-bottom: #3F51B5 1.5px solid;
+}
+
+
+.tab-content {
+  padding-top: 2em;
+}
+
+
+#basic {
+  .mat-column-name {
+    width: 25% !important;
+    word-break: break-word;
+  }
+  .mat-column-content {
+    width: 40% !important;
+    word-break: break-word;
+  }
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
   }
 
-
-
-.image-preview {
-  height: 2rem;
+  .mat-column-picture {
+    width: 15% !important;
+    word-break: break-word;
+  }
 }
 
-.image-preview img {
-  height: 100%;
-}
+#section {
+  .mat-column-name {
+    width: 15% !important;
+    word-break: break-word;
+  }
+  .mat-column-title {
+    width: 15% !important;
+    word-break: break-word;
+  }
+  .mat-column-content {
+    width: 35% !important;
+    word-break: break-word;
+  }
 
-
-.example-icon {
-  padding: 0 14px;
-}
-.example-spacer {
-  flex: 1 1 auto;
-}
-.mat-tab{
-  min-height: 500px!important;
-}
-.input-space {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-
-input[type="file"] {
-  visibility: hidden;
-}
-
-.title-card-right{
-  float: right;
-  display: inline;
+  .mat-column-list {
+    width: 20% !important;
+    word-break: break-word;
+  }
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
+  }
 
 }
 
-.tab-content{
-padding-top: 2em;
+#user {
+  .mat-column-name {
+    width: 10% !important;
+    word-break: break-word;
+  }
+  .mat-column-age {
+    width: 10% !important;
+    word-break: break-word;
+  }
+  .mat-column-occupation {
+    width: 15% !important;
+    word-break: break-word;
+  }
+  .mat-column-story {
+    width: 30% !important;
+    word-break: break-word;
+  }
+  .mat-column-picture {
+    width: 15% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
+  }
 
 }
+
+#insight {
+  .mat-column-icon {
+    width: 20% !important;
+    word-break: break-word;
+  }
+  .mat-column-title {
+    width: 20% !important;
+    word-break: break-word;
+  }
+  .mat-column-content {
+    width: 40% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
+  }
+
+}
+
