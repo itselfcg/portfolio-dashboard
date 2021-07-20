@@ -2,33 +2,55 @@
   <h1 mat-dialog-title>Picture</h1>
   <div mat-dialog-content [formGroup]="form">
     <div class="input-space">
-      <mat-form-field [style.width.%]="100">
+      <mat-form-field [style.width.%]="50">
         <input matInput type="text" formControlName="name" placeholder="Name" />
         <mat-error>Please enter a name.</mat-error>
       </mat-form-field>
-    </div>
-    <div>
-      <mat-form-field [style.width.%]="100">
+      <mat-form-field [style.width.%]="50">
         <textarea
           matInput
-          rows="3"
+          rows="1"
           formControlName="description"
-          placeholder="Picture description"
+          placeholder="Description"
         ></textarea>
         <mat-error>Please enter a picture description.</mat-error>
       </mat-form-field>
-
-      <button mat-stroked-button type="button" (click)="filePicker.click()">
-        Select picture
-      </button>
+    </div>
+    <mat-form-field [style.width.%]="100">
+      <input
+        matInput
+        type="text"
+        formControlName="url"
+        placeholder="Url"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error>Please enter a url or select a picture.</mat-error>
+    </mat-form-field>
+    <div>
       <input type="file" #filePicker (change)="onImagePicked($event)" />
-      <div
-        class="image-preview"
-        *ngIf="
-        imagePreview !== '' && imagePreview && form.get('file').valid
-      "
-      >
-        <img [src]="imagePreview" />
+
+      <div class="preview-box">
+        <button
+          *ngIf="imagePreview !== '' && imagePreview && form.get('file').valid && form.get('file').value"
+          mat-button
+          (click)="removePicture()"
+
+        >
+          <mat-icon color="primary">close</mat-icon>
+        </button>
+
+        <div class="preview">
+          <button *ngIf="!form.get('file').value" mat-stroked-button type="button" (click)="filePicker.click()">
+            Select picture
+          </button>
+          <div
+            class="image-preview"
+            *ngIf="imagePreview !== '' && imagePreview && form.get('file').valid"
+          >
+            <img [src]="imagePreview" />
+          </div>
+          <span> {{imagePreviewName}} </span>
+        </div>
       </div>
     </div>
   </div>

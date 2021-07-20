@@ -1,7 +1,7 @@
 <form [formGroup]="form" (submit)="save()">
   <h1 mat-dialog-title>Section</h1>
   <div mat-dialog-content [formGroup]="form">
-    <mat-tab-group>
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
       <mat-tab label="Basic">
         <div class="tab-content">
           <mat-form-field appearance="fill">

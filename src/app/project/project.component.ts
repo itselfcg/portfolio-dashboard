@@ -27,6 +27,7 @@ export class ProjectComponent implements OnInit {
   mode = 'create';
   projectId: string;
   isLoading = false;
+  tabSelected=0;
 
   labels: string[] = [];
   pictures: Picture[] = [];
@@ -90,6 +91,7 @@ export class ProjectComponent implements OnInit {
     this.isLoading = true;
     if (this.form.invalid) {
       this.isLoading = false;
+      this.tabSelected=0;
       return;
     }
     if (this.mode === 'create') {

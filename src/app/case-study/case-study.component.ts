@@ -28,6 +28,7 @@ export class CaseStudyComponent implements OnInit {
   isLoading = false;
   imagePreview: string;
   mode = 'create';
+  tabSelected=0;
 
   caseId: string;
   caseStudy: CaseStudy;
@@ -130,7 +131,7 @@ export class CaseStudyComponent implements OnInit {
     this.isLoading = true;
     if (this.form.invalid) {
       this.isLoading = false;
-
+      this.tabSelected=0;
       return;
     }
     if (this.mode === 'create') {

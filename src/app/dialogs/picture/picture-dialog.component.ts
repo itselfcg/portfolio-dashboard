@@ -1,37 +1,44 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { mimeType } from 'src/app/mime-type.validator';
+import { CustomErrorStateMatcher } from 'src/app/_error/picture-error.state-matcher';
 import { Picture } from 'src/app/_models/picture.model';
+import { pictureSelectedValidator } from 'src/app/_validator/file.directive';
 
 @Component({
   selector: 'picture-dialog',
-  templateUrl: 'picture-dialog.html'
+  templateUrl: 'picture-dialog.html',
+  styleUrls: ['picture-dialog.component.scss'],
 })
 export class PictureDialog implements OnInit {
   form: FormGroup;
   imagePreview: string;
+  imagePreviewName: string;
+  public matcher = new CustomErrorStateMatcher();
 
   constructor(
     public dialogRef: MatDialogRef<PictureDialog>,
     @Inject(MAT_DIALOG_DATA) public data: Picture
   ) {
-    this.form = new FormGroup({
-      name: new FormControl(this.data.fileName, {
-        validators: [Validators.required],
-      }),
-      description: new FormControl(this.data.description, {
-        validators: [Validators.required],
-      }),
-      file: new FormControl(this.data.url, {
-        validators: [Validators.required],
-        asyncValidators: [mimeType],
-      })
-    });
+    this.form = new FormGroup(
+      {
+        name: new FormControl(this.data.fileName, {
+          validators: [Validators.required],
+        }),
+        description: new FormControl(this.data.description, {
+          validators: [Validators.required],
+        }),
+        url: new FormControl(this.data.file ? '' : this.data.url),
+        file: new FormControl(this.data.file ? this.data.file : '', {
+          asyncValidators: [mimeType],
+        }),
+      },
+      { validators: pictureSelectedValidator.bind(this) }
+    );
+    if(this.data.file ){
+      this.form.get('url').disable();
+    }
 
     this.imagePreview = this.data.url;
   }
@@ -47,7 +54,7 @@ export class PictureDialog implements OnInit {
     let picture: Picture = {
       fileName: this.form.value.name,
       description: this.form.value.description,
-      url: this.imagePreview,
+      url: this.form.value.file ? this.imagePreview : this.form.value.url,
       file: this.form.value.file,
     };
     this.dialogRef.close(picture);
@@ -64,7 +71,21 @@ export class PictureDialog implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
+      this.imagePreviewName = file.name;
     };
+    this.form.patchValue({ name: file.name.split('.')[0] });
+    this.form.patchValue({ url: '' });
+    this.form.get('url').disable();
+    this.form.get('url').updateValueAndValidity();
+
     reader.readAsDataURL(file);
+  }
+
+  removePicture() {
+    this.imagePreview = '';
+    this.imagePreviewName = '';
+    this.form.patchValue({ file: '' });
+    this.form.patchValue({ url: '' });
+    this.form.get('url').enable();
   }
 }

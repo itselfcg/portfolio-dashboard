@@ -74,17 +74,19 @@ export class ProjectService {
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
       description: picture.description,
+      url: typeof picture.file === 'object' ? '' : picture.url,
     }));
 
     formData.append('pictures', JSON.stringify(picturesMapped));
     for (let i = 0; i < pictures.length; i++) {
-      formData.append(
-        'preview-pic-' + i,
-        pictures[i].file,
-        pictures[i].fileName
-      );
+      if (typeof pictures[i].file === 'object') {
+        formData.append(
+          'preview-pic-' + i,
+          pictures[i].file,
+          pictures[i].fileName
+        );
+      }
     }
-
     return this.http.post<{ message: string; id: string }>(API_URL, formData, {
       observe: 'response',
     });

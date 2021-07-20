@@ -16,7 +16,7 @@ import { User } from 'src/app/_models/user.model';
 export class UserDialog implements OnInit {
   form: FormGroup;
   imagePreview: string;
-
+  imagePreviewName:string;
 
 
   constructor(
@@ -77,6 +77,8 @@ export class UserDialog implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
+      this.imagePreviewName = file.name;
+
     };
     reader.readAsDataURL(file);
   }

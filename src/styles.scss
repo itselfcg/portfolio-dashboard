@@ -9,20 +9,23 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
-
 .spacer {
   flex: 1 1 auto;
 }
 
 h3 {
-  margin: auto!important;
-  font-weight: 500!important;
+  margin: auto !important;
+  font-weight: 500 !important;
 }
 
-.image-preview img {
-  height: 3rem;
-  width: auto;
+.image-preview {
+  display: inline-block;
+  margin: auto;
+padding-top: .5rem;
+  img {
+    height: 3rem;
+    width: auto;
+  }
 }
 
 .image-preview-table {

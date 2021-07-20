@@ -18,6 +18,7 @@ import { PictureDialog } from '../../../dialogs/picture/picture-dialog.component
 })
 export class SectionDialog implements OnInit {
   form: FormGroup;
+  tabSelected=0;
   imagePreview: string;
   sectionsAvailable: string[];
   pictures: Picture[] = [];
@@ -63,6 +64,7 @@ export class SectionDialog implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
+      this.tabSelected=0;
       return;
     }
 
