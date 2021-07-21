@@ -64,7 +64,7 @@ export class ProjectComponent implements OnInit {
         this.isLoading = true;
         this.projectService.getById(this.projectId).subscribe((postData) => {
           this.isLoading = false;
-          this.project = postData.project[0];
+          this.project = postData.projects[0];
 
           this.form.setValue({
             language: this.project.language,

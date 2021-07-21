@@ -36,16 +36,23 @@ export class ProjectService {
   }
 
   getAllWithoutCaseStudy() {
-    return this.http.get<{ project: Project[] }>(API_URL, {
+    return this.http.get<{ projects: Project[] }>(API_URL, {
       params: { details: 'false' },
     });
   }
 
   getById(id: string) {
-    return this.http.get<{ project: Project[] }>(API_URL, {
+    return this.http.get<{ projects: Project[] }>(API_URL, {
       params: { id: id },
     });
   }
+
+  getByLanguage(language: string) {
+    return this.http.get<{ projects: Project[] }>(API_URL, {
+      params: { lang: language },
+    });
+  }
+
 
   delete(postId: string) {
     return this.http.delete(API_URL + '/' + postId);

@@ -18,7 +18,7 @@
             <div class="input-space">
               <mat-form-field appearance="fill">
                 <mat-label>Language</mat-label>
-                <mat-select formControlName="language">
+                <mat-select formControlName="language" (selectionChange)="onLanguageChange()">
                   <mat-option value="en">English</mat-option>
                   <mat-option value="sp">Spanish</mat-option>
                 </mat-select>

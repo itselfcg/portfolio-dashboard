@@ -71,7 +71,8 @@ export class CaseStudyComponent implements OnInit {
       this.sectionsNameAvailable = result.sections;
     });
 
-    this.projectService.getAll().subscribe((result) => {
+    this.projectService.getByLanguage('en').subscribe((result) => {
+      console.log(result.projects);
       this.projects = result.projects;
     });
 
@@ -362,5 +363,12 @@ export class CaseStudyComponent implements OnInit {
       (result) => result.fileName !== picture.fileName
     );
     this.picturesDataSource = new MatTableDataSource(this.pictures);
+  }
+
+  onLanguageChange(){
+    var language=this.form.get('language').value;
+    this.projectService.getByLanguage(language).subscribe((result) => {
+      this.projects = result.projects;
+    });
   }
 }
