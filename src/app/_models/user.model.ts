@@ -5,5 +5,5 @@ export interface User {
   age: string,
   occupation: string,
   story: string,
-  pictures: Picture
+  picture: Picture
 }

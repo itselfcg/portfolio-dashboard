@@ -40,26 +40,26 @@ export class UserDialog implements OnInit {
         story: new FormControl(this.data.story, {
           validators: [Validators.required],
         }),
-        file: new FormControl(this.data.pictures.file ? this.data.pictures.file : '', {
+        file: new FormControl(this.data.picture.file ? this.data.picture.file : '', {
           asyncValidators: [mimeType],
         }),
-        fileName: new FormControl(this.data.pictures.fileName, {
+        fileName: new FormControl(this.data.picture.fileName, {
           validators: [Validators.required],
         }),
         url: new FormControl(
-          this.data.pictures.file ? '' : this.data.pictures.url
+          this.data.picture.file ? '' : this.data.picture.url
         ),
 
-        fileDescription: new FormControl(this.data.pictures.description, {
+        fileDescription: new FormControl(this.data.picture.description, {
           validators: [Validators.required],
         }),
       },
       { validators: pictureSelectedValidator.bind(this) }
     );
-    if (this.data.pictures.file) {
+    if (this.data.picture.file) {
       this.form.get('url').disable();
     }
-    this.imagePreview = this.data.pictures.url;
+    this.imagePreview = this.data.picture.url;
   }
 
   ngOnInit() {}
@@ -77,14 +77,14 @@ export class UserDialog implements OnInit {
       age: this.form.value.age,
       story: this.form.value.story,
       occupation: this.form.value.occupation,
-      pictures: {
+      picture: {
         fileName: this.form.value.fileName,
         description: this.form.value.fileDescription,
         url: this.form.value.file ? this.imagePreview : this.form.value.url,
         file: this.form.value.file,
       },
     };
-
+console.log(user);
     this.dialogRef.close(user);
   }
 
@@ -101,7 +101,7 @@ export class UserDialog implements OnInit {
       this.imagePreview = reader.result as string;
       this.imagePreviewName = file.name;
     };
-    this.form.patchValue({ name: file.name.split('.')[0] });
+    this.form.patchValue({ fileName: file.name.split('.')[0] });
     this.form.patchValue({ url: '' });
     this.form.get('url').disable();
     this.form.get('url').updateValueAndValidity();

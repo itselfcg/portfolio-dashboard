@@ -169,7 +169,7 @@ export class CaseStudyComponent implements OnInit {
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-            this.router.navigate(['/']);
+         //   this.router.navigate(['/']);
           }
         });
     }
@@ -185,7 +185,7 @@ export class CaseStudyComponent implements OnInit {
         age: null,
         story: null,
         occupation: null,
-        pictures: {
+        picture: {
           fileName: null,
           description: null,
           url: null,
@@ -201,11 +201,11 @@ export class CaseStudyComponent implements OnInit {
         age: user.age,
         story: user.story,
         occupation: user.occupation,
-        pictures: {
-          fileName: user.pictures.fileName,
-          description: user.pictures.description,
-          url: user.pictures.url,
-          file: user.pictures.file,
+        picture: {
+          fileName: user.picture.fileName,
+          description: user.picture.description,
+          url: user.picture.url,
+          file: user.picture.file,
         },
       },
     });

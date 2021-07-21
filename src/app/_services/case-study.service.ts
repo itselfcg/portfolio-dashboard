@@ -87,17 +87,17 @@ export class CaseStudyService {
       age: user.age,
       story: user.story,
       occupation: user.occupation,
-      pictures: {
-        fileName: user.pictures.fileName,
-        description: user.pictures.description,
+      picture: {
+        fileName: user.picture.fileName,
+        description: user.picture.description,
       },
     }));
 
     for (let i = 0; i < users.length; i++) {
       formData.append(
         'user-pic-' + i,
-        users[i].pictures.file,
-        users[i].pictures.fileName
+        users[i].picture.file,
+        users[i].picture.fileName
       );
     }
 
@@ -174,19 +174,19 @@ export class CaseStudyService {
       age: user.age,
       story: user.story,
       occupation: user.occupation,
-      pictures: {
-        fileName: user.pictures.fileName,
-        description: user.pictures.description,
-        url: typeof user.pictures.file === 'object' ? '' : user.pictures.url,
+      picture: {
+        fileName: user.picture.fileName,
+        description: user.picture.description,
+        url: typeof user.picture.file === 'object' ? '' : user.picture.url,
       },
     }));
 
     for (let i = 0; i < users.length; i++) {
-      if (typeof users[i].pictures.file === 'object') {
+      if (typeof users[i].picture.file === 'object') {
         formData.append(
           'user-pic-' + i,
-          users[i].pictures.file,
-          users[i].pictures.fileName
+          users[i].picture.file,
+          users[i].picture.fileName
         );
       }
     }
