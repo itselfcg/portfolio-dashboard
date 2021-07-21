@@ -1,78 +1,108 @@
 <form [formGroup]="form" (submit)="save()">
   <h1 mat-dialog-title>User</h1>
+
   <div mat-dialog-content [formGroup]="form">
-    <div class="input-space">
-      <mat-form-field [style.width.%]="50">
-        <input matInput type="text" formControlName="name" placeholder="Name" />
-        <mat-error>Please enter a name.</mat-error>
-      </mat-form-field>
-      <mat-form-field [style.width.%]="50">
-        <input matInput type="text" formControlName="age" placeholder="Age" />
-        <mat-error>Please enter an age.</mat-error>
-      </mat-form-field>
-    </div>
-    <mat-form-field [style.width.%]="100">
-      <input
-        matInput
-        type="text"
-        formControlName="occupation"
-        placeholder="Occupation"
-      />
-      <mat-error>Please enter a name.</mat-error>
-    </mat-form-field>
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
+      <mat-tab label="Basic">
+        <div class="tab-content">
+          <div class="input-space">
+            <mat-form-field [style.width.%]="50">
+              <input
+                matInput
+                type="text"
+                formControlName="name"
+                placeholder="Name"
+              />
+              <mat-error>Please enter a name.</mat-error>
+            </mat-form-field>
+            <mat-form-field [style.width.%]="50">
+              <input
+                matInput
+                type="text"
+                formControlName="age"
+                placeholder="Age"
+              />
+              <mat-error>Please enter an age.</mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field [style.width.%]="100">
+            <input
+              matInput
+              type="text"
+              formControlName="occupation"
+              placeholder="Occupation"
+            />
+            <mat-error>Please enter a name.</mat-error>
+          </mat-form-field>
 
-    <mat-form-field [style.width.%]="100">
-      <textarea
-        matInput
-        rows="5"
-        formControlName="story"
-        placeholder="User story"
-      ></textarea>
-      <mat-error>Please enter a name.</mat-error>
-    </mat-form-field>
-
-    <div class="input-space">
-      <mat-form-field [style.width.%]="50">
-        <input
-          matInput
-          type="text"
-          formControlName="fileName"
-          placeholder="Picture name"
-        />
-        <mat-error>Please enter a picture name.</mat-error>
-      </mat-form-field>
-      <mat-form-field [style.width.%]="50">
-        <textarea
-          matInput
-          rows="1"
-          formControlName="fileDescription"
-          placeholder="Picture description"
-        ></textarea>
-        <mat-error>Please enter a picture description.</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div>
-      <button mat-stroked-button type="button" (click)="filePicker.click()">
-        Select picture
-      </button>
-      <input type="file" #filePicker (change)="onImagePicked($event)" />
-      <div>
-        <div
-          class="image-preview"
-          *ngIf="
-        imagePreview !== '' && imagePreview && form.get('file').valid
-      "
-        >
-          <img [src]="imagePreview" />
+          <mat-form-field [style.width.%]="100">
+            <textarea
+              matInput
+              rows="5"
+              formControlName="story"
+              placeholder="User story"
+            ></textarea>
+            <mat-error>Please enter a name.</mat-error>
+          </mat-form-field>
         </div>
-        <span
-          *ngIf="
-    imagePreview !== '' && imagePreview && form.get('file').valid"
-        >   {{imagePreviewName}}
-        </span>
-      </div>
-    </div>
+      </mat-tab>
+      <mat-tab label="Picture">
+        <div class="tab-content">
+          <div class="input-space">
+            <mat-form-field [style.width.%]="50">
+              <input matInput type="text" formControlName="fileName" placeholder="Name" />
+              <mat-error>Please enter a name.</mat-error>
+            </mat-form-field>
+            <mat-form-field [style.width.%]="50">
+              <textarea
+                matInput
+                rows="1"
+                formControlName="fileDescription"
+                placeholder="Description"
+              ></textarea>
+              <mat-error>Please enter a picture description.</mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field [style.width.%]="100">
+            <input
+              matInput
+              type="text"
+              formControlName="url"
+              placeholder="Url"
+              [errorStateMatcher]="matcher"
+            />
+            <mat-error>Please enter a url or select a picture.</mat-error>
+          </mat-form-field>
+          <div>
+            <input type="file" #filePicker (change)="onImagePicked($event)" />
+
+            <div class="preview-box">
+              <button
+                *ngIf="imagePreview !== '' && imagePreview && form.get('file').valid && form.get('file').value"
+                mat-button
+                (click)="removePicture()"
+
+              >
+                <mat-icon color="primary">close</mat-icon>
+              </button>
+
+              <div class="preview">
+                <button *ngIf="!form.get('file').value" mat-stroked-button type="button" (click)="filePicker.click()">
+                  Select picture
+                </button>
+                <div
+                  class="image-preview"
+                  *ngIf="imagePreview !== '' && imagePreview && form.get('file').valid"
+                >
+                  <img [src]="imagePreview" />
+                </div>
+                <span> {{imagePreviewName}} </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
   <div mat-dialog-actions align="end">
     <button type="button" mat-button (click)="close()">CLOSE</button>

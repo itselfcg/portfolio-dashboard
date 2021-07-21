@@ -6,39 +6,60 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { mimeType } from 'src/app/mime-type.validator';
+import { CustomErrorStateMatcher } from 'src/app/_error/picture-error.state-matcher';
 import { User } from 'src/app/_models/user.model';
+import { pictureSelectedValidator } from 'src/app/_validator/file.directive';
 
 @Component({
   selector: 'user-dialog',
   templateUrl: 'user-dialog.html',
-  styleUrls: ['../../case-study.component.scss'],
+  styleUrls: ['user-dialog.component.scss'],
 })
 export class UserDialog implements OnInit {
   form: FormGroup;
   imagePreview: string;
-  imagePreviewName:string;
-
+  imagePreviewName: string;
+  tabSelected = 0;
+  public matcher = new CustomErrorStateMatcher();
 
   constructor(
     public dialogRef: MatDialogRef<UserDialog>,
     @Inject(MAT_DIALOG_DATA) public data: User
   ) {
+    this.form = new FormGroup(
+      {
+        name: new FormControl(this.data.name, {
+          validators: [Validators.required],
+        }),
+        age: new FormControl(this.data.age, {
+          validators: [Validators.required],
+        }),
+        occupation: new FormControl(this.data.occupation, {
+          validators: [Validators.required],
+        }),
+        story: new FormControl(this.data.story, {
+          validators: [Validators.required],
+        }),
+        file: new FormControl(this.data.pictures.file ? this.data.pictures.file : '', {
+          asyncValidators: [mimeType],
+        }),
+        fileName: new FormControl(this.data.pictures.fileName, {
+          validators: [Validators.required],
+        }),
+        url: new FormControl(
+          this.data.pictures.file ? '' : this.data.pictures.url
+        ),
 
-    this.form = new FormGroup({
-      name: new FormControl(this.data.name, { validators: [Validators.required] }),
-      age: new FormControl(this.data.age, { validators: [Validators.required] }),
-      occupation: new FormControl(this.data.occupation, { validators: [Validators.required] }),
-      story: new FormControl(this.data.story, { validators: [Validators.required] }),
-      file: new FormControl(this.data.pictures.url, {
-        validators: [Validators.required],
-        asyncValidators: [mimeType],
-      }),
-      fileName: new FormControl(this.data.pictures.fileName, { validators: [Validators.required] }),
-      fileDescription: new FormControl(this.data.pictures.description, { validators: [Validators.required] }),
-
-    });
-
-    this.imagePreview=this.data.pictures.url;
+        fileDescription: new FormControl(this.data.pictures.description, {
+          validators: [Validators.required],
+        }),
+      },
+      { validators: pictureSelectedValidator.bind(this) }
+    );
+    if (this.data.pictures.file) {
+      this.form.get('url').disable();
+    }
+    this.imagePreview = this.data.pictures.url;
   }
 
   ngOnInit() {}
@@ -47,6 +68,7 @@ export class UserDialog implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
+      this.tabSelected = 1;
       return;
     }
 
@@ -56,10 +78,10 @@ export class UserDialog implements OnInit {
       story: this.form.value.story,
       occupation: this.form.value.occupation,
       pictures: {
-        fileName:this.form.value.fileName,
+        fileName: this.form.value.fileName,
         description: this.form.value.fileDescription,
-        url: this.imagePreview,
-        file:this.form.value.file
+        url: this.form.value.file ? this.imagePreview : this.form.value.url,
+        file: this.form.value.file,
       },
     };
 
@@ -78,8 +100,19 @@ export class UserDialog implements OnInit {
     reader.onload = () => {
       this.imagePreview = reader.result as string;
       this.imagePreviewName = file.name;
-
     };
+    this.form.patchValue({ name: file.name.split('.')[0] });
+    this.form.patchValue({ url: '' });
+    this.form.get('url').disable();
+    this.form.get('url').updateValueAndValidity();
+
     reader.readAsDataURL(file);
+  }
+  removePicture() {
+    this.imagePreview = '';
+    this.imagePreviewName = '';
+    this.form.patchValue({ file: '' });
+    this.form.patchValue({ url: '' });
+    this.form.get('url').enable();
   }
 }

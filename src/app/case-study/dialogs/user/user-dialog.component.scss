@@ -1,0 +1,19 @@
+.preview {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.preview-box{
+  padding: 1em;
+  border: rgb(240, 240, 240) solid 1px;
+  border-radius: 5px;
+
+}
+
+.tab-content {
+  height: 300px;
+  width: 100%;
+}
