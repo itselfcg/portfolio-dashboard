@@ -113,7 +113,7 @@ export class CaseStudyService {
 
       for (let j = 0; j < sections[i].pictures.length; j++) {
         section[sections[i].name].pictures.push({
-          name: sections[i].pictures[j].fileName,
+          fileName: sections[i].pictures[j].fileName,
           description: sections[i].pictures[j].description,
         });
         formData.append(
@@ -155,6 +155,7 @@ export class CaseStudyService {
     //Generic Pictures
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
+      key:picture.key,
       description: picture.description,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
@@ -176,6 +177,7 @@ export class CaseStudyService {
       occupation: user.occupation,
       picture: {
         fileName: user.picture.fileName,
+        key:user.picture.key,
         description: user.picture.description,
         url: typeof user.picture.file === 'object' ? '' : user.picture.url,
       },
@@ -207,6 +209,7 @@ export class CaseStudyService {
           for (let j = 0; j < sections[i].pictures.length; j++) {
             sectionsMapped[sections[i].name].pictures.push({
               fileName: sections[i].pictures[j].fileName,
+              key:sections[i].pictures[j].key,
               description: sections[i].pictures[j].description,
               url:
                 typeof sections[i].pictures[j].file === 'object'

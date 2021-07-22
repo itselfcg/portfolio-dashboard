@@ -169,7 +169,7 @@ export class CaseStudyComponent implements OnInit {
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-         //   this.router.navigate(['/']);
+          this.router.navigate(['/']);
           }
         });
     }
@@ -190,6 +190,7 @@ export class CaseStudyComponent implements OnInit {
           description: null,
           url: null,
           file: null,
+          key:null
         },
       };
     }
@@ -332,6 +333,7 @@ export class CaseStudyComponent implements OnInit {
         description: null,
         url: null,
         file: null,
+        key:null
       };
     }
 

@@ -109,7 +109,7 @@ export class ProjectComponent implements OnInit {
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-            this.router.navigate(['/']);
+           this.router.navigate(['/']);
           }
         });
     } else {
@@ -174,6 +174,7 @@ export class ProjectComponent implements OnInit {
         description: null,
         url: null,
         file: null,
+        key:null
       };
     }
 

@@ -94,6 +94,7 @@ export class SectionDialog implements OnInit {
         description: null,
         url: null,
         file: null,
+        key:null
       };
     }
 

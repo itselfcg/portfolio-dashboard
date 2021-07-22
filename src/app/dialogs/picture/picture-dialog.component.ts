@@ -30,6 +30,7 @@ export class PictureDialog implements OnInit {
           validators: [Validators.required],
         }),
         url: new FormControl(this.data.file ? '' : this.data.url),
+        key: new FormControl(this.data.key),
         file: new FormControl(this.data.file ? this.data.file : '', {
           asyncValidators: [mimeType],
         }),
@@ -56,6 +57,7 @@ export class PictureDialog implements OnInit {
       description: this.form.value.description,
       url: this.form.value.file ? this.imagePreview : this.form.value.url,
       file: this.form.value.file,
+      key:this.form.value.key
     };
     this.dialogRef.close(picture);
   }

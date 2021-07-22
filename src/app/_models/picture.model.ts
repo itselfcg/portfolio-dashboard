@@ -3,5 +3,6 @@ export interface Picture {
   fileName:string,
   url: string,
   description: string,
-  file:File
+  file:File,
+  key:string
 }

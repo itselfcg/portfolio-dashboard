@@ -40,16 +40,19 @@ export class UserDialog implements OnInit {
         story: new FormControl(this.data.story, {
           validators: [Validators.required],
         }),
-        file: new FormControl(this.data.picture.file ? this.data.picture.file : '', {
-          asyncValidators: [mimeType],
-        }),
+        file: new FormControl(
+          this.data.picture.file ? this.data.picture.file : '',
+          {
+            asyncValidators: [mimeType],
+          }
+        ),
         fileName: new FormControl(this.data.picture.fileName, {
           validators: [Validators.required],
         }),
         url: new FormControl(
           this.data.picture.file ? '' : this.data.picture.url
         ),
-
+        key: new FormControl(this.data.picture.key),
         fileDescription: new FormControl(this.data.picture.description, {
           validators: [Validators.required],
         }),
@@ -82,9 +85,10 @@ export class UserDialog implements OnInit {
         description: this.form.value.fileDescription,
         url: this.form.value.file ? this.imagePreview : this.form.value.url,
         file: this.form.value.file,
+        key: this.form.value.key,
       },
     };
-console.log(user);
+    console.log(user);
     this.dialogRef.close(user);
   }
 

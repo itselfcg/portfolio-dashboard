@@ -81,6 +81,7 @@ export class ProjectService {
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
       description: picture.description,
+      key:picture.key,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
 
@@ -123,6 +124,7 @@ export class ProjectService {
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
       description: picture.description,
+      key:picture.key,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
 
