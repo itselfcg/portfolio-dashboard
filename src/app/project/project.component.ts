@@ -55,6 +55,7 @@ export class ProjectComponent implements OnInit {
       content: new FormControl(null, { validators: [Validators.required] }),
       git_url: new FormControl(''),
       preview_url: new FormControl(''),
+      details: new FormControl('false'),
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -73,6 +74,7 @@ export class ProjectComponent implements OnInit {
             content: this.project.content,
             git_url: this.project.git_url,
             preview_url: this.project.preview_url,
+            details: this.project.details,
           });
 
           this.labels = this.project.labels;
@@ -103,6 +105,7 @@ export class ProjectComponent implements OnInit {
           this.form.value.content,
           this.form.value.git_url,
           this.form.value.preview_url,
+          this.form.value.details,
           this.labels,
           this.pictures
         )
@@ -122,6 +125,7 @@ export class ProjectComponent implements OnInit {
           this.form.value.content,
           this.form.value.git_url,
           this.form.value.preview_url,
+          this.form.value.details,
           this.labels,
           this.pictures
         )

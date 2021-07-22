@@ -65,6 +65,7 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
+    details:string,
     labels: string[],
     pictures: Picture[]
   ) {
@@ -75,7 +76,7 @@ export class ProjectService {
     formData.append('content', content);
     formData.append('git_url', git_url);
     formData.append('preview_url', preview_url);
-    formData.append('details', 'false');
+    formData.append('details', details);
     formData.append('labels', JSON.stringify(labels));
 
     var picturesMapped = pictures.map((picture) => ({
@@ -108,6 +109,7 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
+    details:string,
     labels: string[],
     pictures: Picture[]
   ) {
@@ -118,7 +120,7 @@ export class ProjectService {
     formData.append('content', content);
     formData.append('git_url', git_url);
     formData.append('preview_url', preview_url);
-    formData.append('details', 'false');
+    formData.append('details', details);
     formData.append('labels', JSON.stringify(labels));
 
     var picturesMapped = pictures.map((picture) => ({
