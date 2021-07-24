@@ -6,15 +6,14 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ProjectService } from '../_services/projects.service';
-import { Project } from '../_models/project.model';
-import { mimeType } from '../mime-type.validator';
+import { ProjectService } from '../../_services/projects.service';
+import { Project } from '../../_models/project.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemsDialog } from '../dialogs/items/items-dialog.component';
-import { Picture } from '../_models/picture.model';
-import { PictureDialog } from '../dialogs/picture/picture-dialog.component';
+import { ItemsDialog } from '../../dialogs/items/items-dialog.component';
+import { Picture } from '../../_models/picture.model';
+import { PictureDialog } from '../../dialogs/picture/picture-dialog.component';
 
 @Component({
   selector: 'app-project',
