@@ -19,11 +19,11 @@ export class HomeComponent implements OnInit {
 
 
   projectColumns: any[] = [
-  'id','language','title','content','labels','git_url','details','preview_url','actions'
+  'id','language','title','labels','git_url','details','preview_url','actions'
   ];
 
   caseStudyColumns: any[] = [
-    'id','language','project','title','content','actions'
+    'id','language','project','title','actions'
     ];
 
   constructor(
@@ -46,6 +46,8 @@ export class HomeComponent implements OnInit {
       .getCaseStudyUpdateListener()
       .subscribe((caseStudies: CaseStudy[]) => {
         this.caseStudies = caseStudies;
+        console.log(this.caseStudies);
+
         this.isLoading = false;
       });
   }

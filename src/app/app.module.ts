@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectComponent } from './project/project.component';
-import { CaseStudyComponent } from './case-study/case-study.component';
+import { CaseStudyComponent } from './case-study/create-edit/case-study.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -17,6 +17,7 @@ import { InsightDialog } from './case-study/dialogs/insights/insights-dialog.com
 import { SectionDialog } from './case-study/dialogs/sections/section-dialog.component';
 import { PictureDialog } from './dialogs/picture/picture-dialog.component';
 import { ItemsDialog } from './dialogs/items/items-dialog.component';
+import { CaseStudyHomeComponent } from './case-study/home/case-study-home.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ItemsDialog } from './dialogs/items/items-dialog.component';
     ProjectComponent,
     CaseStudyComponent,
     HomeComponent,
+    CaseStudyHomeComponent,
     HeaderComponent,
     UserDialog,
     InsightDialog,
