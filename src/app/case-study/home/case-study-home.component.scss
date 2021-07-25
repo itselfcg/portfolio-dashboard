@@ -1,0 +1,39 @@
+.mat-card {
+  border-color: aqua;
+  margin: 2em;
+}
+
+mat-card-header {
+  padding: 1em 0 1em;
+  margin: a;
+}
+
+
+#caseStudy {
+  .mat-column-id {
+    width: 5% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-language {
+    width: 5% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-project {
+    width: 25% !important;
+    word-break: break-word;
+  }
+
+  .mat-column-title {
+    width: 35% !important;
+    word-break: break-word;
+  }
+
+
+  .mat-column-actions {
+    width: 20% !important;
+    word-break: break-word;
+  }
+
+}

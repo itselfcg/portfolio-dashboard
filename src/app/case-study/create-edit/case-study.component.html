@@ -2,7 +2,7 @@
   <div class="inner"><mat-spinner></mat-spinner></div>
 </div>
 
-<mat-card class="mat-elevation-z8" *ngIf="!isLoading">
+<mat-card class="mat-elevation-z0" *ngIf="!isLoading">
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form [formGroup]="form" (submit)="onSaveCaseStudy()" *ngIf="!isLoading">
     <mat-card-header>
