@@ -2,20 +2,17 @@
   margin: 2em;
 }
 
-mat-card-title{
+mat-card-title {
   padding-top: 1em;
-
 }
 
-mat-toolbar-row{
-  border-bottom: #3F51B5 1.5px solid;
+mat-toolbar-row {
+  border-bottom: #3f51b5 1.5px solid;
 }
-
 
 .tab-content {
   padding-top: 2em;
 }
-
 
 #basic {
   .mat-column-name {
@@ -59,7 +56,6 @@ mat-toolbar-row{
     width: 20% !important;
     word-break: break-word;
   }
-
 }
 
 #user {
@@ -88,7 +84,6 @@ mat-toolbar-row{
     width: 20% !important;
     word-break: break-word;
   }
-
 }
 
 #insight {
@@ -109,6 +104,13 @@ mat-toolbar-row{
     width: 20% !important;
     word-break: break-word;
   }
-
 }
 
+#active {
+  label {
+    margin: 10px;
+  }
+  .radio-button {
+    margin: 10px;
+  }
+}

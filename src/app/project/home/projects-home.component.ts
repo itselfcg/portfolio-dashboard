@@ -15,7 +15,7 @@ export class ProjectsHomeComponent implements OnInit {
   projects: Project[] = [];
   isLoading = false;
   projectColumns: any[] = [
-  'id','language','title','labels','git_url','details','preview_url','actions'
+  'id','language','title','labels','git_url','details','preview_url','active','actions'
   ];
 
   constructor(

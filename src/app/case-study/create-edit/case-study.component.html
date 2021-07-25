@@ -15,10 +15,28 @@
       <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
         <mat-tab label="Basic">
           <div class="tab-content">
+            <div [style.width.%]="100" id="active">
+              <label>Active</label>
+              <mat-radio-group
+                labelledby="active"
+                class="radio-group"
+                formControlName="active"
+              >
+                <mat-radio-button [value]="true" class="radio-button"
+                  >Yes</mat-radio-button
+                >
+                <mat-radio-button [value]="false" class="radio-button"
+                  >No</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
             <div class="input-space">
               <mat-form-field appearance="fill">
                 <mat-label>Language</mat-label>
-                <mat-select formControlName="language" (selectionChange)="onLanguageChange()">
+                <mat-select
+                  formControlName="language"
+                  (selectionChange)="onLanguageChange()"
+                >
                   <mat-option value="en">English</mat-option>
                   <mat-option value="sp">Spanish</mat-option>
                 </mat-select>

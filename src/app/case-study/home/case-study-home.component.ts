@@ -14,7 +14,7 @@ export class CaseStudyHomeComponent implements OnInit {
 
   caseStudies: CaseStudy[] = [];
   isLoading = false;
-  caseStudyColumns: any[] = ['id', 'language', 'project', 'title', 'actions'];
+  caseStudyColumns: any[] = ['id', 'language', 'project', 'title','active', 'actions'];
   constructor(public caseStudyService: CaseStudyService) {}
 
   ngOnInit(): void {

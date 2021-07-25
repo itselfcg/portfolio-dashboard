@@ -26,7 +26,7 @@ export class CaseStudyComponent implements OnInit {
   isLoading = false;
   imagePreview: string;
   mode = 'create';
-  tabSelected=0;
+  tabSelected = 0;
 
   caseId: string;
   caseStudy: CaseStudy;
@@ -81,6 +81,7 @@ export class CaseStudyComponent implements OnInit {
       project: new FormControl(null, { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
+      active: new FormControl(false, { validators: [Validators.required] }),
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -97,6 +98,7 @@ export class CaseStudyComponent implements OnInit {
             project: this.caseStudy.project,
             title: this.caseStudy.title,
             content: this.caseStudy.content,
+            active: this.caseStudy.active ? this.caseStudy.active : false,
           });
 
           this.insigths = this.caseStudy.insights;
@@ -130,7 +132,7 @@ export class CaseStudyComponent implements OnInit {
     this.isLoading = true;
     if (this.form.invalid) {
       this.isLoading = false;
-      this.tabSelected=0;
+      this.tabSelected = 0;
       return;
     }
     if (this.mode === 'create') {
@@ -143,12 +145,13 @@ export class CaseStudyComponent implements OnInit {
           this.users,
           this.insigths,
           this.sections,
-          this.pictures
+          this.pictures,
+          this.form.value.active
         )
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/case-studies']);
           }
         });
     } else {
@@ -162,12 +165,13 @@ export class CaseStudyComponent implements OnInit {
           this.users,
           this.insigths,
           this.sections,
-          this.pictures
+          this.pictures,
+          this.form.value.active
         )
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-          this.router.navigate(['/']);
+            this.router.navigate(['/case-studies']);
           }
         });
     }
@@ -188,7 +192,7 @@ export class CaseStudyComponent implements OnInit {
           description: null,
           url: null,
           file: null,
-          key:null
+          key: null,
         },
       };
     }
@@ -331,7 +335,7 @@ export class CaseStudyComponent implements OnInit {
         description: null,
         url: null,
         file: null,
-        key:null
+        key: null,
       };
     }
 
@@ -365,8 +369,8 @@ export class CaseStudyComponent implements OnInit {
     this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
 
-  onLanguageChange(){
-    var language=this.form.get('language').value;
+  onLanguageChange() {
+    var language = this.form.get('language').value;
     this.projectService.getByLanguage(language).subscribe((result) => {
       this.projects = result.projects;
     });

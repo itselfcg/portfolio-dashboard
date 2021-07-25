@@ -13,6 +13,21 @@
       <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
         <mat-tab label="Basic">
           <div class="tab-content">
+            <div id="active">
+              <label>Is active?</label>
+              <mat-radio-group
+                labelledby="active"
+                class="radio-group"
+                formControlName="active"
+              >
+                <mat-radio-button [value]="true" class="radio-button"
+                  >Yes</mat-radio-button
+                >
+                <mat-radio-button [value]="false" class="radio-button"
+                  >No</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
             <div>
               <mat-form-field appearance="fill">
                 <mat-label>Language</mat-label>
@@ -79,13 +94,21 @@
                 />
               </mat-form-field>
             </div>
-            <label id="details">Has project a case study?</label>
-            <mat-radio-group labelledby="details"
-            class="radio-group"
-            formControlName="details">
-              <mat-radio-button value="true" class="radio-button">Yes</mat-radio-button>
-              <mat-radio-button value="false" class="radio-button">No</mat-radio-button>
-            </mat-radio-group>
+            <div id="details">
+              <label>Has project a case study?</label>
+              <mat-radio-group
+                labelledby="details"
+                class="radio-group"
+                formControlName="details"
+              >
+                <mat-radio-button [value]="true" class="radio-button"
+                  >Yes</mat-radio-button
+                >
+                <mat-radio-button [value]="false" class="radio-button"
+                  >No</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
           </div>
         </mat-tab>
         <mat-tab label="Pictures">

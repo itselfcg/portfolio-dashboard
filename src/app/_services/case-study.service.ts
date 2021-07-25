@@ -57,13 +57,15 @@ export class CaseStudyService {
     users: User[],
     insights: Insight[],
     sections: Section[],
-    pictures: Picture[]
+    pictures: Picture[],
+    active: string
   ) {
     var formData = new FormData();
     formData.append('language', language);
     formData.append('project', project);
     formData.append('title', title);
     formData.append('content', content);
+    formData.append('active', active);
 
     //Generic Pictures
 
@@ -143,7 +145,8 @@ export class CaseStudyService {
     users: User[],
     insights: Insight[],
     sections: Section[],
-    pictures: Picture[]
+    pictures: Picture[],
+    active: string
   ) {
     var formData = new FormData();
     formData.append('language', language);
@@ -151,11 +154,12 @@ export class CaseStudyService {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('insights', JSON.stringify(insights));
+    formData.append('active', active);
 
     //Generic Pictures
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
-      key:picture.key,
+      key: picture.key,
       description: picture.description,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
@@ -177,7 +181,7 @@ export class CaseStudyService {
       occupation: user.occupation,
       picture: {
         fileName: user.picture.fileName,
-        key:user.picture.key,
+        key: user.picture.key,
         description: user.picture.description,
         url: typeof user.picture.file === 'object' ? '' : user.picture.url,
       },
@@ -209,7 +213,7 @@ export class CaseStudyService {
           for (let j = 0; j < sections[i].pictures.length; j++) {
             sectionsMapped[sections[i].name].pictures.push({
               fileName: sections[i].pictures[j].fileName,
-              key:sections[i].pictures[j].key,
+              key: sections[i].pictures[j].key,
               description: sections[i].pictures[j].description,
               url:
                 typeof sections[i].pictures[j].file === 'object'

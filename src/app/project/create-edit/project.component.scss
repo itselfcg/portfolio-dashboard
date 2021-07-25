@@ -44,12 +44,22 @@ mat-toolbar-row {
   }
 }
 
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-}
+#details {
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }
 
-.radio-button {
-  margin: 5px;
+  .radio-button {
+    margin: 10px;
+  }
+}
+#active {
+  label {
+    margin: 10px;
+  }
+  .radio-button {
+    margin: 10px;
+  }
 }

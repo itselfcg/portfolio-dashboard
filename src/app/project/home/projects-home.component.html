@@ -41,7 +41,6 @@
         <td mat-cell *matCellDef="let project">{{ project.name }}</td>
       </ng-container>
 
-
       <ng-container matColumnDef="labels">
         <th mat-header-cell *matHeaderCellDef>Labels</th>
         <td mat-cell *matCellDef="let project">{{ project.labels }}</td>
@@ -53,17 +52,24 @@
       <ng-container matColumnDef="details">
         <th mat-header-cell *matHeaderCellDef>Details</th>
         <td mat-cell *matCellDef="let project">
-          <mat-icon *ngIf="project.details == 'true'; else elseBlock"
-          >check</mat-icon
-        >
-        <ng-template #elseBlock><mat-icon>close</mat-icon> </ng-template>
-
-
+          <mat-icon *ngIf="project.details === true; else elseBlock"
+            >check</mat-icon
+          >
+          <ng-template #elseBlock><mat-icon>close</mat-icon> </ng-template>
         </td>
       </ng-container>
       <ng-container matColumnDef="preview_url">
         <th mat-header-cell *matHeaderCellDef>Prev</th>
         <td mat-cell *matCellDef="let project">{{ project.preview_url }}</td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef>Active</th>
+        <td mat-cell *matCellDef="let project">
+          <mat-icon *ngIf="project.active === true; else elseBlock"
+            >check</mat-icon
+          >
+          <ng-template #elseBlock><mat-icon>close</mat-icon> </ng-template>
+        </td>
       </ng-container>
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -71,7 +77,8 @@
           <button
             mat-icon-button
             color="accent"
-            [routerLink]="['/project/edit', project._id]">
+            [routerLink]="['/project/edit', project._id]"
+          >
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button (click)="onDeleteProject(project._id)">
@@ -84,5 +91,3 @@
     </table>
   </mat-card-content>
 </mat-card>
-
-

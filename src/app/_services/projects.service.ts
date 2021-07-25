@@ -53,7 +53,6 @@ export class ProjectService {
     });
   }
 
-
   delete(postId: string) {
     return this.http.delete(API_URL + '/' + postId);
   }
@@ -65,7 +64,8 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
-    details:string,
+    details: string,
+    active: string,
     labels: string[],
     pictures: Picture[]
   ) {
@@ -77,12 +77,13 @@ export class ProjectService {
     formData.append('git_url', git_url);
     formData.append('preview_url', preview_url);
     formData.append('details', details);
+    formData.append('active', active);
     formData.append('labels', JSON.stringify(labels));
 
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
       description: picture.description,
-      key:picture.key,
+      key: picture.key,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
 
@@ -109,7 +110,8 @@ export class ProjectService {
     content: string,
     git_url: string,
     preview_url: string,
-    details:string,
+    details: string,
+    active: string,
     labels: string[],
     pictures: Picture[]
   ) {
@@ -121,12 +123,13 @@ export class ProjectService {
     formData.append('git_url', git_url);
     formData.append('preview_url', preview_url);
     formData.append('details', details);
+    formData.append('active', active);
     formData.append('labels', JSON.stringify(labels));
 
     var picturesMapped = pictures.map((picture) => ({
       fileName: picture.fileName,
       description: picture.description,
-      key:picture.key,
+      key: picture.key,
       url: typeof picture.file === 'object' ? '' : picture.url,
     }));
 

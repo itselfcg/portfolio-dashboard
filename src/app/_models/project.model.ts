@@ -9,6 +9,7 @@ export interface Project{
   pictures: Picture[],
   labels: string[],
   git_url: string,
-  details: string,
+  details: boolean,
   preview_url: string,
+  active:boolean
 }

@@ -26,7 +26,7 @@ export class ProjectComponent implements OnInit {
   mode = 'create';
   projectId: string;
   isLoading = false;
-  tabSelected=0;
+  tabSelected = 0;
 
   labels: string[] = [];
   pictures: Picture[] = [];
@@ -54,7 +54,8 @@ export class ProjectComponent implements OnInit {
       content: new FormControl(null, { validators: [Validators.required] }),
       git_url: new FormControl(''),
       preview_url: new FormControl(''),
-      details: new FormControl('false'),
+      details: new FormControl(false, { validators: [Validators.required] }),
+      active: new FormControl(false, { validators: [Validators.required] }),
     });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -65,7 +66,6 @@ export class ProjectComponent implements OnInit {
         this.projectService.getById(this.projectId).subscribe((postData) => {
           this.isLoading = false;
           this.project = postData.projects[0];
-
           this.form.setValue({
             language: this.project.language,
             name: this.project.name,
@@ -73,7 +73,8 @@ export class ProjectComponent implements OnInit {
             content: this.project.content,
             git_url: this.project.git_url,
             preview_url: this.project.preview_url,
-            details: this.project.details,
+            details: this.project.details?this.project.details:false,
+            active: this.project.active?this.project.active:false,
           });
 
           this.labels = this.project.labels;
@@ -92,7 +93,7 @@ export class ProjectComponent implements OnInit {
     this.isLoading = true;
     if (this.form.invalid) {
       this.isLoading = false;
-      this.tabSelected=0;
+      this.tabSelected = 0;
       return;
     }
     if (this.mode === 'create') {
@@ -105,13 +106,14 @@ export class ProjectComponent implements OnInit {
           this.form.value.git_url,
           this.form.value.preview_url,
           this.form.value.details,
+          this.form.value.active,
           this.labels,
           this.pictures
         )
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-           this.router.navigate(['/']);
+            this.router.navigate(['/projects']);
           }
         });
     } else {
@@ -125,13 +127,14 @@ export class ProjectComponent implements OnInit {
           this.form.value.git_url,
           this.form.value.preview_url,
           this.form.value.details,
+          this.form.value.active,
           this.labels,
           this.pictures
         )
         .subscribe((result) => {
           this.isLoading = false;
           if (result.status) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/projects']);
           }
         });
     }
@@ -177,7 +180,7 @@ export class ProjectComponent implements OnInit {
         description: null,
         url: null,
         file: null,
-        key:null
+        key: null,
       };
     }
 
