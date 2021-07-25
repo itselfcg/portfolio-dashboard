@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from '../../_models/case-study.model';
@@ -16,6 +17,8 @@ import { ProjectService } from '../../_services/projects.service';
 export class ProjectsHomeComponent implements OnInit {
   private projectSub: Subscription = new Subscription();
   projects: Project[] = [];
+  projectsDataSource = new MatTableDataSource(this.projects);
+
   isLoading = false;
   projectColumns: any[] = [
     'id',
@@ -43,6 +46,7 @@ export class ProjectsHomeComponent implements OnInit {
       .getProjectsUpdateListener()
       .subscribe((projects: Project[]) => {
         this.projects = projects;
+        this.refreshDataSource();
         this.isLoading = false;
         this.totalProjects = projects.length;
       });
@@ -85,6 +89,8 @@ export class ProjectsHomeComponent implements OnInit {
                       .getProjectsUpdateListener()
                       .subscribe((projects: Project[]) => {
                         this.projects = projects;
+                        this.refreshDataSource();
+
                         this.isLoading = false;
                         this.totalProjects = projects.length;
                       });
@@ -108,8 +114,18 @@ export class ProjectsHomeComponent implements OnInit {
       .getProjectsUpdateListener()
       .subscribe((projects: Project[]) => {
         this.projects = projects;
+        this.refreshDataSource();
         this.isLoading = false;
         this.totalProjects = projects.length;
       });
+  }
+
+  refreshDataSource() {
+    this.projectsDataSource = new MatTableDataSource(this.projects);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.projectsDataSource.filter = filterValue.trim().toLowerCase();
   }
 }

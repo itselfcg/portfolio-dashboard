@@ -16,10 +16,15 @@
     >
   </mat-card-header>
   <mat-card-content>
+    <mat-form-field [style.width.%]="100">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Add a filter" #input>
+    </mat-form-field>
+
     <table
       id="caseStudy"
       mat-table
-      [dataSource]="caseStudies"
+      [dataSource]="caseStudiesDataSource"
       [style.width.%]="100"
     >
       <ng-container>

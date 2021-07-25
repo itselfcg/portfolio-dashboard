@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from 'src/app/_models/case-study.model';
@@ -16,6 +17,8 @@ export class CaseStudyHomeComponent implements OnInit {
   private caseStudySub: Subscription = new Subscription();
 
   caseStudies: CaseStudy[] = [];
+  caseStudiesDataSource = new MatTableDataSource(this.caseStudies);
+
   isLoading = false;
   caseStudyColumns: any[] = [
     'id',
@@ -27,7 +30,7 @@ export class CaseStudyHomeComponent implements OnInit {
   ];
   totalCaseStudies = 0;
   caseStudiesPerPage = 10;
-  pageSizeOptions: number[] = [1,5, 10, 25, 50];
+  pageSizeOptions: number[] = [1, 5, 10, 25, 50];
   constructor(
     public caseStudyService: CaseStudyService,
     public dialog: MatDialog
@@ -41,10 +44,18 @@ export class CaseStudyHomeComponent implements OnInit {
       .subscribe((caseStudies: CaseStudy[]) => {
         this.caseStudies = caseStudies;
         this.totalCaseStudies = caseStudies.length;
+        this.refreshDataSource();
         this.isLoading = false;
       });
   }
 
+  refreshDataSource() {
+    this.caseStudiesDataSource = new MatTableDataSource(this.caseStudies);
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.caseStudiesDataSource.filter = filterValue.trim().toLowerCase();
+  }
   onChangePage(pageEvent: PageEvent) {
     this.caseStudyService.getAll(pageEvent.pageSize, pageEvent.pageIndex + 1);
     this.caseStudySub = this.caseStudyService
@@ -52,6 +63,7 @@ export class CaseStudyHomeComponent implements OnInit {
       .subscribe((caseStudies: CaseStudy[]) => {
         this.caseStudies = caseStudies;
         this.totalCaseStudies = caseStudies.length;
+        this.refreshDataSource();
         this.isLoading = false;
       });
   }
@@ -86,12 +98,13 @@ export class CaseStudyHomeComponent implements OnInit {
                   () => {
                     this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
                     this.caseStudySub = this.caseStudyService
-                    .getCaseStudyUpdateListener()
-                    .subscribe((caseStudies: CaseStudy[]) => {
-                      this.caseStudies = caseStudies;
-                      this.totalCaseStudies = caseStudies.length;
-                      this.isLoading = false;
-                    });
+                      .getCaseStudyUpdateListener()
+                      .subscribe((caseStudies: CaseStudy[]) => {
+                        this.caseStudies = caseStudies;
+                        this.totalCaseStudies = caseStudies.length;
+                        this.refreshDataSource();
+                        this.isLoading = false;
+                      });
                   },
                   () => {
                     this.isLoading = false;
