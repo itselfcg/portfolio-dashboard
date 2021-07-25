@@ -88,7 +88,6 @@ export class UserDialog implements OnInit {
         key: this.form.value.key,
       },
     };
-    console.log(user);
     this.dialogRef.close(user);
   }
 

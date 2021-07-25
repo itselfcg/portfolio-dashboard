@@ -70,7 +70,6 @@ export class CaseStudyComponent implements OnInit {
     });
 
     this.projectService.getByLanguage('en').subscribe((result) => {
-      console.log(result.projects);
       this.projects = result.projects;
     });
 
