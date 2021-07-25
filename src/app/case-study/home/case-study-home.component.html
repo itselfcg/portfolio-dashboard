@@ -85,5 +85,10 @@
       <tr mat-header-row *matHeaderRowDef="caseStudyColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: caseStudyColumns"></tr>
     </table>
+    <mat-paginator [length]="totalCaseStudies"
+               [pageSize]="caseStudiesPerPage"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onChangePage($event)">
+</mat-paginator>
   </mat-card-content>
 </mat-card>

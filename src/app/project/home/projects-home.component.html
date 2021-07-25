@@ -93,5 +93,10 @@
       <tr mat-header-row *matHeaderRowDef="projectColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: projectColumns"></tr>
     </table>
+    <mat-paginator [length]="totalProjects"
+    [pageSize]="projectsPerPage"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onChangePage($event)">
+    </mat-paginator>
   </mat-card-content>
 </mat-card>

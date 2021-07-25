@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from '../../_models/case-study.model';
@@ -27,7 +28,9 @@ export class ProjectsHomeComponent implements OnInit {
     'active',
     'actions',
   ];
-
+  totalProjects = 0;
+  projectsPerPage = 10;
+  pageSizeOptions: number[] = [1, 5, 10, 25, 50];
   constructor(
     public projectService: ProjectService,
     public dialog: MatDialog
@@ -35,12 +38,13 @@ export class ProjectsHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.projectService.getAllSubscription();
+    this.projectService.getAllSubscription(this.projectsPerPage, 1);
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
       .subscribe((projects: Project[]) => {
         this.projects = projects;
         this.isLoading = false;
+        this.totalProjects = projects.length;
       });
   }
 
@@ -70,10 +74,20 @@ export class ProjectsHomeComponent implements OnInit {
             })
             .afterClosed()
             .subscribe((deleteFromS3: boolean) => {
-              if (deleteFromS3===false || deleteFromS3 === true) {
+              if (deleteFromS3 === false || deleteFromS3 === true) {
                 this.projectService.delete(postId, deleteFromS3).subscribe(
                   () => {
-                    this.projectService.getAllSubscription();
+                    this.projectService.getAllSubscription(
+                      this.projectsPerPage,
+                      1
+                    );
+                    this.projectSub = this.projectService
+                      .getProjectsUpdateListener()
+                      .subscribe((projects: Project[]) => {
+                        this.projects = projects;
+                        this.isLoading = false;
+                        this.totalProjects = projects.length;
+                      });
                   },
                   () => {
                     this.isLoading = false;
@@ -82,6 +96,20 @@ export class ProjectsHomeComponent implements OnInit {
               }
             });
         }
+      });
+  }
+
+  onChangePage(pageEvent: PageEvent) {
+    this.projectService.getAllSubscription(
+      pageEvent.pageSize,
+      pageEvent.pageIndex + 1
+    );
+    this.projectSub = this.projectService
+      .getProjectsUpdateListener()
+      .subscribe((projects: Project[]) => {
+        this.projects = projects;
+        this.isLoading = false;
+        this.totalProjects = projects.length;
       });
   }
 }

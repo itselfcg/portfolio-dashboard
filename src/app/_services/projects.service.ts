@@ -20,9 +20,11 @@ export class ProjectService {
     return this.projectUpdated.asObservable();
   }
 
-  getAllSubscription() {
+  getAllSubscription(pageSize: number, currentPage: number) {
     this.http
-      .get<{ message: string; projects: Project[] }>(API_URL + '/all')
+      .get<{ message: string; projects: Project[] }>(API_URL + '/all', {
+        params: { pageSize: pageSize, currentPage: currentPage },
+      })
       .subscribe((result) => {
         this.projects = result.projects;
         this.projectUpdated.next([...this.projects]);
@@ -54,7 +56,7 @@ export class ProjectService {
   }
 
   delete(postId: string, deleteS3: boolean) {
-    return this.http.delete(API_URL + '/' + postId,{
+    return this.http.delete(API_URL + '/' + postId, {
       params: { aws: deleteS3 },
     });
   }

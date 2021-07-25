@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from 'src/app/_models/case-study.model';
@@ -24,6 +25,9 @@ export class CaseStudyHomeComponent implements OnInit {
     'active',
     'actions',
   ];
+  totalCaseStudies = 0;
+  caseStudiesPerPage = 10;
+  pageSizeOptions: number[] = [1,5, 10, 25, 50];
   constructor(
     public caseStudyService: CaseStudyService,
     public dialog: MatDialog
@@ -31,11 +35,23 @@ export class CaseStudyHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.caseStudyService.getAll();
+    this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
     this.caseStudySub = this.caseStudyService
       .getCaseStudyUpdateListener()
       .subscribe((caseStudies: CaseStudy[]) => {
         this.caseStudies = caseStudies;
+        this.totalCaseStudies = caseStudies.length;
+        this.isLoading = false;
+      });
+  }
+
+  onChangePage(pageEvent: PageEvent) {
+    this.caseStudyService.getAll(pageEvent.pageSize, pageEvent.pageIndex + 1);
+    this.caseStudySub = this.caseStudyService
+      .getCaseStudyUpdateListener()
+      .subscribe((caseStudies: CaseStudy[]) => {
+        this.caseStudies = caseStudies;
+        this.totalCaseStudies = caseStudies.length;
         this.isLoading = false;
       });
   }
@@ -68,7 +84,14 @@ export class CaseStudyHomeComponent implements OnInit {
               if (deleteFromS3 === false || deleteFromS3 === true) {
                 this.caseStudyService.delete(caseId, deleteFromS3).subscribe(
                   () => {
-                    this.caseStudyService.getAll();
+                    this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
+                    this.caseStudySub = this.caseStudyService
+                    .getCaseStudyUpdateListener()
+                    .subscribe((caseStudies: CaseStudy[]) => {
+                      this.caseStudies = caseStudies;
+                      this.totalCaseStudies = caseStudies.length;
+                      this.isLoading = false;
+                    });
                   },
                   () => {
                     this.isLoading = false;
