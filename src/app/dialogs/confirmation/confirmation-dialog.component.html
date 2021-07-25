@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{ confirmation.title }}</h1>
+<div mat-dialog-content>
+  <p>{{ confirmation.content }}</p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">CANCEL</button>
+  <button *ngIf="confirmation.falseOption " mat-button (click)="confirmNo()">{{ confirmation.falseOption }}</button>
+  <button mat-button mat-flat-button (click)="confirmYes()" cdkFocusInitial>{{ confirmation.trueOption }}</button>
+</div>

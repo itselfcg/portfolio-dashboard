@@ -19,6 +19,7 @@ import { PictureDialog } from './dialogs/picture/picture-dialog.component';
 import { ItemsDialog } from './dialogs/items/items-dialog.component';
 import { CaseStudyHomeComponent } from './case-study/home/case-study-home.component';
 import { ProjectsHomeComponent } from './project/home/projects-home.component';
+import { ConfirmationDialog } from './dialogs/confirmation/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ProjectsHomeComponent } from './project/home/projects-home.component';
     SectionDialog,
     PictureDialog,
     ItemsDialog,
+    ConfirmationDialog
   ],
   imports: [
     BrowserModule,
