@@ -1,4 +1,8 @@
-<mat-card class="mat-elevation-z0">
+<div class="wrapper" *ngIf="isLoading">
+  <div class="inner"><mat-spinner></mat-spinner></div>
+</div>
+
+<mat-card class="mat-elevation-z0"  *ngIf="!isLoading">
   <mat-card-header>
     <mat-card-title>Projects </mat-card-title>
     <span class="spacer"></span>
