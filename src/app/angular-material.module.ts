@@ -18,6 +18,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   exports: [
@@ -38,7 +39,7 @@ import {MatListModule} from '@angular/material/list';
     MatTabsModule,
     MatRadioModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,MatTooltipModule
   ]
 })
 export class AngularMaterialModule {}

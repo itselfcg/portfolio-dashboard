@@ -2,7 +2,7 @@
   <div class="inner"><mat-spinner></mat-spinner></div>
 </div>
 
-<mat-card class="mat-elevation-z0"  *ngIf="!isLoading">
+<mat-card class="mat-elevation-z0" *ngIf="!isLoading">
   <mat-card-header>
     <mat-card-title>Projects </mat-card-title>
     <span class="spacer"></span>
@@ -18,7 +18,12 @@
   <mat-card-content>
     <mat-form-field [style.width.%]="100">
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Add a filter" #input>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Add a filter"
+        #input
+      />
     </mat-form-field>
 
     <table mat-table [dataSource]="projectsDataSource" [style.width.%]="100">
@@ -36,7 +41,14 @@
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let project">
-          <button mat-icon-button [cdkCopyToClipboard]="project._id">
+          <button
+            mat-icon-button
+            [cdkCopyToClipboard]="project._id"
+            matTooltipPosition="below"
+            #tooltip="matTooltip"
+            [matTooltip]="project._id"
+            matTooltipHideDelay="100"
+          >
             <mat-icon aria-hidden="false">file_copy</mat-icon>
           </button>
         </td>
@@ -98,10 +110,12 @@
       <tr mat-header-row *matHeaderRowDef="projectColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: projectColumns"></tr>
     </table>
-    <mat-paginator [length]="totalProjects"
-    [pageSize]="projectsPerPage"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="onChangePage($event)">
+    <mat-paginator
+      [length]="totalProjects"
+      [pageSize]="projectsPerPage"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onChangePage($event)"
+    >
     </mat-paginator>
   </mat-card-content>
 </mat-card>
