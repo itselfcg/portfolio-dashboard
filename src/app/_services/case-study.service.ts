@@ -45,8 +45,10 @@ export class CaseStudyService {
       });
   }
 
-  delete(caseId: string) {
-    return this.http.delete(API_URL + '/' + caseId);
+  delete(caseId: string, deleteS3: boolean) {
+    return this.http.delete(API_URL + '/' + caseId, {
+      params: { aws: deleteS3 },
+    });
   }
 
   create(

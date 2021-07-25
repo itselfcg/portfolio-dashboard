@@ -26,7 +26,10 @@ export class ConfirmationDialog implements OnInit {
   ) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dialogRef.updateSize('450px');
+
+  }
 
   confirmYes(){
     this.dialogRef.close(true);

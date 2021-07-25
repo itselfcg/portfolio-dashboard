@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from '../../_models/case-study.model';
 import { Project } from '../../_models/project.model';
 import { CaseStudyService } from '../../_services/case-study.service';
@@ -15,11 +17,20 @@ export class ProjectsHomeComponent implements OnInit {
   projects: Project[] = [];
   isLoading = false;
   projectColumns: any[] = [
-  'id','language','title','labels','git_url','details','preview_url','active','actions'
+    'id',
+    'language',
+    'title',
+    'labels',
+    'git_url',
+    'details',
+    'preview_url',
+    'active',
+    'actions',
   ];
 
   constructor(
     public projectService: ProjectService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -31,19 +42,46 @@ export class ProjectsHomeComponent implements OnInit {
         this.projects = projects;
         this.isLoading = false;
       });
-
   }
 
   onDeleteProject(postId: string) {
-    this.projectService.delete(postId).subscribe(
-      () => {
-        this.projectService.getAllSubscription();
-      },
-      () => {
-        this.isLoading = false;
-      }
-    );
+    var message = {
+      title: 'Confirmation',
+      content: 'Are you sure you want to delete this project?',
+      falseOption: '',
+      trueOption: 'OK',
+    };
+    this.dialog
+      .open(ConfirmationDialog, {
+        data: message,
+      })
+      .afterClosed()
+      .subscribe((confirmation: Boolean) => {
+        if (confirmation) {
+          message = {
+            title: 'AWS',
+            content: 'Delete files from S3?',
+            falseOption: 'NO',
+            trueOption: 'YES',
+          };
+          this.dialog
+            .open(ConfirmationDialog, {
+              data: message,
+            })
+            .afterClosed()
+            .subscribe((deleteFromS3: boolean) => {
+              if (deleteFromS3===false || deleteFromS3 === true) {
+                this.projectService.delete(postId, deleteFromS3).subscribe(
+                  () => {
+                    this.projectService.getAllSubscription();
+                  },
+                  () => {
+                    this.isLoading = false;
+                  }
+                );
+              }
+            });
+        }
+      });
   }
-
-
 }

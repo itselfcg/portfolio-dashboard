@@ -53,8 +53,10 @@ export class ProjectService {
     });
   }
 
-  delete(postId: string) {
-    return this.http.delete(API_URL + '/' + postId);
+  delete(postId: string, deleteS3: boolean) {
+    return this.http.delete(API_URL + '/' + postId,{
+      params: { aws: deleteS3 },
+    });
   }
 
   create(
