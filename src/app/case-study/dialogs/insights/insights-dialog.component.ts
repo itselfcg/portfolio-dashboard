@@ -9,8 +9,7 @@ import { Insight } from 'src/app/_models/insight.model';
 
 @Component({
   selector: 'insights-dialog',
-  templateUrl: 'insights-dialog.html',
-  styleUrls: ['../../case-study.component.scss'],
+  templateUrl: 'insights-dialog.html'
 })
 export class InsightDialog implements OnInit {
   form: FormGroup;

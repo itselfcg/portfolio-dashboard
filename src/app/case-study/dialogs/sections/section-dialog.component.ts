@@ -14,7 +14,7 @@ import { PictureDialog } from '../../../dialogs/picture/picture-dialog.component
 @Component({
   selector: 'section-dialog',
   templateUrl: 'section-dialog.html',
-  styleUrls: ['../../case-study.component.scss','section-dialog.scss'],
+  styleUrls: ['section-dialog.scss'],
 })
 export class SectionDialog implements OnInit {
   form: FormGroup;
