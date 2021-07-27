@@ -12,7 +12,10 @@ const API_URL = environment.apiUrl + '/projects';
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private projects: Project[] = [];
-  private projectUpdated = new Subject<Project[]>();
+  private projectUpdated = new Subject<{
+    projects: Project[];
+    projectsCout: number;
+  }>();
 
   constructor(private http: HttpClient) {}
 
@@ -22,12 +25,26 @@ export class ProjectService {
 
   getAllSubscription(pageSize: number, currentPage: number) {
     this.http
-      .get<{ message: string; projects: Project[] }>(API_URL + '/all', {
-        params: { pageSize: pageSize, currentPage: currentPage },
-      })
-      .subscribe((result) => {
-        this.projects = result.projects;
-        this.projectUpdated.next([...this.projects]);
+      .get<{ message: string; projects: Project[]; maxProjects: number }>(
+        API_URL + '/all',
+        {
+          params: { pageSize: pageSize, currentPage: currentPage },
+        }
+      )
+      .pipe(
+        map((projectData) => {
+          return {
+            projects: projectData.projects,
+            maxProjects: projectData.maxProjects,
+          };
+        })
+      )
+      .subscribe((transformedData) => {
+        this.projects = transformedData.projects;
+        this.projectUpdated.next({
+          projects: [...this.projects],
+          projectsCout: transformedData.maxProjects,
+        });
       });
   }
 

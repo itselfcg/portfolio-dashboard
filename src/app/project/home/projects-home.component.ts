@@ -44,11 +44,11 @@ export class ProjectsHomeComponent implements OnInit {
     this.projectService.getAllSubscription(this.projectsPerPage, 1);
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
-      .subscribe((projects: Project[]) => {
-        this.projects = projects;
+      .subscribe((data: any) => {
+        this.projects = data.projects;
         this.refreshDataSource();
         this.isLoading = false;
-        this.totalProjects = projects.length;
+        this.totalProjects = data.projectsCout;
       });
   }
 
@@ -87,12 +87,11 @@ export class ProjectsHomeComponent implements OnInit {
                     );
                     this.projectSub = this.projectService
                       .getProjectsUpdateListener()
-                      .subscribe((projects: Project[]) => {
-                        this.projects = projects;
+                      .subscribe((data: any) => {
+                        this.projects = data.projects;
                         this.refreshDataSource();
-
                         this.isLoading = false;
-                        this.totalProjects = projects.length;
+                        this.totalProjects = data.projectsCout;
                       });
                   },
                   () => {
@@ -112,11 +111,11 @@ export class ProjectsHomeComponent implements OnInit {
     );
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
-      .subscribe((projects: Project[]) => {
-        this.projects = projects;
+      .subscribe((data: any) => {
+        this.projects = data.projects;
         this.refreshDataSource();
         this.isLoading = false;
-        this.totalProjects = projects.length;
+        this.totalProjects = data.projectsCout;
       });
   }
 

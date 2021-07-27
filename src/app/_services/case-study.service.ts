@@ -16,7 +16,10 @@ const API_URL = environment.apiUrl + '/cases';
 @Injectable({ providedIn: 'root' })
 export class CaseStudyService {
   private caseStudy: CaseStudy[] = [];
-  private caseUpdated = new Subject<CaseStudy[]>();
+  private caseUpdated = new Subject<{
+    caseStudy: CaseStudy[];
+    caseStudyTotal: number;
+  }>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -38,12 +41,27 @@ export class CaseStudyService {
 
   getAll(pageSize: number, currentPage: number) {
     this.http
-      .get<{ message: string; caseStudy: CaseStudy[] }>(API_URL + '/all', {
-        params: { pageSize: pageSize, currentPage: currentPage },
-      })
-      .subscribe((result) => {
-        this.caseStudy = result.caseStudy;
-        this.caseUpdated.next([...this.caseStudy]);
+      .get<{ message: string; caseStudy: CaseStudy[]; caseStudyTotal: number }>(
+        API_URL + '/all',
+        {
+          params: { pageSize: pageSize, currentPage: currentPage },
+        }
+      )
+
+      .pipe(
+        map((caseStudyData) => {
+          return {
+            caseStudy: caseStudyData.caseStudy,
+            caseStudyTotal: caseStudyData.caseStudyTotal,
+          };
+        })
+      )
+      .subscribe((dataTransformed) => {
+        this.caseStudy = dataTransformed.caseStudy;
+        this.caseUpdated.next({
+          caseStudy: [...this.caseStudy],
+          caseStudyTotal: dataTransformed.caseStudyTotal,
+        });
       });
   }
 

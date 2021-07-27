@@ -41,9 +41,9 @@ export class CaseStudyHomeComponent implements OnInit {
     this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
     this.caseStudySub = this.caseStudyService
       .getCaseStudyUpdateListener()
-      .subscribe((caseStudies: CaseStudy[]) => {
-        this.caseStudies = caseStudies;
-        this.totalCaseStudies = caseStudies.length;
+      .subscribe((data: any) => {
+        this.caseStudies = data.caseStudy;
+        this.totalCaseStudies = data.caseStudyTotal;
         this.refreshDataSource();
         this.isLoading = false;
       });
@@ -60,9 +60,9 @@ export class CaseStudyHomeComponent implements OnInit {
     this.caseStudyService.getAll(pageEvent.pageSize, pageEvent.pageIndex + 1);
     this.caseStudySub = this.caseStudyService
       .getCaseStudyUpdateListener()
-      .subscribe((caseStudies: CaseStudy[]) => {
-        this.caseStudies = caseStudies;
-        this.totalCaseStudies = caseStudies.length;
+      .subscribe((data: any) => {
+        this.caseStudies = data.caseStudy;
+        this.totalCaseStudies = data.caseStudyTotal;
         this.refreshDataSource();
         this.isLoading = false;
       });
@@ -99,9 +99,9 @@ export class CaseStudyHomeComponent implements OnInit {
                     this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
                     this.caseStudySub = this.caseStudyService
                       .getCaseStudyUpdateListener()
-                      .subscribe((caseStudies: CaseStudy[]) => {
-                        this.caseStudies = caseStudies;
-                        this.totalCaseStudies = caseStudies.length;
+                      .subscribe((data: any) => {
+                        this.caseStudies = data.caseStudy;
+                        this.totalCaseStudies = data.caseStudyTotal;
                         this.refreshDataSource();
                         this.isLoading = false;
                       });
