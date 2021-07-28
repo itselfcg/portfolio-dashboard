@@ -42,7 +42,7 @@ export class ItemsDialog implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    let item: String = this.form.value.content;
+    let item: String = this.form.value.content.trim();
     this.dialogRef.close(item);
   }
 
