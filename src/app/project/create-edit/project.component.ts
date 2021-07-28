@@ -213,4 +213,6 @@ export class ProjectComponent implements OnInit {
     );
     this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
+
+
 }

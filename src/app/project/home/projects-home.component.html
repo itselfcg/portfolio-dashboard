@@ -16,14 +16,68 @@
     >
   </mat-card-header>
   <mat-card-content>
-    <mat-form-field [style.width.%]="100">
-      <mat-label>Filter</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Add a filter"
-        #input
-      />
+    <h3>Filters</h3>
+    <div class="input-space">
+      <mat-form-field [style.width.%]="25">
+        <mat-label>Language</mat-label>
+        <mat-select value="{{selectedOption}}-language" (selectionChange)="onFilterSelect($event.value)">
+          <mat-option *ngFor="let option of filterOptions" value="{{option}}-language">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [style.width.%]="25">
+        <mat-label>Git url</mat-label>
+        <mat-select value="{{selectedOption}}-git_url" (selectionChange)="onFilterSelect($event.value)">
+          <mat-option *ngFor="let option of filterOptions" value="{{option}}-git">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="25">
+        <mat-label>Preview url</mat-label>
+        <mat-select value="{{selectedOption}}-preview_url" (selectionChange)="onFilterSelect($event.value)">
+          <mat-option *ngFor="let option of filterOptions" value="{{option}}-preview">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="25">
+        <mat-label>Case study</mat-label>
+        <mat-select value="{{selectedOption}}-details" (selectionChange)="onFilterSelect($event.value)">
+          <mat-option *ngFor="let option of filterOptions" value="{{option}}-case">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="input-space">
+      <mat-form-field [style.width.%]="25">
+        <mat-label>Active</mat-label>
+        <mat-select value="{{selectedOption}}-active" (selectionChange)="onFilterSelect($event.value)">
+          <mat-option *ngFor="let option of filterOptions" value="{{option}}-active">{{option}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field [style.width.%]="75">
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Add a filter"
+          #input
+        />
+      </mat-form-field>
+    </div>
+    <mat-form-field class="example-chip-list" [style.width.%]="100">
+      <mat-label>Projects labels</mat-label>
+      <mat-chip-list #chipList selectable multiple>
+        <mat-chip
+          *ngFor="let label of filterLabels"
+          #chip="matChip"
+          (click)="
+            chip.selected ? chip.deselect() : chip.selectViaInteraction()
+          "
+          [selected]="chip.selected"
+          [selectable]="true"
+          class="leadr-category-chip"
+          (selectionChange)="onChipSelect($event, chip)"
+        >
+          {{ label }}
+        </mat-chip>
+      </mat-chip-list>
     </mat-form-field>
 
     <table mat-table [dataSource]="projectsDataSource" [style.width.%]="100">
@@ -71,7 +125,7 @@
         <td mat-cell *matCellDef="let project">{{ project.git_url }}</td>
       </ng-container>
       <ng-container matColumnDef="details">
-        <th mat-header-cell *matHeaderCellDef>Details</th>
+        <th mat-header-cell *matHeaderCellDef>Case Study</th>
         <td mat-cell *matCellDef="let project">
           <mat-icon *ngIf="project.details === true; else elseBlock"
             >check</mat-icon
