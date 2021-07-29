@@ -133,7 +133,6 @@ export class ProjectsHomeComponent implements OnInit {
       }
     }
 
-    console.log(this.filterOptionsSelected);
     this.filterDataSource();
   }
 
@@ -219,18 +218,6 @@ export class ProjectsHomeComponent implements OnInit {
     this.filterLabelsSelected = [];
 
     this.projectsDataSource = new MatTableDataSource(this.projects);
-  }
-
-  onChangePage(pageEvent: PageEvent) {
-    this.projectService.getAll();
-    this.projectSub = this.projectService
-      .getProjectsUpdateListener()
-      .subscribe((data: any) => {
-        this.projects = data.projects;
-        this.filterDataSource();
-        this.isLoading = false;
-        this.totalProjects = data.projectsCout;
-      });
   }
 
   applyFilter(event: Event) {

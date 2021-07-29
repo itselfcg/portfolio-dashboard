@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
@@ -36,9 +36,25 @@ export class CaseStudyHomeComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
+  // DROPLIST
+  filterOptionsLanguage: string[] = ['All', 'en', 'sp'];
+  filterOptions: string[] = ['All', 'Yes', 'No'];
+  languageSelected = this.filterOptions[0];
+  activeSelected = this.filterOptions[0];
+  filterOptionsSelected = {
+    language: this.languageSelected,
+    active: this.activeSelected,
+  };
+  private paginator: MatPaginator;
+
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.caseStudiesDataSource.paginator = this.paginator;
+  }
+
   ngOnInit(): void {
     this.isLoading = true;
-    this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
+    this.caseStudyService.getAll();
     this.caseStudySub = this.caseStudyService
       .getCaseStudyUpdateListener()
       .subscribe((data: any) => {
@@ -54,23 +70,86 @@ export class CaseStudyHomeComponent implements OnInit {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue);
     this.caseStudiesDataSource.filter = filterValue.trim().toLowerCase();
   }
-  onChangePage(pageEvent: PageEvent) {
-    this.caseStudyService.getAll(pageEvent.pageSize, pageEvent.pageIndex + 1);
-    this.caseStudySub = this.caseStudyService
-      .getCaseStudyUpdateListener()
-      .subscribe((data: any) => {
-        this.caseStudies = data.caseStudy;
-        this.totalCaseStudies = data.caseStudyTotal;
-        this.refreshDataSource();
-        this.isLoading = false;
+
+  clearFilters() {
+    this.languageSelected = this.filterOptions[0];
+    this.activeSelected = this.filterOptions[0];
+    this.filterOptionsSelected = {
+      language: this.languageSelected,
+      active: this.activeSelected,
+    };
+    this.caseStudiesDataSource = new MatTableDataSource(this.caseStudies);
+  }
+
+  onFilterSelect(eventValue: any) {
+    if (eventValue) {
+      const filter = eventValue.split('-');
+      const value =
+        filter[0] === 'Yes' ? 'true' : filter[0] === 'No' ? 'false' : 'All';
+      switch (filter[1]) {
+        case 'active':
+          this.filterOptionsSelected.active = value;
+          break;
+        case 'language':
+          this.filterOptionsSelected.language = filter[0];
+          break;
+      }
+    }
+
+    this.filterDataSource();
+  }
+
+  filterDataSource() {
+    var projectsFiltered = new Promise<CaseStudy[]>((resolve, reject) => {
+      var projects = [...this.caseStudies];
+      return resolve(projects);
+    });
+
+    projectsFiltered
+      .then((projectsFiltered) => {
+        for (const [k, v] of Object.entries(this.filterOptionsSelected)) {
+          let option = v;
+          let key: keyof CaseStudy = k === 'active' ? 'active' : 'language';
+
+          if (option !== 'All') {
+            projectsFiltered = projectsFiltered.filter((project) => {
+              if (project[key] === 'true' || project[key] === 'false') {
+                return project[key] === option;
+              }
+              if (
+                (option === 'true' && project[key]) ||
+                (option === 'false' && !project[key])
+              ) {
+                return true;
+              }
+              if (option === 'en' || option === 'sp') {
+                console.log(project[key] + ' ' + option);
+
+                return project[key] === option;
+              }
+
+              return false;
+            });
+          }
+        }
+        return projectsFiltered;
+      })
+      .then((filterList: CaseStudy[]) => {
+        console.log(filterList);
+        this.caseStudiesDataSource = new MatTableDataSource(filterList);
+        if (this.caseStudiesDataSource.paginator) {
+          this.caseStudiesDataSource.paginator.firstPage();
+        }
       });
   }
+
   onDeleteCase(caseId: string) {
     var message = {
       title: 'Confirmation',
-      content: 'Are you sure you want to delete this project?',
+      content: 'Are you sure you want to delete this case study?',
       falseOption: '',
       trueOption: 'OK',
     };
@@ -96,7 +175,7 @@ export class CaseStudyHomeComponent implements OnInit {
               if (deleteFromS3 === false || deleteFromS3 === true) {
                 this.caseStudyService.delete(caseId, deleteFromS3).subscribe(
                   () => {
-                    this.caseStudyService.getAll(this.caseStudiesPerPage, 1);
+                    this.caseStudyService.getAll();
                     this.caseStudySub = this.caseStudyService
                       .getCaseStudyUpdateListener()
                       .subscribe((data: any) => {

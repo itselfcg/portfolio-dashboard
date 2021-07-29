@@ -39,13 +39,10 @@ export class CaseStudyService {
     });
   }
 
-  getAll(pageSize: number, currentPage: number) {
+  getAll() {
     this.http
       .get<{ message: string; caseStudy: CaseStudy[]; caseStudyTotal: number }>(
-        API_URL + '/all',
-        {
-          params: { pageSize: pageSize, currentPage: currentPage },
-        }
+        API_URL + '/all'
       )
 
       .pipe(
