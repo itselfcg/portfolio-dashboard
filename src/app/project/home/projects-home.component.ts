@@ -105,6 +105,7 @@ export class ProjectsHomeComponent implements OnInit {
       let i = this.filterLabelsSelected.indexOf(category.value.trim());
       this.filterLabelsSelected.splice(i);
     }
+    this.filterLabels=[...this.filterLabels];
 
     this.filterDataSource();
   }
@@ -177,8 +178,6 @@ export class ProjectsHomeComponent implements OnInit {
                 return true;
               }
               if (option === 'en' || option === 'sp') {
-                console.log(project[key] + ' ' + option);
-
                 return project[key] === option;
               }
 
@@ -189,7 +188,6 @@ export class ProjectsHomeComponent implements OnInit {
         return projectsFiltered;
       })
       .then((filterList: Project[]) => {
-        console.log(filterList);
         this.projectsDataSource = new MatTableDataSource(filterList);
         if (this.projectsDataSource.paginator) {
           this.projectsDataSource.paginator.firstPage();
@@ -200,6 +198,10 @@ export class ProjectsHomeComponent implements OnInit {
   refreshDataSource() {
     this.projectsDataSource = new MatTableDataSource(this.projects);
     this.projectsDataSource.paginator = this.paginator;
+  }
+
+  isLabelSelected(value:string){
+    return this.filterLabelsSelected.indexOf(value)>-1?true:false;
   }
 
   clearFilters() {

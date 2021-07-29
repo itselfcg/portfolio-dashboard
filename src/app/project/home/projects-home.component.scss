@@ -38,10 +38,19 @@ mat-card-header {
 }
 
 
-.example-chip-list {
+.chip-filter {
   width: 100%;
 }
 
-.example-button-container > button {
-  margin: 0 12px;
+
+
+
+mat-chip{
+  margin: 2px;
+
+}
+
+.mat-chip-selected {
+  background-color: #000 !important;
+  color: #fff;
 }
