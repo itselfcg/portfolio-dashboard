@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   apiUrl:'http://localhost:3000/api',
-  apiUser:'admin',
-  apiPassword:'admin'
+  apiUser:'itzel',
+  apiPassword:'u4DNJG902oIcJXB1'
 };
 
 /*

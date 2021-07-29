@@ -16,39 +16,80 @@
     >
   </mat-card-header>
   <mat-card-content>
-    <h3>Filters</h3>
+    <div>
+      <h3 style="display: inline-block">Filters</h3>
+      <span class="spacer"></span>
+      <button mat-button color="accent" (click)="clearFilters()">
+        Clear filters
+      </button>
+    </div>
     <div class="input-space">
       <mat-form-field [style.width.%]="25">
         <mat-label>Language</mat-label>
-        <mat-select value="{{selectedOption}}-language" (selectionChange)="onFilterSelect($event.value)">
-          <mat-option *ngFor="let option of filterOptions" value="{{option}}-language">{{option}}</mat-option>
+        <mat-select
+          [(ngModel)]="languageSelected"
+          (selectionChange)="onFilterSelect($event.value + '-language')"
+        >
+          <mat-option
+            *ngFor="let option of filterOptionsLanguage"
+            value="{{ option }}"
+            >{{ option }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
 
       <mat-form-field [style.width.%]="25">
         <mat-label>Git url</mat-label>
-        <mat-select value="{{selectedOption}}-git_url" (selectionChange)="onFilterSelect($event.value)">
-          <mat-option *ngFor="let option of filterOptions" value="{{option}}-git">{{option}}</mat-option>
+        <mat-select
+          [(ngModel)]="gitUrlSelected"
+          (selectionChange)="onFilterSelect($event.value + '-git_url')"
+        >
+          <mat-option
+            *ngFor="let option of filterOptions"
+            value="{{ option }}"
+            >{{ option }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
       <mat-form-field [style.width.%]="25">
         <mat-label>Preview url</mat-label>
-        <mat-select value="{{selectedOption}}-preview_url" (selectionChange)="onFilterSelect($event.value)">
-          <mat-option *ngFor="let option of filterOptions" value="{{option}}-preview">{{option}}</mat-option>
+        <mat-select
+          [(ngModel)]="previewUrlSelected"
+          (selectionChange)="onFilterSelect($event.value + '-preview_url')"
+        >
+          <mat-option
+            *ngFor="let option of filterOptions"
+            value="{{ option }}"
+            >{{ option }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
       <mat-form-field [style.width.%]="25">
         <mat-label>Case study</mat-label>
-        <mat-select value="{{selectedOption}}-details" (selectionChange)="onFilterSelect($event.value)">
-          <mat-option *ngFor="let option of filterOptions" value="{{option}}-case">{{option}}</mat-option>
+        <mat-select
+          [(ngModel)]="detailsSelected"
+          (selectionChange)="onFilterSelect($event.value + '-details')"
+        >
+          <mat-option
+            *ngFor="let option of filterOptions"
+            value="{{ option }}"
+            >{{ option }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </div>
     <div class="input-space">
       <mat-form-field [style.width.%]="25">
         <mat-label>Active</mat-label>
-        <mat-select value="{{selectedOption}}-active" (selectionChange)="onFilterSelect($event.value)">
-          <mat-option *ngFor="let option of filterOptions" value="{{option}}-active">{{option}}</mat-option>
+        <mat-select
+          [(ngModel)]="activeSelected"
+          (selectionChange)="onFilterSelect($event.value + '-active')"
+        >
+          <mat-option
+            *ngFor="let option of filterOptions"
+            value="{{ option }}"
+            >{{ option }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
       <mat-form-field [style.width.%]="75">
@@ -165,10 +206,10 @@
       <tr mat-row *matRowDef="let row; columns: projectColumns"></tr>
     </table>
     <mat-paginator
+      #paginator
       [length]="totalProjects"
       [pageSize]="projectsPerPage"
       [pageSizeOptions]="pageSizeOptions"
-      (page)="onChangePage($event)"
     >
     </mat-paginator>
   </mat-card-content>

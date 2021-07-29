@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
@@ -44,25 +44,39 @@ export class ProjectsHomeComponent implements OnInit {
   filterLabelsSelected: string[] = [];
 
   // DROPLIST
+  filterOptionsLanguage: string[] = ['All', 'en', 'sp'];
   filterOptions: string[] = ['All', 'Yes', 'No'];
-  selectedOption = this.filterOptions[0];
+  languageSelected = this.filterOptions[0];
+  activeSelected = this.filterOptions[0];
+  gitUrlSelected = this.filterOptions[0];
+  previewUrlSelected = this.filterOptions[0];
+  detailsSelected = this.filterOptions[0];
 
   filterOptionsSelected = {
-    language: this.selectedOption,
-    git_url: this.selectedOption,
-    preview_url: this.selectedOption,
-    details: this.selectedOption,
-    active: this.selectedOption,
+    language: this.languageSelected,
+    git_url: this.gitUrlSelected,
+    preview_url: this.previewUrlSelected,
+    details: this.detailsSelected,
+    active: this.activeSelected,
   };
+  private paginator: MatPaginator;
 
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+    this.paginator = mp;
+    this.projectsDataSource.paginator = this.paginator;
+  }
   constructor(
     public projectService: ProjectService,
     public dialog: MatDialog
   ) {}
 
+  ngAfterViewInit() {
+    this.projectsDataSource.paginator = this.paginator;
+  }
+
   ngOnInit(): void {
     this.isLoading = true;
-    this.projectService.getAllSubscription(this.projectsPerPage, 1);
+    this.projectService.getAll();
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
       .subscribe((data: any) => {
@@ -99,74 +113,121 @@ export class ProjectsHomeComponent implements OnInit {
     if (eventValue) {
       const filter = eventValue.split('-');
       const value =
-        filter[0] === 'Yes' ? 'true' : filter[0] === 'No' ? 'false' : 'all';
+        filter[0] === 'Yes' ? 'true' : filter[0] === 'No' ? 'false' : 'All';
       switch (filter[1]) {
         case 'active':
           this.filterOptionsSelected.active = value;
           break;
-        case 'case':
+        case 'details':
           this.filterOptionsSelected.details = value;
           break;
-        case 'preview':
+        case 'preview_url':
           this.filterOptionsSelected.preview_url = value;
           break;
         case 'language':
-          this.filterOptionsSelected.language = value;
+          this.filterOptionsSelected.language = filter[0];
           break;
-        case 'git':
+        case 'git_url':
           this.filterOptionsSelected.git_url = value;
           break;
       }
     }
 
+    console.log(this.filterOptionsSelected);
     this.filterDataSource();
   }
 
   filterDataSource() {
-    let projectsFiltered = [...this.projects];
-    const filtered = projectsFiltered.filter((project) =>
-      project.labels.some((label) => this.filterLabelsSelected.includes(label))
-    );
-    if (filtered.length > 0) {
-      projectsFiltered = filtered;
-    }
-
-    for (const [k, v] of Object.entries(this.filterOptionsSelected)) {
-      let option = v === 'true' ? true : v === 'false' ? false : '';
-      let key: keyof Project =
-        k === 'active'
-          ? 'active'
-          : k === 'language'
-          ? 'language'
-          : k === 'git_url'
-          ? 'git_url'
-          : k === 'preview_url'
-          ? 'preview_url'
-          : 'details';
-      if (typeof option === 'boolean') {
-        projectsFiltered = projectsFiltered.filter(
-          (project) => project[key] === option
-        );
+    var projectsFiltered = new Promise<Project[]>((resolve, reject) => {
+      var projects = [...this.projects];
+      const filtered = projects.filter((project) =>
+        project.labels.some((label) =>
+          this.filterLabelsSelected.includes(label)
+        )
+      );
+      if (filtered.length > 0) {
+        projects = filtered;
       }
-    }
+      return resolve(projects);
+    });
 
-    this.projectsDataSource = new MatTableDataSource(projectsFiltered);
+    projectsFiltered
+      .then((projectsFiltered) => {
+        for (const [k, v] of Object.entries(this.filterOptionsSelected)) {
+          let option = v;
+          let key: keyof Project =
+            k === 'active'
+              ? 'active'
+              : k === 'language'
+              ? 'language'
+              : k === 'git_url'
+              ? 'git_url'
+              : k === 'preview_url'
+              ? 'preview_url'
+              : 'details';
+
+          if (option !== 'All') {
+            projectsFiltered = projectsFiltered.filter((project) => {
+              if (project[key] === 'true' || project[key] === 'false') {
+                return project[key] === option;
+              }
+              if (
+                (option === 'true' && project[key]) ||
+                (option === 'false' && !project[key])
+              ) {
+                return true;
+              }
+              if (option === 'en' || option === 'sp') {
+                console.log(project[key] + ' ' + option);
+
+                return project[key] === option;
+              }
+
+              return false;
+            });
+          }
+        }
+        return projectsFiltered;
+      })
+      .then((filterList: Project[]) => {
+        console.log(filterList);
+        this.projectsDataSource = new MatTableDataSource(filterList);
+        if (this.projectsDataSource.paginator) {
+          this.projectsDataSource.paginator.firstPage();
+        }
+      });
   }
 
   refreshDataSource() {
     this.projectsDataSource = new MatTableDataSource(this.projects);
+    this.projectsDataSource.paginator = this.paginator;
+  }
+
+  clearFilters() {
+    this.languageSelected = this.filterOptions[0];
+    this.activeSelected = this.filterOptions[0];
+    this.gitUrlSelected = this.filterOptions[0];
+    this.previewUrlSelected = this.filterOptions[0];
+    this.detailsSelected = this.filterOptions[0];
+    this.filterOptionsSelected = {
+      language: this.languageSelected,
+      git_url: this.gitUrlSelected,
+      preview_url: this.previewUrlSelected,
+      details: this.detailsSelected,
+      active: this.activeSelected,
+    };
+    this.filterLabelsSelected = [];
+
+    this.projectsDataSource = new MatTableDataSource(this.projects);
   }
 
   onChangePage(pageEvent: PageEvent) {
-    this.projectService.getAllSubscription(
-      pageEvent.pageSize,
-      pageEvent.pageIndex + 1
-    );
+    this.projectService.getAll();
     this.projectSub = this.projectService
       .getProjectsUpdateListener()
       .subscribe((data: any) => {
         this.projects = data.projects;
-        this.refreshDataSource();
+        this.filterDataSource();
         this.isLoading = false;
         this.totalProjects = data.projectsCout;
       });
@@ -205,10 +266,7 @@ export class ProjectsHomeComponent implements OnInit {
               if (deleteFromS3 === false || deleteFromS3 === true) {
                 this.projectService.delete(postId, deleteFromS3).subscribe(
                   () => {
-                    this.projectService.getAllSubscription(
-                      this.projectsPerPage,
-                      1
-                    );
+                    this.projectService.getAll();
                     this.projectSub = this.projectService
                       .getProjectsUpdateListener()
                       .subscribe((data: any) => {

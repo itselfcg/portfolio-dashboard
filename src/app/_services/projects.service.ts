@@ -23,7 +23,7 @@ export class ProjectService {
     return this.projectUpdated.asObservable();
   }
 
-  getAllSubscription(pageSize: number, currentPage: number) {
+  getAllPaginator(pageSize: number, currentPage: number) {
     this.http
       .get<{ message: string; projects: Project[]; maxProjects: number }>(
         API_URL + '/all',
@@ -49,9 +49,25 @@ export class ProjectService {
   }
 
   getAll() {
-    return this.http.get<{ message: string; projects: Project[] }>(
+    this.http
+    .get<{ message: string; projects: Project[]; maxProjects: number }>(
       API_URL + '/all'
-    );
+    )
+    .pipe(
+      map((projectData) => {
+        return {
+          projects: projectData.projects,
+          maxProjects: projectData.maxProjects,
+        };
+      })
+    )
+    .subscribe((transformedData) => {
+      this.projects = transformedData.projects;
+      this.projectUpdated.next({
+        projects: [...this.projects],
+        projectsCout: transformedData.maxProjects,
+      });
+    });
   }
 
   getAllWithoutCaseStudy() {
