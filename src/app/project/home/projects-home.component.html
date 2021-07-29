@@ -119,7 +119,8 @@
       </mat-chip-list>
     </mat-form-field>
 
-    <table mat-table [dataSource]="projectsDataSource" [style.width.%]="100">
+    <table mat-table [dataSource]="projectsDataSource" [style.width.%]="100"
+    matSort (matSortChange)="sortData($event)">
       <ng-container>
         <tr class="mat-row" *matNoDataRow>
           <td
@@ -147,7 +148,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="language">
-        <th mat-header-cell *matHeaderCellDef>Lang</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="language">Lang</th>
         <td mat-cell *matCellDef="let project">{{ project.language }}</td>
       </ng-container>
       <ng-container matColumnDef="title">

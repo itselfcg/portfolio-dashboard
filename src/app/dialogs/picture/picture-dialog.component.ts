@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { mimeType } from 'src/app/mime-type.validator';
-import { CustomErrorStateMatcher } from 'src/app/_error/picture-error.state-matcher';
+import { CustomErrorStateMatcher } from 'src/app/_error/custom-error.state-matcher';
 import { Picture } from 'src/app/_models/picture.model';
 import { pictureSelectedValidator } from 'src/app/_validator/file.directive';
 

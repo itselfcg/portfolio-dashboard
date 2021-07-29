@@ -9,6 +9,7 @@ import { ProjectService } from '../../_services/projects.service';
 
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSelectChange } from '@angular/material/select';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'projects-home-app',
@@ -60,15 +61,15 @@ export class ProjectsHomeComponent implements OnInit {
     active: this.activeSelected,
   };
   private paginator: MatPaginator;
+  sortedProjects: Project[];
 
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.projectsDataSource.paginator = this.paginator;
   }
-  constructor(
-    public projectService: ProjectService,
-    public dialog: MatDialog
-  ) {}
+  constructor(public projectService: ProjectService, public dialog: MatDialog) {
+    this.sortedProjects = this.projects.slice();
+  }
 
   ngAfterViewInit() {
     this.projectsDataSource.paginator = this.paginator;
@@ -105,7 +106,7 @@ export class ProjectsHomeComponent implements OnInit {
       let i = this.filterLabelsSelected.indexOf(category.value.trim());
       this.filterLabelsSelected.splice(i);
     }
-    this.filterLabels=[...this.filterLabels];
+    this.filterLabels = [...this.filterLabels];
 
     this.filterDataSource();
   }
@@ -200,8 +201,36 @@ export class ProjectsHomeComponent implements OnInit {
     this.projectsDataSource.paginator = this.paginator;
   }
 
-  isLabelSelected(value:string){
-    return this.filterLabelsSelected.indexOf(value)>-1?true:false;
+  isLabelSelected(value: string) {
+    return this.filterLabelsSelected.indexOf(value) > -1 ? true : false;
+  }
+
+  sortData(sort: Sort) {
+    const data = this.projects.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedProjects = data;
+      return;
+    }
+    console.log(sort);
+
+    this.sortedProjects = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name':
+          return this.compare(a.name, b.name, isAsc);
+        case 'language':
+          return this.compare(a.language, b.language, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.projects=this.sortedProjects;
+    this.refreshDataSource();
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   clearFilters() {

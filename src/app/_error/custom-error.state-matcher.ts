@@ -6,3 +6,10 @@ export class CustomErrorStateMatcher implements ErrorStateMatcher {
     return (control.touched && form.invalid);
   }
 }
+
+export class PasswordErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+
+    return (!control.dirty && form.invalid && form.submitted || control.value==='');
+  }
+}

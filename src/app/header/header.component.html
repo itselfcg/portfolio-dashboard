@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="mat-elevation-z8" >
+<mat-toolbar color="primary" class="mat-elevation-z8"  *ngIf="userIsAuthenticated">
   <mat-toolbar-row>
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -10,7 +10,7 @@
       <a mat-button [routerLink]="'/case-studies'"> Case Studies </a>
     </div>
     <span class="spacer"></span>
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf="userIsAuthenticated" (click)="onLogout()">
       logout
     </button>
   </mat-toolbar-row>
@@ -31,7 +31,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="height: 88vh;">
+    <div style="height: 100vh;">
 
       <router-outlet></router-outlet>
     </div>

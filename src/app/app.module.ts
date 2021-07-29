@@ -20,12 +20,14 @@ import { ItemsDialog } from './dialogs/items/items-dialog.component';
 import { CaseStudyHomeComponent } from './case-study/home/case-study-home.component';
 import { ProjectsHomeComponent } from './project/home/projects-home.component';
 import { ConfirmationDialog } from './dialogs/confirmation/confirmation-dialog.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProjectComponent,
     CaseStudyComponent,
+    LoginComponent,
     HomeComponent,
     CaseStudyHomeComponent,
     ProjectsHomeComponent,

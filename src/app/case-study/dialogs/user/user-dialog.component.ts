@@ -6,7 +6,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { mimeType } from 'src/app/mime-type.validator';
-import { CustomErrorStateMatcher } from 'src/app/_error/picture-error.state-matcher';
+import { CustomErrorStateMatcher } from 'src/app/_error/custom-error.state-matcher';
 import { User } from 'src/app/_models/user.model';
 import { pictureSelectedValidator } from 'src/app/_validator/file.directive';
 

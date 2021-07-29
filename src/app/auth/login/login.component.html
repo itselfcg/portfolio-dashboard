@@ -1,0 +1,41 @@
+<div class="flex-container">
+  <div *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+  <div *ngIf="!isLoading">
+    <img class="logo" src="/assets/pictures/logo.png" />
+  </div>
+  <div *ngIf="!isLoading">
+    <form [formGroup]="form" (submit)="onLogin()">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="user"
+          placeholder="User"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error>Please enter a valid user.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error>Please enter a valid password.</mat-error>
+
+      </mat-form-field>
+      <div mat-dialog-actions>
+        <button
+          class="btn-login"
+          mat-raised-button
+          color="primary"
+          type="submit"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
