@@ -39,3 +39,15 @@ mat-card-header {
   }
 
 }
+
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mainContainer > * {
+  flex: 1;
+  margin-right: 15px;
+}

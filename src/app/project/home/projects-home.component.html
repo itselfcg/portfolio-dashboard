@@ -23,8 +23,8 @@
         clear filters
       </button>
     </div>
-    <div class="input-space">
-      <mat-form-field [style.width.%]="25">
+    <div class="mainContainer">
+      <mat-form-field>
         <mat-label>Language</mat-label>
         <mat-select
           [(ngModel)]="languageSelected"
@@ -38,7 +38,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field [style.width.%]="25">
+      <mat-form-field>
         <mat-label>Git url</mat-label>
         <mat-select
           [(ngModel)]="gitUrlSelected"
@@ -51,7 +51,7 @@
           >
         </mat-select>
       </mat-form-field>
-      <mat-form-field [style.width.%]="25">
+      <mat-form-field>
         <mat-label>Preview url</mat-label>
         <mat-select
           [(ngModel)]="previewUrlSelected"
@@ -64,7 +64,7 @@
           >
         </mat-select>
       </mat-form-field>
-      <mat-form-field [style.width.%]="25">
+      <mat-form-field>
         <mat-label>Case study</mat-label>
         <mat-select
           [(ngModel)]="detailsSelected"
@@ -77,9 +77,8 @@
           >
         </mat-select>
       </mat-form-field>
-    </div>
-    <div class="input-space">
-      <mat-form-field [style.width.%]="25">
+
+      <mat-form-field>
         <mat-label>Active</mat-label>
         <mat-select
           [(ngModel)]="activeSelected"
@@ -92,7 +91,7 @@
           >
         </mat-select>
       </mat-form-field>
-      <mat-form-field [style.width.%]="75">
+      <mat-form-field>
         <mat-label>Filter</mat-label>
         <input
           matInput

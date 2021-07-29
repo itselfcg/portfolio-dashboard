@@ -23,8 +23,8 @@
         clear filters
       </button>
     </div>
-    <div class="input-space">
-      <mat-form-field [style.width.%]="33">
+    <div class="mainContainer">
+      <mat-form-field>
         <mat-label>Language</mat-label>
         <mat-select
           [(ngModel)]="languageSelected"
@@ -38,7 +38,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field [style.width.%]="33">
+      <mat-form-field>
         <mat-label>Active</mat-label>
         <mat-select
           [(ngModel)]="activeSelected"
@@ -51,7 +51,7 @@
           >
         </mat-select>
       </mat-form-field>
-      <mat-form-field [style.width.%]="33">
+      <mat-form-field>
         <mat-label>Filter</mat-label>
         <input
           matInput
