@@ -13,3 +13,10 @@ export class PasswordErrorStateMatcher implements ErrorStateMatcher {
     return (!control.dirty && form.invalid && form.submitted || control.value==='');
   }
 }
+
+
+export class PasswordConfirmationErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return (control.touched && form.invalid);
+  }
+}

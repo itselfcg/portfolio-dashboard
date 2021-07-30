@@ -8,4 +8,12 @@ export const pictureSelectedValidator: ValidatorFn = (
   return url.value === '' && !file.value ? { pictureSelected: true } : null;
 };
 
-
+export const passwordMatch: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const newPassword = control.get('newPassword');
+  const confirmPassword = control.get('confirmPassword');
+  return newPassword.value !== confirmPassword.value
+    ? { validPassword: true }
+    : null;
+};

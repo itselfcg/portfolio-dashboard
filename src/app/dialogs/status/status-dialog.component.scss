@@ -1,0 +1,33 @@
+.icon {
+  font-size: 50px;
+  width: 100px;
+  height: 100px;
+
+  #success {
+    background-color: var(--color-primary);
+    border-radius: 100%;
+    color: white;
+  }
+
+  #error {
+    background-color: var(--color-warn);
+    border-radius: 100%;
+    color: white;
+  }
+}
+.mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.label {
+  padding-top: 1em;
+  font-weight: bold;
+  text-align: center;
+}

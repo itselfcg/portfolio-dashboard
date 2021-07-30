@@ -1,0 +1,17 @@
+<div class="dialog">
+  <div mat-dialog-content>
+    <div class="content" *ngIf="success">
+      <div class="icon">
+        <mat-icon id="success" inline>done_outline</mat-icon>
+      </div>
+      <div class="label">Password was updated.</div>
+    </div>
+
+    <div class="content" *ngIf="!success">
+      <div class="icon">
+        <mat-icon id="error" inline>warning</mat-icon>
+      </div>
+      <div class="label">Password couldn't be changed. Try again.</div>
+    </div>
+  </div>
+</div>

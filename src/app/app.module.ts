@@ -21,6 +21,8 @@ import { CaseStudyHomeComponent } from './case-study/home/case-study-home.compon
 import { ProjectsHomeComponent } from './project/home/projects-home.component';
 import { ConfirmationDialog } from './dialogs/confirmation/confirmation-dialog.component';
 import { LoginComponent } from './auth/login/login.component';
+import { UserComponent } from './user/user.component';
+import { StatusDialog } from './dialogs/status/status-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { LoginComponent } from './auth/login/login.component';
     SectionDialog,
     PictureDialog,
     ItemsDialog,
-    ConfirmationDialog
+    StatusDialog,
+    ConfirmationDialog,
+    UserComponent
   ],
   imports: [
     BrowserModule,

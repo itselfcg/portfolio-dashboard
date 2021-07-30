@@ -7,6 +7,7 @@ import { CaseStudyHomeComponent } from './case-study/home/case-study-home.compon
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/create-edit/project.component';
 import { ProjectsHomeComponent } from './project/home/projects-home.component';
+import { UserComponent } from './user/user.component';
 
 
 
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'case-studies', component: CaseStudyHomeComponent,canActivate: [AuthGuard]  },
   { path: 'case', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'case/edit/:caseId', component: CaseStudyComponent,canActivate: [AuthGuard]  },
+  { path: 'settings', component: UserComponent,canActivate: [AuthGuard]  },
   { path: "login", component: LoginComponent },
   { path: '', component: HomeComponent,canActivate: [AuthGuard] }
 ];
