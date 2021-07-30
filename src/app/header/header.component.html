@@ -26,12 +26,13 @@
       <a mat-list-item [routerLink]="'/project'"> Create Project </a>
       <a mat-list-item [routerLink]="'/case-studies'"> Case Studies </a>
       <a mat-list-item [routerLink]="'/case'"> Create Case Study </a>
+      <a mat-list-item [routerLink]="'/settings'"> Settings </a>
       <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a>
 
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <div >
+  <mat-sidenav-content >
+    <div class="sidenav__content--height">
 
       <router-outlet></router-outlet>
     </div>
