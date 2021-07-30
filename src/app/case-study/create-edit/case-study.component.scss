@@ -7,7 +7,7 @@ mat-card-title {
 }
 
 mat-toolbar-row {
-  border-bottom: #3f51b5 1.5px solid;
+  border-bottom: var(--color-primary) 1.5px solid;
 }
 
 .tab-content {

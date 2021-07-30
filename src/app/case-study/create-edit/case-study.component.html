@@ -17,7 +17,7 @@
           <div class="tab-content">
             <div [style.width.%]="100" id="active">
               <label>Active</label>
-              <mat-radio-group
+              <mat-radio-group color="primary"
                 labelledby="active"
                 class="radio-group"
                 formControlName="active"
@@ -45,7 +45,7 @@
               <mat-form-field appearance="fill" [style.width.%]="75">
                 <mat-label>Projects</mat-label>
                 <mat-select formControlName="project">
-                  <mat-option
+                  <mat-option color="primary"
                     *ngFor="let project of projects"
                     [value]="project._id"
                     >{{ project.name }}</mat-option

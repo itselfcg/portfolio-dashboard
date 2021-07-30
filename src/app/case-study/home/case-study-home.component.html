@@ -11,7 +11,7 @@
       mat-raised-button
       routerLink="/case"
       routerLinkActive="mat-accent"
-      color="accent"
+      color="primary"
       >NEW CASE STUDY</a
     >
   </mat-card-header>
@@ -19,7 +19,7 @@
     <div>
       <h3 style="display: inline-block">Filters</h3>
       <span class="spacer"></span>
-      <button mat-button color="accent" (click)="clearFilters()">
+      <button mat-button color="primary" (click)="clearFilters()">
         clear filters
       </button>
     </div>
@@ -115,10 +115,10 @@
       <ng-container matColumnDef="active">
         <th mat-header-cell *matHeaderCellDef>Active</th>
         <td mat-cell *matCellDef="let project">
-          <mat-icon *ngIf="project.active; else elseBlock" color="primary"
+          <mat-icon *ngIf="project.active; else elseBlock"
             >check</mat-icon
           >
-          <ng-template #elseBlock><mat-icon color="secondary">close</mat-icon> </ng-template>
+          <ng-template #elseBlock><mat-icon color="accent">close</mat-icon> </ng-template>
         </td>
       </ng-container>
       <ng-container matColumnDef="actions">
@@ -126,12 +126,12 @@
         <td mat-cell *matCellDef="let caseStudy">
           <button
             mat-icon-button
-            color="accent"
+            color="primary"
             [routerLink]="['/case/edit', caseStudy._id]"
           >
             edit
           </button>
-          <button mat-icon-button (click)="onDeleteCase(caseStudy._id)">
+          <button mat-icon-button (click)="onDeleteCase(caseStudy._id)" color="warn">
             delete
           </button>
         </td>

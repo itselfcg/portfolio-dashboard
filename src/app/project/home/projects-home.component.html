@@ -11,7 +11,7 @@
       routerLink="/project"
       routerLinkActive="mat-accent"
       mat-raised-button
-      color="accent"
+      color="primary"
       >NEW PROJECT</a
     >
   </mat-card-header>
@@ -19,7 +19,7 @@
     <div>
       <h3 style="display: inline-block">Filters</h3>
       <span class="spacer"></span>
-      <button mat-button color="accent" (click)="clearFilters()">
+      <button mat-button color="primary" (click)="clearFilters()">
         clear filters
       </button>
     </div>
@@ -193,8 +193,8 @@
       <ng-container matColumnDef="details">
         <th mat-header-cell *matHeaderCellDef>Case Study</th>
         <td mat-cell *matCellDef="let project">
-          <mat-icon *ngIf="project.details;else elseBlock" color="primary">check</mat-icon>
-          <ng-template #elseBlock><mat-icon color="secondary">close</mat-icon> </ng-template>
+          <mat-icon *ngIf="project.details;else elseBlock" >check</mat-icon>
+          <ng-template #elseBlock><mat-icon color="accent">close</mat-icon> </ng-template>
 
         </td>
       </ng-container>
@@ -217,10 +217,10 @@
       <ng-container matColumnDef="active">
         <th mat-header-cell *matHeaderCellDef>Active</th>
         <td mat-cell *matCellDef="let project">
-          <mat-icon *ngIf="project.active; else elseBlock" color="primary"
+          <mat-icon *ngIf="project.active; else elseBlock"
             >check</mat-icon
           >
-          <ng-template #elseBlock><mat-icon color="secondary">close</mat-icon> </ng-template>
+          <ng-template #elseBlock><mat-icon color="accent">close</mat-icon> </ng-template>
         </td>
       </ng-container>
       <ng-container matColumnDef="actions">
@@ -228,12 +228,12 @@
         <td mat-cell *matCellDef="let project">
           <button
             mat-icon-button
-            color="accent"
+            color="primary"
             [routerLink]="['/project/edit', project._id]"
           >
             edit
           </button>
-          <button mat-icon-button (click)="onDeleteProject(project._id)">
+          <button mat-icon-button (click)="onDeleteProject(project._id)" color="warn">
             delete
           </button>
         </td>
