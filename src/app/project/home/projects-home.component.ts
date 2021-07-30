@@ -99,15 +99,20 @@ export class ProjectsHomeComponent implements OnInit {
   }
 
   onChipSelect($event: any, category: any): void {
+    category.value = category.value.trim();
     category.selected = $event.selected;
+    let index = this.filterLabelsSelected.indexOf(category.value);
+
     if (category.selected) {
-      this.filterLabelsSelected.push(category.value.trim());
+      if (index === -1) {
+        this.filterLabelsSelected.push(category.value);
+      }
     } else {
-      let i = this.filterLabelsSelected.indexOf(category.value.trim());
-      this.filterLabelsSelected.splice(i);
+      if (index > -1) {
+        this.filterLabelsSelected.splice(index, 1);
+      }
     }
     this.filterLabels = [...this.filterLabels];
-
     this.filterDataSource();
   }
 
@@ -139,61 +144,51 @@ export class ProjectsHomeComponent implements OnInit {
   }
 
   filterDataSource() {
-    var projectsFiltered = new Promise<Project[]>((resolve, reject) => {
-      var projects = [...this.projects];
-      const filtered = projects.filter((project) =>
-        project.labels.some((label) =>
-          this.filterLabelsSelected.includes(label)
-        )
-      );
-      if (filtered.length > 0) {
-        projects = filtered;
-      }
-      return resolve(projects);
-    });
+    var projectsFiltered = [...this.projects];
+    const filtered = projectsFiltered.filter((project) =>
+      project.labels.some((label) => this.filterLabelsSelected.includes(label.trim()))
+    );
+    if (filtered.length > 0) {
+      projectsFiltered = filtered;
+    }
 
-    projectsFiltered
-      .then((projectsFiltered) => {
-        for (const [k, v] of Object.entries(this.filterOptionsSelected)) {
-          let option = v;
-          let key: keyof Project =
-            k === 'active'
-              ? 'active'
-              : k === 'language'
-              ? 'language'
-              : k === 'git_url'
-              ? 'git_url'
-              : k === 'preview_url'
-              ? 'preview_url'
-              : 'details';
+    for (const [k, v] of Object.entries(this.filterOptionsSelected)) {
+      let option = v;
+      let key: keyof Project =
+        k === 'active'
+          ? 'active'
+          : k === 'language'
+          ? 'language'
+          : k === 'git_url'
+          ? 'git_url'
+          : k === 'preview_url'
+          ? 'preview_url'
+          : 'details';
 
-          if (option !== 'All') {
-            projectsFiltered = projectsFiltered.filter((project) => {
-              if (project[key] === 'true' || project[key] === 'false') {
-                return project[key] === option;
-              }
-              if (
-                (option === 'true' && project[key]) ||
-                (option === 'false' && !project[key])
-              ) {
-                return true;
-              }
-              if (option === 'en' || option === 'sp') {
-                return project[key] === option;
-              }
-
-              return false;
-            });
+      if (option !== 'All') {
+        projectsFiltered = projectsFiltered.filter((project) => {
+          if (project[key] === 'true' || project[key] === 'false') {
+            return project[key] === option;
           }
-        }
-        return projectsFiltered;
-      })
-      .then((filterList: Project[]) => {
-        this.projectsDataSource = new MatTableDataSource(filterList);
-        if (this.projectsDataSource.paginator) {
-          this.projectsDataSource.paginator.firstPage();
-        }
-      });
+          if (
+            (option === 'true' && project[key]) ||
+            (option === 'false' && !project[key])
+          ) {
+            return true;
+          }
+          if (option === 'en' || option === 'sp') {
+            return project[key] === option;
+          }
+
+          return false;
+        });
+      }
+    }
+
+    this.projectsDataSource = new MatTableDataSource(projectsFiltered);
+    if (this.projectsDataSource.paginator) {
+      this.projectsDataSource.paginator.firstPage();
+    }
   }
 
   refreshDataSource() {
@@ -202,7 +197,7 @@ export class ProjectsHomeComponent implements OnInit {
   }
 
   isLabelSelected(value: string) {
-    return this.filterLabelsSelected.indexOf(value) > -1 ? true : false;
+    return this.filterLabelsSelected.indexOf(value.trim()) > -1 ? true : false;
   }
 
   sortData(sort: Sort) {
@@ -211,7 +206,6 @@ export class ProjectsHomeComponent implements OnInit {
       this.sortedProjects = data;
       return;
     }
-    console.log(sort);
 
     this.sortedProjects = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
@@ -225,7 +219,7 @@ export class ProjectsHomeComponent implements OnInit {
       }
     });
 
-    this.projects=this.sortedProjects;
+    this.projects = this.sortedProjects;
     this.refreshDataSource();
   }
 
