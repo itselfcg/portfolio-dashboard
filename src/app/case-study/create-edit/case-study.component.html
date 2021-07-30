@@ -17,7 +17,8 @@
           <div class="tab-content">
             <div [style.width.%]="100" id="active">
               <label>Active</label>
-              <mat-radio-group color="primary"
+              <mat-radio-group
+                color="primary"
                 labelledby="active"
                 class="radio-group"
                 formControlName="active"
@@ -45,7 +46,8 @@
               <mat-form-field appearance="fill" [style.width.%]="75">
                 <mat-label>Projects</mat-label>
                 <mat-select formControlName="project">
-                  <mat-option color="primary"
+                  <mat-option
+                    color="primary"
                     *ngFor="let project of projects"
                     [value]="project._id"
                     >{{ project.name }}</mat-option
@@ -124,17 +126,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openPictureDialog(picture)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
+                    color="warn"
                     mat-icon-button
                     (click)="onDeletePicture(picture)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>
@@ -211,17 +214,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openSectionDialog(section)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
                     mat-icon-button
+                    color="warn"
                     (click)="onDeleteSection(section)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>
@@ -299,17 +303,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openUserDialog(user)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
                     mat-icon-button
+                    color="warn"
                     (click)="onDeleteUser(user)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>
@@ -375,17 +380,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openInsightDialog(user)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
+                    color="warn"
                     mat-icon-button
                     (click)="onDeleteInsight(user)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>

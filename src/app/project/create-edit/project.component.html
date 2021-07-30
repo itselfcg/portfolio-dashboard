@@ -15,7 +15,8 @@
           <div class="tab-content">
             <div id="active">
               <label>Is active?</label>
-              <mat-radio-group color="primary"
+              <mat-radio-group
+                color="primary"
                 labelledby="active"
                 class="radio-group"
                 formControlName="active"
@@ -96,7 +97,8 @@
             </div>
             <div id="details">
               <label>Has project a case study?</label>
-              <mat-radio-group color="primary"
+              <mat-radio-group
+                color="primary"
                 labelledby="details"
                 class="radio-group"
                 formControlName="details"
@@ -169,17 +171,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openPictureDialog(picture)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
+                    color="warn"
                     mat-icon-button
                     (click)="onDeletePicture(picture)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>
@@ -231,17 +234,18 @@
                   <button
                     type="button"
                     mat-icon-button
-                    color="accent"
+                    color="primary"
                     (click)="openItemDialog(item)"
                   >
-                    <mat-icon>edit</mat-icon>
+                    edit
                   </button>
                   <button
                     type="button"
+                    color="warn"
                     mat-icon-button
                     (click)="onDeleteListItem(item)"
                   >
-                    <mat-icon>delete</mat-icon>
+                    delete
                   </button>
                 </td>
               </ng-container>
