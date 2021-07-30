@@ -3,6 +3,12 @@
   width: auto;
 }
 
-.sidenav__content--height{
-  min-height: 100vh;
+.navbar{
+  background: var(--color-accent);
+  background: linear-gradient(
+    -360deg,
+    var(--color-accent) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  width: 100%;
 }

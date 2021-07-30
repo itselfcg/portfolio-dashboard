@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
@@ -9,24 +10,12 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  userIsAuthenticated = false;
-  private authListenerSubs: Subscription;
-
+  @Input() matsideNav: MatSidenav;
   constructor(private authService: AuthService) {}
-
-
   ngOnInit(): void {
-    this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-      });
   }
 
   onLogout() {
     this.authService.logout();
   }
-
-
 }

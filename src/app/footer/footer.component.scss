@@ -1,0 +1,36 @@
+.footer {
+  padding: 2.5em 0 4em;
+  background: var(--color-accent);
+  background: linear-gradient(
+    180deg,
+    var(--color-accent) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  width: 100%;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex-direction: column;
+  width: 100%;
+  min-width: 150px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0px;
+}
+li {
+  list-style: none;
+}
+
+ul a {
+  color: black;
+  text-decoration: none;
+}
+ul a:hover {
+  text-decoration: none;
+}

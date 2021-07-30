@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
+import { LoggedGuard } from './auth/logged.guard copy';
 import { LoginComponent } from './auth/login/login.component';
 import { CaseStudyComponent } from './case-study/create-edit/case-study.component';
 import { CaseStudyHomeComponent } from './case-study/home/case-study-home.component';
@@ -19,7 +20,7 @@ const routes: Routes = [
   { path: 'case', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'case/edit/:caseId', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'settings', component: UserComponent,canActivate: [AuthGuard]  },
-  { path: "login", component: LoginComponent },
+  { path: "login", component: LoginComponent,canActivate: [LoggedGuard] },
   { path: '', component: HomeComponent,canActivate: [AuthGuard] }
 ];
 @NgModule({
@@ -27,6 +28,6 @@ const routes: Routes = [
     scrollPositionRestoration: 'enabled', // Add options right here
   })],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard,LoggedGuard]
 })
 export class AppRoutingModule { }

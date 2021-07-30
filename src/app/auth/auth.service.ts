@@ -30,7 +30,11 @@ export class AuthService {
   }
 
   login(user: string, password: string) {
-    const authData: AuthData = { name: user, password: password,newPassword:'' };
+    const authData: AuthData = {
+      name: user,
+      password: password,
+      newPassword: '',
+    };
     this.http
       .post<{ token: string; expiresIn: number }>(
         API_URL + '/login',
@@ -52,8 +56,9 @@ export class AuthService {
             const expirationDate = new Date(
               now.getTime() + expiresInDuration * 1000
             );
-            this.saveAuthData(token,user,expirationDate);
+            this.saveAuthData(token, user, expirationDate);
             const authInformation = this.getAuthData();
+            console.log(authInformation);
             this.router.navigate(['/']);
           }
         },
@@ -78,8 +83,6 @@ export class AuthService {
     }
   }
 
-
-
   logout() {
     this.token = null;
     this.isAuthenticated = false;
@@ -96,7 +99,7 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string,user:string, expirationDate: Date) {
+  private saveAuthData(token: string, user: string, expirationDate: Date) {
     localStorage.setItem('token', token);
     localStorage.setItem('user', user);
     localStorage.setItem('expiration', expirationDate.toISOString());
@@ -119,15 +122,15 @@ export class AuthService {
     }
     return {
       token: token,
-      user:user,
+      user: user,
       expirationDate: new Date(expirationDate),
     };
   }
 
-   getAuthUser() {
+  getAuthUser() {
     const user = localStorage.getItem('user');
     return {
-      user:user,
+      user: user,
     };
   }
 }

@@ -23,6 +23,7 @@ import { ConfirmationDialog } from './dialogs/confirmation/confirmation-dialog.c
 import { LoginComponent } from './auth/login/login.component';
 import { UserComponent } from './user/user.component';
 import { StatusDialog } from './dialogs/status/status-dialog.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { StatusDialog } from './dialogs/status/status-dialog.component';
     ItemsDialog,
     StatusDialog,
     ConfirmationDialog,
-    UserComponent
+    UserComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
