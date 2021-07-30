@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
-import { LoggedGuard } from './auth/logged.guard copy';
+import { LoggedGuard } from './auth/logged.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { CaseStudyComponent } from './case-study/create-edit/case-study.component';
 import { CaseStudyHomeComponent } from './case-study/home/case-study-home.component';
