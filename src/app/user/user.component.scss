@@ -28,7 +28,6 @@
   flex-direction: column;
 }
 
-
 .submitBtn {
   margin-top: 1rem;
 }
@@ -38,11 +37,8 @@
   margin-right: 15px;
 }
 
-
-
-@media (max-width:768px) {
+@media (max-width: 768px) {
   .row {
     flex-direction: column;
   }
-
 }

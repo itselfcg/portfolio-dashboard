@@ -1,407 +1,412 @@
 <div class="wrapper" *ngIf="isLoading">
   <div class="inner"><mat-spinner></mat-spinner></div>
 </div>
+<div class="container" *ngIf="!isLoading">
+  <mat-card class="mat-elevation-z0">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form" (submit)="onSaveCaseStudy()" *ngIf="!isLoading">
+      <mat-card-header>
+        <mat-card-title>Case study </mat-card-title>
+        <span class="spacer"></span>
+        <button mat-raised-button color="accent" type="submit">SAVE</button>
+      </mat-card-header>
 
-<mat-card class="mat-elevation-z0" *ngIf="!isLoading">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form [formGroup]="form" (submit)="onSaveCaseStudy()" *ngIf="!isLoading">
-    <mat-card-header>
-      <mat-card-title>Case study </mat-card-title>
-      <span class="spacer"></span>
-      <button mat-raised-button color="accent" type="submit">SAVE</button>
-    </mat-card-header>
-
-    <mat-card-content>
-      <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
-        <mat-tab label="Basic">
-          <div class="tab-content">
-            <div [style.width.%]="100" id="active">
-              <label>Active</label>
-              <mat-radio-group
-                color="primary"
-                labelledby="active"
-                class="radio-group"
-                formControlName="active"
-              >
-                <mat-radio-button [value]="true" class="radio-button"
-                  >Yes</mat-radio-button
+      <mat-card-content>
+        <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabSelected">
+          <mat-tab label="Basic">
+            <div class="tab-content">
+              <div [style.width.%]="100" id="active">
+                <label>Active</label>
+                <mat-radio-group
+                  color="primary"
+                  labelledby="active"
+                  class="radio-group"
+                  formControlName="active"
                 >
-                <mat-radio-button [value]="false" class="radio-button"
-                  >No</mat-radio-button
-                >
-              </mat-radio-group>
-            </div>
-            <div class="input-space">
-              <mat-form-field appearance="fill">
-                <mat-label>Language</mat-label>
-                <mat-select
-                  formControlName="language"
-                  (selectionChange)="onLanguageChange()"
-                >
-                  <mat-option value="en">English</mat-option>
-                  <mat-option value="sp">Spanish</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill" [style.width.%]="75">
-                <mat-label>Projects</mat-label>
-                <mat-select formControlName="project">
-                  <mat-option
-                    color="primary"
-                    *ngFor="let project of projects"
-                    [value]="project._id"
-                    >{{ project.name }}</mat-option
+                  <mat-radio-button [value]="true" class="radio-button"
+                    >Yes</mat-radio-button
                   >
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="input-space">
-              <mat-form-field [style.width.%]="50">
-                <input
-                  matInput
-                  type="text"
-                  formControlName="title"
-                  placeholder="Title"
-                />
-                <mat-error>Please enter a case study title.</mat-error>
-              </mat-form-field>
-            </div>
-            <div>
-              <mat-form-field [style.width.%]="100">
-                <textarea
-                  matInput
-                  rows="3"
-                  formControlName="content"
-                  placeholder="Description"
-                ></textarea>
-                <mat-error>Please enter a case study description.</mat-error>
-              </mat-form-field>
-            </div>
-
-            <mat-toolbar-row>
-              <span><h3>Header pictures</h3></span>
-              <span class="spacer"></span>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                (click)="openPictureDialog(null)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </mat-toolbar-row>
-
-            <table
-              id="basic"
-              mat-table
-              [dataSource]="picturesDataSource"
-              [style.width.%]="100"
-            >
-              <ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td
-                    class="mat-cell"
-                    [colSpan]="picturesColumns.length"
-                    style="text-align: center"
+                  <mat-radio-button [value]="false" class="radio-button"
+                    >No</mat-radio-button
                   >
-                    No records found
-                  </td>
-                </tr>
-              </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let picture">
-                  {{ picture.fileName }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let picture">
-                  {{ picture.description }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let picture">
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    (click)="openPictureDialog(picture)"
+                </mat-radio-group>
+              </div>
+              <div class="input-space">
+                <mat-form-field appearance="fill">
+                  <mat-label>Language</mat-label>
+                  <mat-select
+                    formControlName="language"
+                    (selectionChange)="onLanguageChange()"
                   >
-                    edit
-                  </button>
-                  <button
-                    type="button"
-                    color="warn"
-                    mat-icon-button
-                    (click)="onDeletePicture(picture)"
-                  >
-                    delete
-                  </button>
-                </td>
-              </ng-container>
+                    <mat-option value="en">English</mat-option>
+                    <mat-option value="sp">Spanish</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-              <ng-container matColumnDef="picture">
-                <th mat-header-cell *matHeaderCellDef>Url</th>
-                <td mat-cell *matCellDef="let picture">
-                  <img class="image-preview-table" src="{{ picture.url }}" />
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="picturesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: picturesColumns"></tr>
-            </table>
-          </div>
-        </mat-tab>
-        <mat-tab label="Sections">
-          <div class="tab-content">
-            <mat-toolbar-row>
-              <span><h3>Sections</h3></span>
-              <span class="spacer"></span>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                (click)="openSectionDialog(null)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </mat-toolbar-row>
-
-            <div style="text-align: center; width: 100%"></div>
-
-            <table
-              id="section"
-              mat-table
-              [dataSource]="sectionsDataSource"
-              [style.width.%]="100"
-            >
-              <ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td
-                    class="mat-cell"
-                    [colSpan]="sectionsColumns.length"
-                    style="text-align: center"
-                  >
-                    No records found
-                  </td>
-                </tr>
-              </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let section">{{ section.name }}</td>
-              </ng-container>
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let section">{{ section.title }}</td>
-              </ng-container>
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let section">
-                  {{ section.content }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="list">
-                <th mat-header-cell *matHeaderCellDef>List</th>
-                <td mat-cell *matCellDef="let section">
-                  {{ section.list }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let section">
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    (click)="openSectionDialog(section)"
-                  >
-                    edit
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    (click)="onDeleteSection(section)"
-                  >
-                    delete
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="sectionsColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: sectionsColumns"></tr>
-            </table>
-          </div>
-        </mat-tab>
-        <mat-tab label="Users">
-          <div class="tab-content">
-            <mat-toolbar-row>
-              <span><h3>Users</h3></span>
-              <span class="spacer"></span>
-
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                (click)="openUserDialog(null)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </mat-toolbar-row>
-
-            <div style="text-align: center; width: 100%"></div>
-
-            <table
-              id="user"
-              mat-table
-              [dataSource]="usersDataSource"
-              [style.width.%]="100"
-            >
-              <ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td
-                    class="mat-cell"
-                    [colSpan]="userColumns.length"
-                    style="text-align: center"
-                  >
-                    No records found
-                  </td>
-                </tr>
-              </ng-container>
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let user">{{ user.name }}</td>
-              </ng-container>
-              <ng-container matColumnDef="age">
-                <th mat-header-cell *matHeaderCellDef>Age</th>
-                <td mat-cell *matCellDef="let user">{{ user.age }}</td>
-              </ng-container>
-              <ng-container matColumnDef="occupation">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let user">{{ user.occupation }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="story">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let user">{{ user.story }}</td>
-              </ng-container>
-              <ng-container matColumnDef="picture">
-                <th mat-header-cell *matHeaderCellDef>Picture</th>
-                <td mat-cell *matCellDef="let user">
-                  <img
-                    class="image-preview-table"
-                    src="{{ user.picture.url }}"
+                <mat-form-field appearance="fill" [style.width.%]="75">
+                  <mat-label>Projects</mat-label>
+                  <mat-select formControlName="project">
+                    <mat-option
+                      color="primary"
+                      *ngFor="let project of projects"
+                      [value]="project._id"
+                      >{{ project.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="input-space">
+                <mat-form-field [style.width.%]="50">
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="title"
+                    placeholder="Title"
                   />
-                </td>
-              </ng-container>
+                  <mat-error>Please enter a case study title.</mat-error>
+                </mat-form-field>
+              </div>
+              <div>
+                <mat-form-field [style.width.%]="100">
+                  <textarea
+                    matInput
+                    rows="3"
+                    formControlName="content"
+                    placeholder="Description"
+                  ></textarea>
+                  <mat-error>Please enter a case study description.</mat-error>
+                </mat-form-field>
+              </div>
 
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let user">
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    (click)="openUserDialog(user)"
-                  >
-                    edit
-                  </button>
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="warn"
-                    (click)="onDeleteUser(user)"
-                  >
-                    delete
-                  </button>
-                </td>
-              </ng-container>
+              <mat-toolbar-row>
+                <span><h3>Header pictures</h3></span>
+                <span class="spacer"></span>
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="primary"
+                  (click)="openPictureDialog(null)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-toolbar-row>
 
-              <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: userColumns"></tr>
-            </table>
-          </div>
-        </mat-tab>
-        <mat-tab label="Insights">
-          <div class="tab-content">
-            <mat-toolbar-row>
-              <span><h3>Insights</h3></span>
-              <span class="spacer"></span>
-              <button
-                type="button"
-                mat-icon-button
-                color="primary"
-                (click)="openInsightDialog(null)"
+              <table
+                id="basic"
+                mat-table
+                [dataSource]="picturesDataSource"
+                [style.width.%]="100"
               >
-                <mat-icon>add</mat-icon>
-              </button>
-            </mat-toolbar-row>
-
-            <div style="text-align: center; width: 100%"></div>
-
-            <table
-              id="insight"
-              mat-table
-              [dataSource]="insightsDataSource"
-              [style.width.%]="100"
-            >
-              <ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td
-                    class="mat-cell"
-                    [colSpan]="insigthsColumns.length"
-                    style="text-align: center"
-                  >
-                    No records found
+                <ng-container>
+                  <tr class="mat-row" *matNoDataRow>
+                    <td
+                      class="mat-cell"
+                      [colSpan]="picturesColumns.length"
+                      style="text-align: center"
+                    >
+                      No records found
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
+                  <td mat-cell *matCellDef="let picture">
+                    {{ picture.fileName }}
                   </td>
-                </tr></ng-container
+                </ng-container>
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let picture">
+                    {{ picture.description }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let picture">
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="openPictureDialog(picture)"
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      color="warn"
+                      mat-icon-button
+                      (click)="onDeletePicture(picture)"
+                    >
+                      delete
+                    </button>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="picture">
+                  <th mat-header-cell *matHeaderCellDef>Url</th>
+                  <td mat-cell *matCellDef="let picture">
+                    <img class="image-preview-table" src="{{ picture.url }}" />
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="picturesColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: picturesColumns"></tr>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Sections">
+            <div class="tab-content">
+              <mat-toolbar-row>
+                <span><h3>Sections</h3></span>
+                <span class="spacer"></span>
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="primary"
+                  (click)="openSectionDialog(null)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-toolbar-row>
+
+              <div style="text-align: center; width: 100%"></div>
+
+              <table
+                id="section"
+                mat-table
+                [dataSource]="sectionsDataSource"
+                [style.width.%]="100"
               >
+                <ng-container>
+                  <tr class="mat-row" *matNoDataRow>
+                    <td
+                      class="mat-cell"
+                      [colSpan]="sectionsColumns.length"
+                      style="text-align: center"
+                    >
+                      No records found
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
+                  <td mat-cell *matCellDef="let section">{{ section.name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef>Title</th>
+                  <td mat-cell *matCellDef="let section">
+                    {{ section.title }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="content">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let section">
+                    {{ section.content }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="list">
+                  <th mat-header-cell *matHeaderCellDef>List</th>
+                  <td mat-cell *matCellDef="let section">
+                    {{ section.list }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let section">
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="openSectionDialog(section)"
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="warn"
+                      (click)="onDeleteSection(section)"
+                    >
+                      delete
+                    </button>
+                  </td>
+                </ng-container>
 
-              <ng-container matColumnDef="icon">
-                <th mat-header-cell *matHeaderCellDef>Icon</th>
-                <td mat-cell *matCellDef="let insight">{{ insight.icon }}</td>
-              </ng-container>
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let insight">{{ insight.title }}</td>
-              </ng-container>
-              <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let insight">
-                  {{ insight.content }}
-                </td>
-              </ng-container>
+                <tr mat-header-row *matHeaderRowDef="sectionsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: sectionsColumns"></tr>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Users">
+            <div class="tab-content">
+              <mat-toolbar-row>
+                <span><h3>Users</h3></span>
+                <span class="spacer"></span>
 
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let user">
-                  <button
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    (click)="openInsightDialog(user)"
-                  >
-                    edit
-                  </button>
-                  <button
-                    type="button"
-                    color="warn"
-                    mat-icon-button
-                    (click)="onDeleteInsight(user)"
-                  >
-                    delete
-                  </button>
-                </td>
-              </ng-container>
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="primary"
+                  (click)="openUserDialog(null)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-toolbar-row>
 
-              <tr mat-header-row *matHeaderRowDef="insigthsColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: insigthsColumns"></tr>
-            </table>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-  </form>
-</mat-card>
+              <div style="text-align: center; width: 100%"></div>
+
+              <table
+                id="user"
+                mat-table
+                [dataSource]="usersDataSource"
+                [style.width.%]="100"
+              >
+                <ng-container>
+                  <tr class="mat-row" *matNoDataRow>
+                    <td
+                      class="mat-cell"
+                      [colSpan]="userColumns.length"
+                      style="text-align: center"
+                    >
+                      No records found
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
+                  <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="age">
+                  <th mat-header-cell *matHeaderCellDef>Age</th>
+                  <td mat-cell *matCellDef="let user">{{ user.age }}</td>
+                </ng-container>
+                <ng-container matColumnDef="occupation">
+                  <th mat-header-cell *matHeaderCellDef>Title</th>
+                  <td mat-cell *matCellDef="let user">{{ user.occupation }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="story">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let user">{{ user.story }}</td>
+                </ng-container>
+                <ng-container matColumnDef="picture">
+                  <th mat-header-cell *matHeaderCellDef>Picture</th>
+                  <td mat-cell *matCellDef="let user">
+                    <img
+                      class="image-preview-table"
+                      src="{{ user.picture.url }}"
+                    />
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let user">
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="openUserDialog(user)"
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="warn"
+                      (click)="onDeleteUser(user)"
+                    >
+                      delete
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: userColumns"></tr>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Insights">
+            <div class="tab-content">
+              <mat-toolbar-row>
+                <span><h3>Insights</h3></span>
+                <span class="spacer"></span>
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="primary"
+                  (click)="openInsightDialog(null)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-toolbar-row>
+
+              <div style="text-align: center; width: 100%"></div>
+
+              <table
+                id="insight"
+                mat-table
+                [dataSource]="insightsDataSource"
+                [style.width.%]="100"
+              >
+                <ng-container>
+                  <tr class="mat-row" *matNoDataRow>
+                    <td
+                      class="mat-cell"
+                      [colSpan]="insigthsColumns.length"
+                      style="text-align: center"
+                    >
+                      No records found
+                    </td>
+                  </tr></ng-container
+                >
+
+                <ng-container matColumnDef="icon">
+                  <th mat-header-cell *matHeaderCellDef>Icon</th>
+                  <td mat-cell *matCellDef="let insight">{{ insight.icon }}</td>
+                </ng-container>
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef>Title</th>
+                  <td mat-cell *matCellDef="let insight">
+                    {{ insight.title }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="content">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let insight">
+                    {{ insight.content }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let user">
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="openInsightDialog(user)"
+                    >
+                      edit
+                    </button>
+                    <button
+                      type="button"
+                      color="warn"
+                      mat-icon-button
+                      (click)="onDeleteInsight(user)"
+                    >
+                      delete
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="insigthsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: insigthsColumns"></tr>
+              </table>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </form>
+  </mat-card>
+</div>
