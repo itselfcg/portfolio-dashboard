@@ -162,6 +162,11 @@
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let project">
             <b>{{ project.name }}</b>
+
+            <div class="labels">
+              {{ project.labels }}
+
+            </div>
           </td>
         </ng-container>
 
@@ -169,6 +174,7 @@
           <th mat-header-cell *matHeaderCellDef>Labels</th>
           <td mat-cell *matCellDef="let project">
             <mat-chip
+              class="chip"
               *ngFor="let label of project.labels"
               #chip="matChip"
               (click)="

@@ -21,7 +21,7 @@ mat-card-header {
   word-break: break-word;
 }
 .mat-column-labels {
-  width: 25% !important;
+  width: 25%;
   word-break: break-word;
 }
 
@@ -39,9 +39,26 @@ mat-card-header {
 
 .mat-chip {
   margin: 2px;
+  white-space: nowrap;
 }
 
+.labels {
+  display: none;
+}
+@media (max-width: 768px) {
+  .mat-column-title {
+    width: 40% !important;
+    word-break: break-word;
+  }
+  .mat-column-labels {
+    width: 0%;
 
+    display: none;
+  }
+  .labels {
+    display: block;
+  }
+}
 
 .mainContainer {
   display: flex;
@@ -54,5 +71,3 @@ mat-card-header {
   flex: 1;
   margin-right: 15px;
 }
-
-
