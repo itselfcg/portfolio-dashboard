@@ -22,14 +22,26 @@
         <mat-form-field>
           <input
             matInput
+            #password
             type="password"
             formControlName="password"
             placeholder="Password"
             [errorStateMatcher]="matcher"
+            (input)="onPasswordKeyPressed($event.target)"
           />
           <mat-error>Please enter a valid password.</mat-error>
         </mat-form-field>
+        <div [ngClass]="showCaptcha ? 'captchaShow' : 'captchaHide'">
+          <ngx-recaptcha2
+            #captchaElem
+            [siteKey]="siteKey"
+            (success)="successCaptcha=true"
+            formControlName="recaptcha"
+          >
+          </ngx-recaptcha2>
+        </div>
         <button
+          [disabled]="!successCaptcha"
           class="btn-login"
           mat-raised-button
           color="primary"
@@ -39,6 +51,5 @@
         </button>
       </form>
     </div>
-
   </div>
 </div>

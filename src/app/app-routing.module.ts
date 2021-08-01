@@ -20,8 +20,8 @@ const routes: Routes = [
   { path: 'case', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'case/edit/:caseId', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'settings', component: UserComponent,canActivate: [AuthGuard]  },
-  { path: "login", component: LoginComponent,canActivate: [LoggedGuard] },
-  { path: '', component: HomeComponent,canActivate: [AuthGuard] }
+  { path: '', component: HomeComponent,canActivate: [AuthGuard] },
+  { path: "login", component: LoginComponent,canActivate: [LoggedGuard] }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {

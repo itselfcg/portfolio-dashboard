@@ -24,6 +24,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { UserComponent } from './user/user.component';
 import { StatusDialog } from './dialogs/status/status-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FooterComponent } from './footer/footer.component';
     HttpClientModule,
     AngularMaterialModule,
     MatIconModule,
+    NgxCaptchaModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
