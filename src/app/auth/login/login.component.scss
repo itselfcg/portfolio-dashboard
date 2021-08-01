@@ -66,9 +66,10 @@ mat-spinner {
 }
 
 .captchaHide{
-  display: none;
+opacity: 0;
+height: 0px;
 }
 
 .captchaShow{
-  display: display;
+  transition: all 1.5s ease-in-out;
 }

@@ -1,23 +1,23 @@
-
-<app-header [matsideNav]="sidenav" *ngIf="userIsAuthenticated" ></app-header>
+<app-header [matsideNav]="sidenav" *ngIf="userIsAuthenticated"></app-header>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-
       <a mat-list-item [routerLink]="'/projects'"> Projects </a>
       <a mat-list-item [routerLink]="'/project'"> Create Project </a>
       <a mat-list-item [routerLink]="'/case-studies'"> Case Studies </a>
       <a mat-list-item [routerLink]="'/case'"> Create Case Study </a>
       <a mat-list-item [routerLink]="'/settings'"> Settings </a>
-      <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item>Close</a>
-
+      <a mat-list-item (click)="sidenav.toggle()" href="" mat-list-item
+        >Close</a
+      >
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content >
+  <mat-sidenav-content>
     <div class="sidenav">
-
-      <router-outlet></router-outlet>
+      <div [@triggerName]="prepareRoute(outlet)">
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

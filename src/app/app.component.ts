@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth.service';
+import { routeTransitionAnimations } from './_animations/transitions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [routeTransitionAnimations],
 })
 export class AppComponent implements OnInit {
   userIsAuthenticated = false;
@@ -22,5 +25,13 @@ export class AppComponent implements OnInit {
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
       });
+  }
+
+  prepareRoute(outlet: RouterOutlet) {
+    return (
+      outlet &&
+      outlet.activatedRouteData &&
+      outlet.activatedRouteData['animationState']
+    );
   }
 }
