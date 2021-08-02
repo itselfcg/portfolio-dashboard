@@ -70,6 +70,7 @@ export class CaseStudyService {
 
   create(
     language: string,
+    creation_date: Date,
     project: string,
     title: string,
     content: string,
@@ -81,6 +82,8 @@ export class CaseStudyService {
   ) {
     var formData = new FormData();
     formData.append('language', language);
+    var datestr = new Date(creation_date).toUTCString();
+    formData.append('creation_date', datestr);
     formData.append('project', project);
     formData.append('title', title);
     formData.append('content', content);
@@ -158,6 +161,7 @@ export class CaseStudyService {
   update(
     id: string,
     language: string,
+    creation_date: Date,
     project: string,
     title: string,
     content: string,
@@ -169,6 +173,9 @@ export class CaseStudyService {
   ) {
     var formData = new FormData();
     formData.append('language', language);
+    var datestr = new Date(creation_date).toUTCString();
+    formData.append('creation_date', datestr);
+
     formData.append('project', project);
     formData.append('title', title);
     formData.append('content', content);

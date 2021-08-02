@@ -6,6 +6,8 @@ import { User } from './user.model';
 
 export interface CaseStudy {
   language: String;
+  creation_date: Date;
+
   _id: string;
   project: Project;
   title: string;

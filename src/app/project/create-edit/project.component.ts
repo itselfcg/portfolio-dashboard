@@ -50,6 +50,7 @@ export class ProjectComponent implements OnInit {
         validators: [Validators.required],
       }),
       name: new FormControl(null, { validators: [Validators.required] }),
+      created: new FormControl(new Date() , { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
       git_url: new FormControl(''),
@@ -68,6 +69,7 @@ export class ProjectComponent implements OnInit {
           this.project = postData.projects[0];
           this.form.setValue({
             language: this.project.language,
+            created: this.project.creation_date,
             name: this.project.name,
             title: this.project.title,
             content: this.project.content,
@@ -100,6 +102,7 @@ export class ProjectComponent implements OnInit {
       this.projectService
         .create(
           this.form.value.language,
+          this.form.value.created,
           this.form.value.name,
           this.form.value.title,
           this.form.value.content,
@@ -121,6 +124,7 @@ export class ProjectComponent implements OnInit {
         .update(
           this.projectId,
           this.form.value.language,
+          this.form.value.created,
           this.form.value.name,
           this.form.value.title,
           this.form.value.content,

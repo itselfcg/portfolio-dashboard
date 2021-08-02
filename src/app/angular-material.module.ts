@@ -22,6 +22,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   exports: [
@@ -47,6 +49,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatChipsModule,
     MatAutocompleteModule,
     MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class AngularMaterialModule {}

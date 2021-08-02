@@ -77,6 +77,9 @@ export class CaseStudyComponent implements OnInit {
       language: new FormControl('en', {
         validators: [Validators.required],
       }),
+      created: new FormControl(new Date(), {
+        validators: [Validators.required],
+      }),
       project: new FormControl(null, { validators: [Validators.required] }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
@@ -94,6 +97,7 @@ export class CaseStudyComponent implements OnInit {
 
           this.form.setValue({
             language: this.caseStudy.language,
+            created: this.caseStudy.creation_date,
             project: this.caseStudy.project,
             title: this.caseStudy.title,
             content: this.caseStudy.content,
@@ -138,6 +142,7 @@ export class CaseStudyComponent implements OnInit {
       this.caseStudyService
         .create(
           this.form.value.language,
+          this.form.value.created,
           this.form.value.project,
           this.form.value.title,
           this.form.value.content,
@@ -158,6 +163,7 @@ export class CaseStudyComponent implements OnInit {
         .update(
           this.caseId,
           this.form.value.language,
+          this.form.value.created,
           this.form.value.project,
           this.form.value.title,
           this.form.value.content,

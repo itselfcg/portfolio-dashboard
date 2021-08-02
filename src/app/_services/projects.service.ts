@@ -50,24 +50,24 @@ export class ProjectService {
 
   getAll() {
     this.http
-    .get<{ message: string; projects: Project[]; maxProjects: number }>(
-      API_URL + '/all'
-    )
-    .pipe(
-      map((projectData) => {
-        return {
-          projects: projectData.projects,
-          maxProjects: projectData.maxProjects,
-        };
-      })
-    )
-    .subscribe((transformedData) => {
-      this.projects = transformedData.projects;
-      this.projectUpdated.next({
-        projects: [...this.projects],
-        projectsCout: transformedData.maxProjects,
+      .get<{ message: string; projects: Project[]; maxProjects: number }>(
+        API_URL + '/all'
+      )
+      .pipe(
+        map((projectData) => {
+          return {
+            projects: projectData.projects,
+            maxProjects: projectData.maxProjects,
+          };
+        })
+      )
+      .subscribe((transformedData) => {
+        this.projects = transformedData.projects;
+        this.projectUpdated.next({
+          projects: [...this.projects],
+          projectsCout: transformedData.maxProjects,
+        });
       });
-    });
   }
 
   getAllWithoutCaseStudy() {
@@ -96,6 +96,7 @@ export class ProjectService {
 
   create(
     language: string,
+    creation_date: Date,
     name: string,
     title: string,
     content: string,
@@ -108,6 +109,8 @@ export class ProjectService {
   ) {
     let formData = new FormData();
     formData.append('language', language);
+    var datestr = new Date(creation_date).toUTCString();
+    formData.append('creation_date', datestr);
     formData.append('name', name);
     formData.append('title', title);
     formData.append('content', content);
@@ -142,6 +145,7 @@ export class ProjectService {
   update(
     id: string,
     language: string,
+    creation_date: Date,
     name: string,
     title: string,
     content: string,
@@ -154,6 +158,8 @@ export class ProjectService {
   ) {
     let formData = new FormData();
     formData.append('language', language);
+    var datestr = new Date(creation_date).toUTCString();
+    formData.append('creation_date', datestr);
     formData.append('name', name);
     formData.append('title', title);
     formData.append('content', content);

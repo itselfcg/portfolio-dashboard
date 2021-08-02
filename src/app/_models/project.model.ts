@@ -7,6 +7,7 @@ export interface Project{
   title: string,
   content: string,
   pictures: Picture[],
+  creation_date:Date,
   labels: string[],
   git_url: string,
   details: boolean,
