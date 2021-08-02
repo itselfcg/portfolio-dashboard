@@ -69,9 +69,7 @@ export class CaseStudyComponent implements OnInit {
       this.sectionsNameAvailable = result.sections;
     });
 
-    this.projectService.getByLanguage('en').subscribe((result) => {
-      this.projects = result.projects;
-    });
+
 
     this.form = new FormGroup({
       language: new FormControl('en', {
@@ -94,6 +92,10 @@ export class CaseStudyComponent implements OnInit {
         this.caseStudyService.getById(this.caseId).subscribe((postData) => {
           this.isLoading = false;
           this.caseStudy = postData.caseStudy[0];
+
+          this.projectService.getByLanguage(this.caseStudy.language).subscribe((result) => {
+            this.projects = result.projects;
+          });
 
           this.form.setValue({
             language: this.caseStudy.language,
@@ -126,6 +128,10 @@ export class CaseStudyComponent implements OnInit {
           this.usersDataSource = new MatTableDataSource(this.users);
           this.picturesDataSource = new MatTableDataSource(this.pictures);
           this.sectionsDataSource = new MatTableDataSource(this.sections);
+        });
+      }else{
+        this.projectService.getByLanguage('en').subscribe((result) => {
+          this.projects = result.projects;
         });
       }
     });

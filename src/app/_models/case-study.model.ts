@@ -5,7 +5,7 @@ import { Section } from './section.model';
 import { User } from './user.model';
 
 export interface CaseStudy {
-  language: String;
+  language: string;
   creation_date: Date;
 
   _id: string;
