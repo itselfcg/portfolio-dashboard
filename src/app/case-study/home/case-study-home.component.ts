@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
@@ -17,6 +18,8 @@ export class CaseStudyHomeComponent implements OnInit {
   private caseStudySub: Subscription = new Subscription();
 
   caseStudies: CaseStudy[] = [];
+  sortedCaseStudies: CaseStudy[];
+
   caseStudiesDataSource = new MatTableDataSource(this.caseStudies);
 
   isLoading = false;
@@ -35,7 +38,9 @@ export class CaseStudyHomeComponent implements OnInit {
   constructor(
     public caseStudyService: CaseStudyService,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.sortedCaseStudies = this.caseStudies.slice();
+  }
 
   // DROPLIST
   filterOptionsLanguage: string[] = ['All', 'en', 'sp'];
@@ -101,6 +106,32 @@ export class CaseStudyHomeComponent implements OnInit {
     }
 
     this.filterDataSource();
+  }
+
+  sortData(sort: Sort) {
+    const data = this.caseStudies.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedCaseStudies = data;
+      return;
+    }
+    this.sortedCaseStudies = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      let aDate = new Date(a.creation_date).toUTCString();
+      let bDate = new Date(b.creation_date).toUTCString();
+      switch (sort.active) {
+        case 'creation':
+          return this.compare(aDate, bDate, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.caseStudies = this.sortedCaseStudies;
+    this.refreshDataSource();
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   filterDataSource() {

@@ -147,7 +147,9 @@ export class ProjectsHomeComponent implements OnInit {
   filterDataSource() {
     var projectsFiltered = [...this.projects];
     const filtered = projectsFiltered.filter((project) =>
-      project.labels.some((label) => this.filterLabelsSelected.includes(label.trim()))
+      project.labels.some((label) =>
+        this.filterLabelsSelected.includes(label.trim())
+      )
     );
     if (filtered.length > 0) {
       projectsFiltered = filtered;
@@ -207,12 +209,13 @@ export class ProjectsHomeComponent implements OnInit {
       this.sortedProjects = data;
       return;
     }
-
     this.sortedProjects = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
+      let aDate = new Date(a.creation_date).toUTCString();
+      let bDate = new Date(b.creation_date).toUTCString();
       switch (sort.active) {
-        case 'name':
-          return this.compare(a.name, b.name, isAsc);
+        case 'creation':
+          return this.compare(aDate, bDate, isAsc);
         case 'language':
           return this.compare(a.language, b.language, isAsc);
         default:
