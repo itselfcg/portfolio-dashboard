@@ -69,8 +69,6 @@ export class CaseStudyComponent implements OnInit {
       this.sectionsNameAvailable = result.sections;
     });
 
-
-
     this.form = new FormGroup({
       language: new FormControl('en', {
         validators: [Validators.required],
@@ -93,10 +91,15 @@ export class CaseStudyComponent implements OnInit {
           this.isLoading = false;
           this.caseStudy = postData.caseStudy[0];
 
-          this.projectService.getByLanguage(this.caseStudy.language).subscribe((result) => {
-            this.projects = result.projects;
-          });
+          this.projectService
+            .getByLanguage(this.caseStudy.language)
+            .subscribe((result) => {
+              this.projects = result.projects;
+            });
 
+          this.caseStudy.creation_date = this.caseStudy.creation_date
+            ? this.caseStudy.creation_date
+            : new Date();
           this.form.setValue({
             language: this.caseStudy.language,
             created: this.caseStudy.creation_date,
@@ -129,7 +132,7 @@ export class CaseStudyComponent implements OnInit {
           this.picturesDataSource = new MatTableDataSource(this.pictures);
           this.sectionsDataSource = new MatTableDataSource(this.sections);
         });
-      }else{
+      } else {
         this.projectService.getByLanguage('en').subscribe((result) => {
           this.projects = result.projects;
         });

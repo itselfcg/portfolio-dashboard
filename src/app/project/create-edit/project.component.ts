@@ -67,6 +67,7 @@ export class ProjectComponent implements OnInit {
         this.projectService.getById(this.projectId).subscribe((postData) => {
           this.isLoading = false;
           this.project = postData.projects[0];
+          this.project.creation_date=this.project.creation_date?this.project.creation_date:new Date();
           this.form.setValue({
             language: this.project.language,
             created: this.project.creation_date,

@@ -24,6 +24,7 @@ export class ProjectsHomeComponent implements OnInit {
   isLoading = false;
   projectColumns: any[] = [
     'id',
+    'creation',
     'language',
     'title',
     'labels',

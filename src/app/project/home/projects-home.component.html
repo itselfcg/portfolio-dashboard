@@ -152,6 +152,14 @@
             </button>
           </td>
         </ng-container>
+        <ng-container matColumnDef="creation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="creation">
+            Date
+          </th>
+          <td mat-cell *matCellDef="let project">
+            {{ project.creation_date | date: "short" }}
+          </td>
+        </ng-container>
         <ng-container matColumnDef="language">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="language">
             Lang
@@ -161,11 +169,16 @@
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let project">
+            <div class="small-screen">
+              {{ project.language }}<br />
+
+              {{ project.creation_date | date }}
+            </div>
+
             <b>{{ project.name }}</b>
 
-            <div class="labels">
+            <div class="small-screen">
               {{ project.labels }}
-
             </div>
           </td>
         </ng-container>

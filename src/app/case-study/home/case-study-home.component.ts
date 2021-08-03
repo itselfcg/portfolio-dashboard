@@ -22,6 +22,7 @@ export class CaseStudyHomeComponent implements OnInit {
   isLoading = false;
   caseStudyColumns: any[] = [
     'id',
+    'creation',
     'language',
     'project',
     'title',
