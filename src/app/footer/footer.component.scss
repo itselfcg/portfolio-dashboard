@@ -1,12 +1,11 @@
+
 .footer {
   padding: 2.5em 0 4em;
-  background: var(--color-accent);
-  background: linear-gradient(
-    180deg,
-    var(--color-accent) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  background: rgb(26, 65, 42);
+color: white;
   width: 100%;
+
+
 }
 .row {
   display: flex;
@@ -28,7 +27,7 @@ li {
 }
 
 ul a {
-  color: black;
+  color: white;
   text-decoration: none;
 }
 ul a:hover {

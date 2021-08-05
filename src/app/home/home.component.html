@@ -1,3 +1,21 @@
-<div>
+<div class="container">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Welcome, Itzel</mat-card-title>
+      <mat-card-subtitle>Admin</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://itzel-contreras.s3.us-east-2.amazonaws.com/preview.jpg" alt="Preview" />
+    <mat-card-content>
+      <p>Manage itzelcontreras.com content in a few clicks.</p>
+    </mat-card-content>
+    <mat-card-actions>
 
+      <a mat-button href="https://itzelcontreras.com/" target="_blank"> PORTFOLIO </a>
+      <a mat-button [routerLink]="'/projects'"> PROJECTS </a>
+      <a mat-button [routerLink]="'/case-studies'"> CASE STUDIES </a>
+      <a mat-button [routerLink]="'/translations'"> TRANSLATIONS </a>
+
+    </mat-card-actions>
+  </mat-card>
 </div>

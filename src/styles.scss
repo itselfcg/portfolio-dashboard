@@ -65,6 +65,10 @@ input[type="file"] {
   padding: 2em 0 1em;
 }
 
+.mat-toolbar-row {
+  border-bottom: var(--color-primary) 2.5px solid;
+}
+
 .mat-card {
   margin: 2em;
   width: 80%;
