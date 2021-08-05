@@ -1,0 +1,30 @@
+<form [formGroup]="form" (submit)="save()">
+  <div mat-dialog-content [formGroup]="form">
+    <mat-form-field [style.width.%]="50">
+      <input
+      type="text"
+      matInput
+      formControlName="key"
+      placeholder="Key"
+    />
+      <mat-error>Please enter a key.</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field [style.width.%]="100">
+      <textarea
+      type="text"
+      matInput
+      rows=""
+      formControlName="value"
+      placeholder="Value"
+    ></textarea>
+      <mat-error>Please enter a value.</mat-error
+      >
+    </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="close()">CLOSE</button>
+    <button mat-button mat-flat-button type="submit">SAVE</button>
+  </div>
+</form>

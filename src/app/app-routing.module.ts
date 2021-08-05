@@ -8,6 +8,8 @@ import { CaseStudyHomeComponent } from './case-study/home/case-study-home.compon
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/create-edit/project.component';
 import { ProjectsHomeComponent } from './project/home/projects-home.component';
+import { TranslationComponent } from './translation/create-edit/translation.component';
+import { TranslationHomeComponent } from './translation/home/translation-home.component';
 import { UserComponent } from './user/user.component';
 
 
@@ -21,6 +23,10 @@ const routes: Routes = [
   { path: 'case/edit/:caseId', component: CaseStudyComponent,canActivate: [AuthGuard]  },
   { path: 'settings', component: UserComponent,
   data: { animationState: 'three' },canActivate: [AuthGuard]  },
+  { path: 'translations', component: TranslationHomeComponent,canActivate: [AuthGuard]  },
+  { path: 'translation', component: TranslationComponent,canActivate: [AuthGuard]  },
+  { path: 'translation/edit/:languageID', component: TranslationComponent,canActivate: [AuthGuard]  },
+
   { path: '', component: HomeComponent,
   data: { animationState: 'two' },canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent,

@@ -25,6 +25,9 @@ import { UserComponent } from './user/user.component';
 import { StatusDialog } from './dialogs/status/status-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { TranslationComponent } from './translation/create-edit/translation.component';
+import { TranslationHomeComponent } from './translation/home/translation-home.component';
+import { WordDialog } from './dialogs/word/word-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,10 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     StatusDialog,
     ConfirmationDialog,
     UserComponent,
-    FooterComponent
+    FooterComponent,
+    TranslationComponent,
+    TranslationHomeComponent,
+    WordDialog
   ],
   imports: [
     BrowserModule,
