@@ -1,15 +1,4 @@
-.mat-card {
-  border-color: aqua;
-  margin: 2em;
-}
 
-.mat-card-title {
-  padding-top: 1em;
-}
-
-.mat-card-content {
-  padding: 2em 0 2em;
-}
 
 
 .formContent {
@@ -41,4 +30,9 @@
   .row {
     flex-direction: column;
   }
+}
+
+.mat-card {
+  margin: 2em;
+  width: 50%;
 }

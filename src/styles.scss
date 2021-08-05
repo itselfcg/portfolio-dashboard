@@ -54,8 +54,50 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   height: calc(100vh - 20px);
+  .inner {
+    color: white;
+    padding: 12px;
+  }
 }
-.inner {
-  color: white;
-  padding: 12px;
+
+
+.mat-card-header {
+  padding: 2em 0 1em;
+}
+
+.mat-card {
+  margin: 2em;
+  width: 80%;
+  max-width: 900px;
+
+  .mat-toolbar-row {
+    border-bottom: var(--color-primary) 1.5px solid;
+  }
+
+  .inputs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .inputs > * {
+    flex: 1;
+    margin-right: 15px;
+  }
+
+}
+.tab-content {
+  padding-top: 2em;
+}
+
+
+.small-screen {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .small-screen {
+    display: block;
+  }
 }
