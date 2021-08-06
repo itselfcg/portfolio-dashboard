@@ -75,7 +75,8 @@ export class TranslationComponent implements OnInit {
             this.translationService
               .getByKey(this.language.key)
               .subscribe((translationsData) => {
-                this.file = translationsData.file;
+                this.file = translationsData.result;
+                console.log(this.file);
 
                 for (let section of this.sections) {
                   if (this.file.hasOwnProperty(section)) {

@@ -27,7 +27,7 @@ export class TranslationService {
   }
 
   getByKey(key: string) {
-    return this.http.get<{ message: string; file: Translation }>(
+    return this.http.get< Translation >(
       API_URL + '/' + key
     );
   }
