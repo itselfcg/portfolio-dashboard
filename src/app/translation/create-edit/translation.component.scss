@@ -1,5 +1,7 @@
 
-
+.mat-toolbar-row{
+  margin-bottom: 1rem;
+}
 .mat-column-key,
 .mat-column-actions {
   width: 25% !important;
@@ -23,3 +25,9 @@
     display: none;
   }
 }
+
+.mat-table {
+  -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }

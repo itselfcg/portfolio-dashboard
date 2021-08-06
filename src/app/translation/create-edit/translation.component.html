@@ -10,9 +10,22 @@
         <button mat-raised-button color="primary" type="submit">SAVE</button>
       </mat-card-header>
       <mat-card-content>
-        <mat-tab-group animationDuration="0ms" >
+        <mat-tab-group animationDuration="0ms">
           <mat-tab label="Basic">
             <div class="tab-content">
+              <mat-toolbar-row>
+                <h3>File</h3>
+                <span class="spacer"></span>
+                <input
+                  type="file"
+                  id="file"
+                  (change)="handleFileInput($event)"
+                />
+
+                <button type="button" mat-icon-button color="primary">
+                  <label for="file"> <mat-icon>add</mat-icon> </label>
+                </button>
+              </mat-toolbar-row>
               <div class="inputs">
                 <mat-form-field [style.width.%]="25">
                   <input
@@ -47,6 +60,8 @@
               </div>
 
               <mat-toolbar-row>
+                <div style="padding-right: 1rem"><h3>Section:</h3></div>
+
                 <mat-select
                   [style.width.%]="25"
                   [(value)]="selectedSection"
@@ -165,7 +180,6 @@
               </table>
             </div>
           </mat-tab>
-
         </mat-tab-group>
       </mat-card-content>
     </form>

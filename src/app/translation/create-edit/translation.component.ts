@@ -20,7 +20,8 @@ export class TranslationComponent implements OnInit {
   form: FormGroup;
   mode = 'create';
   languageID: string;
-
+  fileToUpload: File | null = null;
+  file: Translation;
   isLoading = false;
   sections: string[];
   selectedSection: string;
@@ -32,8 +33,6 @@ export class TranslationComponent implements OnInit {
   selectedTranslations: Word[] = [];
   selectedTranslationColumns: string[] = ['key', 'value', 'actions'];
   selectedTranslationSource = new MatTableDataSource(this.selectedTranslations);
-
-  file: Translation;
   constructor(
     public languageService: LanguageService,
     public translationService: TranslationService,
@@ -75,39 +74,45 @@ export class TranslationComponent implements OnInit {
             this.translationService
               .getByKey(this.language.key)
               .subscribe((translationsData) => {
-                this.file = translationsData.result;
-                console.log(this.file);
-
-                for (let section of this.sections) {
-                  if (this.file.hasOwnProperty(section)) {
-                    let resultArray = Object.keys(this.file[section]).map(
-                      (index) => {
-                        if (index) {
-                          let word: Word = {
-                            section: section,
-                            key: index,
-                            value: this.file[section][index],
-                          };
-                          return word;
-                        }
-                        return null;
-                      }
-                    );
-                    this.translations = this.translations.concat(resultArray);
-                    if (section === this.selectedSection) {
-                      this.selectedTranslations = resultArray;
-                      this.selectedTranslationSource = new MatTableDataSource(
-                        this.selectedTranslations
-                      );
-                    }
-                  }
-                }
-                this.translationSource = new MatTableDataSource(
-                  this.translations
-                );
+                var file = translationsData.result;
+                this.converFileToLocalObject(file);
               });
           });
       }
+    });
+  }
+
+  converFileToLocalObject(file: Translation) {
+    var translations = new Promise<Word[]>((resolve) => {
+      var words: Word[] = [];
+      for (let section of this.sections) {
+        if (file.hasOwnProperty(section)) {
+          let resultArray = Object.keys(file[section]).map((index) => {
+            if (index) {
+              let word: Word = {
+                section: section,
+                key: index,
+                value: file[section][index],
+              };
+              return word;
+            }
+            return null;
+          });
+          words = words.concat(resultArray);
+          if (section === this.selectedSection) {
+            this.selectedTranslations = resultArray;
+            this.selectedTranslationSource = new MatTableDataSource(
+              this.selectedTranslations
+            );
+          }
+        }
+      }
+      resolve(words);
+    });
+
+    translations.then((result: Word[]) => {
+      this.translations = result;
+      this.translationSource = new MatTableDataSource(this.translations);
     });
   }
 
@@ -152,18 +157,22 @@ export class TranslationComponent implements OnInit {
         fileName: this.form.value.fileName,
       };
       this.languageService
-        .update(this.language._id, this.language.name, this.language.key,this.language.fileName)
+        .update(
+          this.language._id,
+          this.language.name,
+          this.language.key,
+          this.language.fileName
+        )
         .subscribe((result) => {
           if (result) {
-            console.log(result);
             var fileName = this.language.fileName;
             var translation = this.mapTranslation(fileName);
             this.translationService
               .update(this.language._id, translation)
               .subscribe((result) => {
-             this.isLoading = false;
+                this.isLoading = false;
                 if (result.status) {
-                 this.router.navigate(['/translations']);
+                  this.router.navigate(['/translations']);
                 }
               });
           }
@@ -174,7 +183,9 @@ export class TranslationComponent implements OnInit {
   mapTranslation(fileName: string) {
     var translation: Translation = { fileName: fileName };
     for (let i = 0; i < this.translations.length; i++) {
-      translation[this.translations[i].section] = {};
+      if (!translation.hasOwnProperty(this.translations[i].section)) {
+        translation[this.translations[i].section] = {};
+      }
       translation[this.translations[i].section][this.translations[i].key] =
         this.translations[i].value;
     }
@@ -198,6 +209,21 @@ export class TranslationComponent implements OnInit {
   onDeleteTranslation(word: Word) {
     this.translations = this.translations.filter((w) => w.key !== word.key);
     this.selectSection(word.section);
+  }
+
+  handleFileInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+      reader.onload = () => {
+        var data = reader.result as string;
+        var file = JSON.parse(data) as Translation;
+        this.converFileToLocalObject(file);
+      };
+    }
   }
 
   openTranslationDialog(word: Word) {

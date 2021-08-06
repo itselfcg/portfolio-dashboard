@@ -37,7 +37,7 @@ export class TranslationHomeComponent implements OnInit {
   onDeleteTranslation(id: string) {
     var message = {
       title: 'Confirmation',
-      content: 'Are you sure you want to delete this project?',
+      content: 'Are you sure you want to delete this translation?',
       falseOption: '',
       trueOption: 'OK',
     };
