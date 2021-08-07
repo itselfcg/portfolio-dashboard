@@ -24,9 +24,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
+    FormsModule,
+
     MatInputModule,
     MatCardModule,
     MatButtonModule,
@@ -51,6 +54,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
+
   ],
 })
 export class AngularMaterialModule {}

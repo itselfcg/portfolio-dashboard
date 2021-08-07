@@ -3,19 +3,24 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-
       <a mat-list-item [routerLink]="'/projects'"> Projects </a>
-      <a mat-list-item [routerLink]="'/project'"> Create Project </a>
+      <a mat-list-item [routerLink]="'/projects/new'"> Create Project </a>
       <a mat-list-item [routerLink]="'/case-studies'"> Case Studies </a>
-      <a mat-list-item [routerLink]="'/case'"> Create Case Study </a>
+      <a mat-list-item [routerLink]="'/case-studies/new'">
+        Create Case Study
+      </a>
       <a mat-list-item [routerLink]="'/translations'"> Translations </a>
       <a mat-list-item [routerLink]="'/settings'"> Settings </a>
-
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="sidenav">
       <div [@triggerName]="prepareRoute(outlet)">
+        <div class="container" *ngIf="userIsAuthenticated">
+          <div class="breadcrumb">
+            <xng-breadcrumb></xng-breadcrumb>
+          </div>
+        </div>
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
     </div>

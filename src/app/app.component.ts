@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { BreadcrumbService } from 'xng-breadcrumb';
 import { AuthService } from './auth/auth.service';
 import { routeTransitionAnimations } from './_animations/transitions';
 
@@ -14,7 +15,11 @@ export class AppComponent implements OnInit {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private breadcrumbService: BreadcrumbService,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
     this.authService.autoAuthUser();

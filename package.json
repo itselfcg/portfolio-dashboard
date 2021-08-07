@@ -13,12 +13,12 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "~12.1.1",
-    "@angular/cli": "~12.1.1",
-    "@angular/compiler-cli": "~12.1.1",
     "@angular/animations": "~12.1.1",
     "@angular/cdk": "^12.1.1",
+    "@angular/cli": "~12.1.1",
     "@angular/common": "~12.1.1",
     "@angular/compiler": "~12.1.1",
+    "@angular/compiler-cli": "~12.1.1",
     "@angular/core": "~12.1.1",
     "@angular/forms": "~12.1.1",
     "@angular/material": "^12.1.1",
@@ -29,6 +29,7 @@
     "ngx-captcha": "^9.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
+    "xng-breadcrumb": "^6.7.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

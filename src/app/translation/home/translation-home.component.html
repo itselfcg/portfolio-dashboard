@@ -8,7 +8,7 @@
       <span class="spacer"></span>
       <a
         mat-button
-        routerLink="/translation"
+        routerLink="new"
         routerLinkActive="mat-accent"
         mat-raised-button
         color="primary"
@@ -66,7 +66,7 @@
               mat-icon-button
               type="button"
               color="primary"
-              [routerLink]="['/translation/edit', language._id]"
+              [routerLink]="['/translations/', language._id]"
             >
               edit
             </button>

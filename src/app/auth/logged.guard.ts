@@ -21,6 +21,7 @@ export class LoggedGuard implements CanActivate {
     if (isAuth) {
       this.router.navigate(['']);
     }
+
     return true;
   }
 }

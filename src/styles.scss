@@ -49,6 +49,11 @@ input[type="file"] {
   visibility: hidden;
 }
 
+.breadcrumb {
+  width: 80%;
+  margin: 2rem 0 0.5rem 0;
+  font-weight: 500;
+}
 .wrapper {
   display: flex;
   justify-content: center;
@@ -60,7 +65,6 @@ input[type="file"] {
   }
 }
 
-
 .mat-card-header {
   padding: 2em 0 1em;
 }
@@ -70,9 +74,9 @@ input[type="file"] {
 }
 
 .mat-card {
-  margin: 2em;
   width: 80%;
   max-width: 900px;
+  margin-bottom: 2rem;
 
   .mat-toolbar-row {
     border-bottom: var(--color-primary) 1.5px solid;
@@ -89,12 +93,10 @@ input[type="file"] {
     flex: 1;
     margin-right: 15px;
   }
-
 }
 .tab-content {
   padding-top: 2em;
 }
-
 
 .small-screen {
   display: none;
