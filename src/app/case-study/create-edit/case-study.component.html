@@ -8,7 +8,7 @@
       <mat-card-header>
         <mat-card-title>Case study </mat-card-title>
         <span class="spacer"></span>
-        <button mat-raised-button color="primary" type="submit">SAVE</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!canEdit">SAVE</button>
       </mat-card-header>
 
       <mat-card-content>

@@ -101,7 +101,7 @@
           />
         </mat-form-field>
       </div>
-      <mat-form-field class="example-chip-list" [style.width.%]="100">
+      <mat-form-field [style.width.%]="100">
         <mat-label>Projects labels</mat-label>
         <mat-chip-list #chipList selectable multiple>
           <mat-chip
@@ -251,17 +251,19 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let project">
+          <th mat-header-cell *matHeaderCellDef [hidden]="!canEdit">Actions</th>
+          <td mat-cell *matCellDef="let project" [hidden]="!canEdit">
             <button
               mat-icon-button
               color="primary"
+              *ngIf="canEdit"
               [routerLink]="['/projects/', project._id]"
             >
               edit
             </button>
             <button
               mat-icon-button
+              *ngIf="canEdit"
               (click)="onDeleteProject(project._id)"
               color="warn"
             >

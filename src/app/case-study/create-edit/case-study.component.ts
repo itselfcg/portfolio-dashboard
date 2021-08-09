@@ -15,6 +15,7 @@ import { InsightDialog } from './../dialogs/insights/insights-dialog.component';
 import { PictureDialog } from '../../dialogs/picture/picture-dialog.component';
 import { SectionDialog } from './../dialogs/sections/section-dialog.component';
 import { UserDialog } from './../dialogs/user/user-dialog.component';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 
 @Component({
   selector: 'app-case-study',
@@ -61,8 +62,10 @@ export class CaseStudyComponent implements OnInit {
     private projectService: ProjectService,
     private caseStudyService: CaseStudyService,
     public route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private readonly auth: RoleAuthService
   ) {}
+
   ngOnInit(): void {
     this.caseStudyService.getSections().subscribe((result) => {
       this.sectionsName = result.sections;
@@ -388,5 +391,9 @@ export class CaseStudyComponent implements OnInit {
     this.projectService.getByLanguage(language).subscribe((result) => {
       this.projects = result.projects;
     });
+  }
+
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }

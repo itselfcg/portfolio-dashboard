@@ -15,7 +15,8 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    data: { animationState: 'two' },
+    data: { animationState: 'two' , breadcrumb: 'Home' },
+
     loadChildren: () =>
       import(`./home/home.module`).then((module) => module.HomeModule),
   },

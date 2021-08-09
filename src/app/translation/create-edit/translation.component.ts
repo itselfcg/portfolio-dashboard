@@ -8,6 +8,7 @@ import { Language } from 'src/app/_models/language.model';
 import { Translation } from 'src/app/_models/translation.model';
 import { Word } from 'src/app/_models/word.model';
 import { LanguageService } from 'src/app/_services/language.service';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 import { TranslationService } from 'src/app/_services/translation.service';
 
 @Component({
@@ -38,7 +39,8 @@ export class TranslationComponent implements OnInit {
     public translationService: TranslationService,
     public route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly auth: RoleAuthService
   ) {}
 
   ngOnInit(): void {
@@ -258,5 +260,9 @@ export class TranslationComponent implements OnInit {
         this.selectSection(word.section);
       }
     });
+  }
+
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }

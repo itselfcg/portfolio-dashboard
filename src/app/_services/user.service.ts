@@ -20,9 +20,12 @@ export class UserService {
 
   changePassword(user: string, password: string, newPassword: string) {
     const authData: AuthData = {
-      name: user,
+      username: user,
       password: password,
       newPassword: newPassword,
+      name:null,
+      role: null,
+      token: null
     };
     return this.http.post(API_URL + '/update', authData, {
       observe: 'response',

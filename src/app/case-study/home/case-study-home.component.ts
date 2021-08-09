@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { CaseStudy } from 'src/app/_models/case-study.model';
 import { CaseStudyService } from 'src/app/_services/case-study.service';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -35,12 +36,6 @@ export class CaseStudyHomeComponent implements OnInit {
   totalCaseStudies = 0;
   caseStudiesPerPage = 10;
   pageSizeOptions: number[] = [1, 5, 10, 25, 50];
-  constructor(
-    public caseStudyService: CaseStudyService,
-    public dialog: MatDialog
-  ) {
-    this.sortedCaseStudies = this.caseStudies.slice();
-  }
 
   // DROPLIST
   filterOptionsLanguage: string[] = ['All', 'en', 'sp'];
@@ -52,6 +47,14 @@ export class CaseStudyHomeComponent implements OnInit {
     active: this.activeSelected,
   };
   private paginator: MatPaginator;
+
+  constructor(
+    public caseStudyService: CaseStudyService,
+    public dialog: MatDialog,
+    private readonly auth: RoleAuthService
+  ) {
+    this.sortedCaseStudies = this.caseStudies.slice();
+  }
 
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
@@ -76,7 +79,6 @@ export class CaseStudyHomeComponent implements OnInit {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log(filterValue);
     this.caseStudiesDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -158,8 +160,6 @@ export class CaseStudyHomeComponent implements OnInit {
                 return true;
               }
               if (option === 'en' || option === 'sp') {
-                console.log(project[key] + ' ' + option);
-
                 return project[key] === option;
               }
 
@@ -170,7 +170,6 @@ export class CaseStudyHomeComponent implements OnInit {
         return projectsFiltered;
       })
       .then((filterList: CaseStudy[]) => {
-        console.log(filterList);
         this.caseStudiesDataSource = new MatTableDataSource(filterList);
         if (this.caseStudiesDataSource.paginator) {
           this.caseStudiesDataSource.paginator.firstPage();
@@ -225,5 +224,9 @@ export class CaseStudyHomeComponent implements OnInit {
             });
         }
       });
+  }
+
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }

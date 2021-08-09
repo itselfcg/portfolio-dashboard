@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ItemsDialog } from '../../dialogs/items/items-dialog.component';
 import { Picture } from '../../_models/picture.model';
 import { PictureDialog } from '../../dialogs/picture/picture-dialog.component';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 
 @Component({
   selector: 'app-project',
@@ -41,7 +42,8 @@ export class ProjectComponent implements OnInit {
     public dialog: MatDialog,
     public projectService: ProjectService,
     public route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private readonly auth: RoleAuthService
   ) {}
 
   ngOnInit() {
@@ -50,7 +52,9 @@ export class ProjectComponent implements OnInit {
         validators: [Validators.required],
       }),
       name: new FormControl(null, { validators: [Validators.required] }),
-      created: new FormControl(new Date() , { validators: [Validators.required] }),
+      created: new FormControl(new Date(), {
+        validators: [Validators.required],
+      }),
       title: new FormControl(null, { validators: [Validators.required] }),
       content: new FormControl(null, { validators: [Validators.required] }),
       git_url: new FormControl(''),
@@ -67,7 +71,9 @@ export class ProjectComponent implements OnInit {
         this.projectService.getById(this.projectId).subscribe((postData) => {
           this.isLoading = false;
           this.project = postData.projects[0];
-          this.project.creation_date=this.project.creation_date?this.project.creation_date:new Date();
+          this.project.creation_date = this.project.creation_date
+            ? this.project.creation_date
+            : new Date();
           this.form.setValue({
             language: this.project.language,
             created: this.project.creation_date,
@@ -76,8 +82,8 @@ export class ProjectComponent implements OnInit {
             content: this.project.content,
             git_url: this.project.git_url,
             preview_url: this.project.preview_url,
-            details: this.project.details?this.project.details:false,
-            active: this.project.active?this.project.active:false,
+            details: this.project.details ? this.project.details : false,
+            active: this.project.active ? this.project.active : false,
           });
 
           this.labels = this.project.labels;
@@ -219,5 +225,7 @@ export class ProjectComponent implements OnInit {
     this.picturesDataSource = new MatTableDataSource(this.pictures);
   }
 
-
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
+  }
 }

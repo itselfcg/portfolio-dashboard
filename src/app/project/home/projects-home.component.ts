@@ -10,6 +10,7 @@ import { ProjectService } from '../../_services/projects.service';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSelectChange } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 
 @Component({
   selector: 'projects-home-app',
@@ -68,7 +69,11 @@ export class ProjectsHomeComponent implements OnInit {
     this.paginator = mp;
     this.projectsDataSource.paginator = this.paginator;
   }
-  constructor(public projectService: ProjectService, public dialog: MatDialog) {
+  constructor(
+    public projectService: ProjectService,
+    public dialog: MatDialog,
+    private readonly auth: RoleAuthService
+  ) {
     this.sortedProjects = this.projects.slice();
   }
 
@@ -300,5 +305,8 @@ export class ProjectsHomeComponent implements OnInit {
             });
         }
       });
+  }
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }

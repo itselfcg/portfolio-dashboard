@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialog } from 'src/app/dialogs/confirmation/confirmation-dialog.component';
 import { Language } from 'src/app/_models/language.model';
 import { LanguageService } from 'src/app/_services/language.service';
+import { RoleAuthService } from 'src/app/_services/role-auth.service';
 @Component({
   selector: 'app-translation-home',
   templateUrl: './translation-home.component.html',
@@ -19,7 +20,8 @@ export class TranslationHomeComponent implements OnInit {
   languageColumns: any[] = ['id', 'name', 'key', 'fileName', 'actions'];
   constructor(
     public languageService: LanguageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly auth: RoleAuthService
   ) {}
 
   ngOnInit(): void {
@@ -69,5 +71,9 @@ export class TranslationHomeComponent implements OnInit {
 
   refreshDataSource() {
     this.languagesDataSource = new MatTableDataSource(this.languages);
+  }
+
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }

@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { StatusDialog } from '../dialogs/status/status-dialog.component';
 import { CustomErrorStateMatcher } from '../_error/custom-error.state-matcher';
 import { User } from '../_models/user.model';
+import { RoleAuthService } from '../_services/role-auth.service';
 import { UserService } from '../_services/user.service';
 import { passwordMatch } from '../_validator/file.directive';
 
@@ -22,12 +23,13 @@ export class UserComponent implements OnInit {
   constructor(
     public userService: UserService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private readonly auth: RoleAuthService
   ) {}
 
   ngOnInit(): void {
-    const auth = this.authService.getAuthUser();
-    this.user = auth.user;
+    const authData = this.authService.getAuthUser();
+    this.user = authData.username;
     this.form = new FormGroup(
       {
         user: new FormControl(
@@ -86,5 +88,9 @@ export class UserComponent implements OnInit {
             .subscribe((confirmation: Boolean) => {});
         }
       );
+  }
+
+  public get canEdit(): boolean {
+    return this.auth.isAdmin();
   }
 }
