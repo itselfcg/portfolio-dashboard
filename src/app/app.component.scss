@@ -1,6 +1,9 @@
-.sidenav{
-  background-color: rgba(var(--color-accent),.5);
+.sidenav {
+  background-color: rgba(var(--color-accent), 0.5);
   min-height: 80vh;
 }
 
-
+.breadcrumb {
+  width: 80%;
+  max-width: 900px;
+}
